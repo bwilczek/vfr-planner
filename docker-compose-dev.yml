@@ -1,0 +1,22 @@
+version: '2'
+services:
+  rails:
+    build: .
+    ports:
+     - "3000:3000"
+     - "8080:8080"
+    depends_on:
+     - mysql
+    volumes:
+     - .:/app
+  mysql:
+    image: mysql/mysql-server:5.6
+    ports:
+     - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vfr
+      MYSQL_USER: vfr
+      MYSQL_PASSWORD: vfr
+    volumes:
+     - /tmp/mysql_data:/var/lib/mysql

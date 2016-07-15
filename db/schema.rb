@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160712163038) do
+ActiveRecord::Schema.define(version: 20160715145148) do
 
-  create_table "nav_points", force: :cascade do |t|
+  create_table "nav_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
+    t.float    "lat",         limit: 24
+    t.float    "lng",         limit: 24
     t.integer  "type"
     t.integer  "status"
     t.string   "height"
@@ -23,8 +23,30 @@ ActiveRecord::Schema.define(version: 20160712163038) do
     t.string   "icao_code"
     t.string   "description"
     t.string   "radio"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "token"
+    t.integer  "user_id"
+    t.datetime "last_used"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_sessions_on_token", unique: true, using: :btree
+    t.index ["user_id"], name: "index_sessions_on_user_id", using: :btree
+  end
+
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "provider_id"
+    t.datetime "last_login"
+    t.integer  "status"
+    t.boolean  "admin"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["provider_id"], name: "index_users_on_provider_id", unique: true, using: :btree
+  end
+
+  add_foreign_key "sessions", "users"
 end

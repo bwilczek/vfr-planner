@@ -1,6 +1,6 @@
 class CreateNavPoints < ActiveRecord::Migration[5.0]
   def change
-    create_table :nav_points do |t|
+    create_table(:nav_points, :options => 'DEFAULT CHARSET=utf8') do |t|
       t.string :name
       t.float :lat
       t.float :lng
