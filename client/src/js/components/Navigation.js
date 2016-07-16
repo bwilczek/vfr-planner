@@ -3,6 +3,8 @@ import React from "react";
 import { Link } from "react-router";
 import { Button, ButtonGroup } from "react-bootstrap";
 
+import Auth from "./Auth";
+
 export default class Navigation extends React.Component {
 
   render() {
@@ -25,6 +27,7 @@ export default class Navigation extends React.Component {
 
     return (
       <div>
+        <Auth />
         <ButtonGroup>
           {buttons}
         </ButtonGroup>

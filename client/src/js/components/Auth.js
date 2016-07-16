@@ -24,7 +24,7 @@ export default class Auth extends React.Component {
 
   render() {
     return (
-      <div>
+      <span>
       {this.props.name}
       <FacebookLogin
         appId={secrets.FACEBOOK_APP_ID}
@@ -38,7 +38,7 @@ export default class Auth extends React.Component {
           clientId={secrets.GOOGLE_APP_ID}
           buttonText="Login"
           callback={this.responseGoogle} />
-      </div>
+      </span>
     );
   }
 
