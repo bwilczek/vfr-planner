@@ -15,6 +15,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "google-maps": "^3.2.1",
     "react": "^15.2.1",
+    "react-anything-sortable": "^1.5.2",
     "react-bootstrap": "^0.29.5",
     "react-dom": "^15.2.1",
     "react-facebook-login": "^3.1.0",
