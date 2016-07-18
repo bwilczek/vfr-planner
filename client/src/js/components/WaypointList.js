@@ -1,25 +1,29 @@
 import React from 'react';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
-var Sortable = require('react-anything-sortable');
+const SortableItem = SortableElement(({value}) => <li>{value.lat()}</li>);
 
-import WaypointListItem from '../components/WaypointListItem';
+const SortableList = SortableContainer(({items}) => {
+    return (
+        <ul>
+            {items.map((value, index) =>
+                <SortableItem key={`item-${index}`} index={index} value={value} />
+            )}
+        </ul>
+    );
+});
 
 export default class WaypointList extends React.Component {
 
-  handleSort(data) {
-    console.log(data);
-    // TODO: trigger action WAYPOINT_REORDERED
-  }
+  onSortEnd = ({oldIndex, newIndex}) => {
+    console.log(oldIndex, newIndex);
+    arrayMove(this.props.waypoints, oldIndex, newIndex);
+  };
 
   render() {
-    const renderedItems = this.props.waypoints.map((item, index) => <WaypointListItem className="vertical" sortData={item} key={index}>WPT {index+1}</WaypointListItem>);
 
     return (
-      <div>
-        <Sortable onSort={this.handleSort.bind(this)} className="vertical-container" direction="vertical" containment="true" dynamic="true">
-          {renderedItems}
-        </Sortable>
-      </div>
+      <SortableList items={this.props.waypoints} onSortEnd={this.onSortEnd.bind(this)} />
     );
   }
 
