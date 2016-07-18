@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from 'react-redux';
+import * as routeDataActions from '../actions/routeDataActions';
 
 const GoogleMapsLoader = require('google-maps');
 GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY;
@@ -7,6 +9,9 @@ import * as secrets from '../secrets';
 import WaypointList from '../components/WaypointList';
 import { localStorageGetObject, localStorageSetObject } from '../lib/LocalStorageForObjects'
 
+@connect((store) => {
+  return _.cloneDeep(store.routeData);
+})
 export default class Plan extends React.Component {
 
   constructor() {
@@ -45,6 +50,7 @@ export default class Plan extends React.Component {
 
       this.map.addListener('click', (e) => {
         console.log(`${e.latLng.lat()} ${e.latLng.lng()}`);
+        this.props.dispatch(routeDataActions.addWaypoint(e.latLng));
       });
 
       this.map.addListener('idle', (e) => {
@@ -77,7 +83,7 @@ export default class Plan extends React.Component {
       <div style={wrapperStyle}>
         <div ref='map' style={mapStyle}>loading map...</div>
         <div ref='sidebar' style={sidebarStyle} >
-          <WaypointList />
+          <WaypointList waypoints={this.props.waypoints}/>
         </div>
         <div style={clearStyle} />
       </div>

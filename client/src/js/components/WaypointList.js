@@ -8,23 +8,16 @@ export default class WaypointList extends React.Component {
 
   handleSort(data) {
     console.log(data);
+    // TODO: trigger action WAYPOINT_REORDERED
   }
 
-  // {this.props.arr.map(renderItem, this)}
-
   render() {
+    const renderedItems = this.props.waypoints.map((item, index) => <WaypointListItem className="vertical" sortData={item} key={index}>WPT {index+1}</WaypointListItem>);
+
     return (
       <div>
-        <Sortable onSort={this.handleSort.bind(this)} className="vertical-container" direction="vertical" containment="true">
-          <WaypointListItem className="vertical" sortData="epws" key={1}>
-            React
-          </WaypointListItem>
-          <WaypointListItem className="vertical" sortData="epkp" key={2}>
-            Angular
-          </WaypointListItem>
-          <WaypointListItem className="vertical" sortData="epru" key={3}>
-            Backbone
-          </WaypointListItem>
+        <Sortable onSort={this.handleSort.bind(this)} className="vertical-container" direction="vertical" containment="true" dynamic="true">
+          {renderedItems}
         </Sortable>
       </div>
     );
