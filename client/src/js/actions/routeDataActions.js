@@ -9,6 +9,13 @@ export function addWaypoint(latLng) {
   }
 }
 
+export function updateWaypoint(waypoint) {
+  return {
+    type: 'WAYPOINT_UPDATE',
+    payload: waypoint,
+  }
+}
+
 export function reorderWaypoints(newWaypoints) {
   return {
     type: 'WAYPOINT_REORDER',

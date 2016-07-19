@@ -17,6 +17,14 @@ export default function reducer(state=initialState, action) {
       return newState;
       break;
     }
+    case 'WAYPOINT_UPDATE': {
+      let waypointToUpdate = action.payload;
+      let newState = _.cloneDeep(state);
+      let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key]);
+      newState.waypoints[i] = waypointToUpdate;
+      return newState;
+      break;
+    }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
       console.log('WAYPOINT_REVERSE_GEOCODE_PENDING');
       //return _.cloneDeep(state);

@@ -21,11 +21,11 @@ export default class Plan extends React.Component {
     this.map = null;
     this.polyline = null;
     this.markers = [];
+    this.keyOfWaypointBeingDragged = null;
   }
 
   componentDidMount() {
     this.initMap();
-    console.log('componentDidMount ', this.props.waypoints.length);
     this.plotRoute();
   }
 
@@ -42,34 +42,41 @@ export default class Plan extends React.Component {
   }
 
   plotRoute() {
+    console.log('plotRoute');
     GoogleMapsLoader.load((google) => {
-      console.log('plotRoute');
       if(this.polyline) {
         this.polyline.setMap(null);
       }
+      if(this.markers.length > 0) {
+        this.markers.forEach((m)=>m.setMap(null));
+        this.markers = [];
+      }
       this.polyline = new google.maps.Polyline({
-        path: this.props.waypoints,
+        path: this.props.waypoints.map((wp)=>wp.latLng),
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
       });
       this.polyline.setMap(this.map);
 
-      _.forEach(this.props.waypoints, (latLng, i) => {
+      _.forEach(this.props.waypoints, (wp, i) => {
         let marker = new google.maps.Marker({
-          position: latLng,
+          position: wp.latLng,
           map: this.map,
+          title: wp.name,
           draggable: true,
-          // title: 'Hello World!'
         });
-        marker.customData = 'kasia';
+        marker.waypoint = wp;
         marker.addListener('dragstart', (e) => {
-          console.log('dragstart ', e.latLng.lat(), ' ', e.latLng.lng(), ' ', this.map.getCenter());
+          this.keyOfWaypointBeingDragged = marker.waypoint.key;
         });
         marker.addListener('dragend', (e) => {
-          console.log('dragend ', e.latLng.lat(), ' ', e.latLng.lng());
+          let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
+          waypoint.latLng = e.latLng;
+          this.props.dispatch(routeDataActions.updateWaypoint(waypoint));
+          this.keyOfWaypointBeingDragged = null;
         });
-        console.log('test custom data setting ', marker.customData);
+        this.markers.push(marker);
       }); //forEach
 
     })
@@ -90,8 +97,13 @@ export default class Plan extends React.Component {
       });
 
       this.map.addListener('click', (e) => {
-        console.log(`${e.latLng.lat()} ${e.latLng.lng()}`);
-        this.props.dispatch(routeDataActions.addWaypoint(e.latLng));
+        let waypoint = {
+          latLng: e.latLng,
+          name: `WPT ${this.props.waypoints.length+1}`,
+          key: `${_.random(10000,99999)}-${Date.now()}`,
+          marker: null,
+        }
+        this.props.dispatch(routeDataActions.addWaypoint(waypoint));
       });
 
       this.map.addListener('idle', (e) => {

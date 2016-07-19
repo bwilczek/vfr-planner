@@ -3,16 +3,16 @@ import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-ho
 import { connect } from 'react-redux';
 import * as routeDataActions from '../actions/routeDataActions';
 
-const SortableItem = SortableElement(({value}) => <li>{value.lat()}</li>);
+const SortableItem = SortableElement(({value}) => <li>{value.name}</li>);
 
 const SortableList = SortableContainer(({items}) => {
-    return (
-        <ul>
-            {items.map((value, index) =>
-                <SortableItem key={`item-${index}`} index={index} value={value} />
-            )}
-        </ul>
-    );
+  return (
+    <ul>
+      {items.map((value, index) =>
+          <SortableItem key={`item-${value.key}`} index={index} value={value} />
+      )}
+    </ul>
+  );
 });
 
 @connect((store) => {
@@ -21,7 +21,6 @@ const SortableList = SortableContainer(({items}) => {
 export default class WaypointList extends React.Component {
 
   onSortEnd = ({oldIndex, newIndex}) => {
-    console.log(oldIndex, newIndex);
     this.props.dispatch(routeDataActions.reorderWaypoints(arrayMove(this.props.waypoints, oldIndex, newIndex)));
   };
 
