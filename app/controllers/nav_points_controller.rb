@@ -10,4 +10,8 @@ class NavPointsController < ApplicationController
     render json: NavPoint.find(params[:id])
   end
 
+  def find
+    # https://maps.googleapis.com/maps/api/geocode/json?latlng=51.20763622191245,16.99808120727539
+  end
+
 end

@@ -19,25 +19,66 @@ export default class Plan extends React.Component {
     this.initMap = this.initMap.bind(this);
     this.saveMapState = this.saveMapState.bind(this);
     this.map = null;
+    this.polyline = null;
+    this.markers = [];
   }
 
   componentDidMount() {
     this.initMap();
+    console.log('componentDidMount ', this.props.waypoints.length);
+    this.plotRoute();
   }
 
   componentWillUnmount() {
     this.saveMapState();
   }
 
+  componentDidUpdate() {
+    this.plotRoute();
+  }
+
   saveMapState() {
     localStorageSetObject('mapState', {center: this.map.getCenter(), zoom: this.map.getZoom()});
+  }
+
+  plotRoute() {
+    GoogleMapsLoader.load((google) => {
+      console.log('plotRoute');
+      if(this.polyline) {
+        this.polyline.setMap(null);
+      }
+      this.polyline = new google.maps.Polyline({
+        path: this.props.waypoints,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      this.polyline.setMap(this.map);
+
+      _.forEach(this.props.waypoints, (latLng, i) => {
+        let marker = new google.maps.Marker({
+          position: latLng,
+          map: this.map,
+          draggable: true,
+          // title: 'Hello World!'
+        });
+        marker.customData = 'kasia';
+        marker.addListener('dragstart', (e) => {
+          console.log('dragstart ', e.latLng.lat(), ' ', e.latLng.lng(), ' ', this.map.getCenter());
+        });
+        marker.addListener('dragend', (e) => {
+          console.log('dragend ', e.latLng.lat(), ' ', e.latLng.lng());
+        });
+        console.log('test custom data setting ', marker.customData);
+      }); //forEach
+
+    })
   }
 
   initMap() {
     let center = {lat: 51, lng: 17};
     let zoom = 8;
     const mapState = localStorageGetObject('mapState');
-    console.log(mapState);
     if(mapState !== null) {
       center = mapState.center;
       zoom = mapState.zoom;
@@ -56,10 +97,8 @@ export default class Plan extends React.Component {
       this.map.addListener('idle', (e) => {
         this.saveMapState();
       });
-
     });
   }
-
 
   render() {
     const mapStyle = {
@@ -83,7 +122,7 @@ export default class Plan extends React.Component {
       <div style={wrapperStyle}>
         <div ref='map' style={mapStyle}>loading map...</div>
         <div ref='sidebar' style={sidebarStyle} >
-          <WaypointList waypoints={this.props.waypoints}/>
+          <WaypointList />
         </div>
         <div style={clearStyle} />
       </div>
