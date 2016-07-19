@@ -1,6 +1,7 @@
 const initialState = {
   waypoints: [],
   weather: {},
+  runGeocode: null,
 };
 
 export default function reducer(state=initialState, action) {
@@ -8,6 +9,7 @@ export default function reducer(state=initialState, action) {
     case 'WAYPOINT_ADDED': {
       let newState = _.cloneDeep(state);
       newState.waypoints.push(action.payload);
+      newState.runGeocode = action.payload;
       return newState;
       break;
     }
@@ -22,26 +24,29 @@ export default function reducer(state=initialState, action) {
       let newState = _.cloneDeep(state);
       let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key]);
       newState.waypoints[i] = waypointToUpdate;
+      newState.runGeocode = waypointToUpdate;
       return newState;
       break;
     }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
-      console.log('WAYPOINT_REVERSE_GEOCODE_PENDING');
+      //do nothing
       //return _.cloneDeep(state);
       break;
     }
     case 'WAYPOINT_REVERSE_GEOCODE_REJECTED': {
-      console.log('WAYPOINT_REVERSE_GEOCODE_REJECTED');
-      //return {...state, error: action.payload}
+      // ignore the error
+      let newState = _.cloneDeep(state);
+      newState.runGeocode = null;
+      return newState;
       break;
     }
     case 'WAYPOINT_REVERSE_GEOCODE_FULFILLED': {
-      console.log('WAYPOINT_REVERSE_GEOCODE_FULFILLED');
-      //let data = action.payload.data;
-      //return {
-      //  ...state,
-      //  items: action.payload.data,
-      //}
+      let newState = _.cloneDeep(state);
+      // action.payload.data contains { key: 123, name: 'EPWS', details: {radio: 122.8, icao_code: epws, type: asd} }
+      let i = _.findIndex(newState.waypoints, ['key', action.payload.data.key]);
+      newState.waypoints[i].name = action.payload.data.name;
+      newState.runGeocode = null;
+      return newState;
       break;
     }
   }

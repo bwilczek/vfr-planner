@@ -34,6 +34,11 @@ export default class Plan extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log('runGeocode');
+    console.log(this.props.runGeocode);
+    if(this.props.runGeocode) {
+      this.props.dispatch(routeDataActions.reverseGeocode(this.props.runGeocode));
+    }
     this.plotRoute();
   }
 
@@ -42,7 +47,6 @@ export default class Plan extends React.Component {
   }
 
   plotRoute() {
-    console.log('plotRoute');
     GoogleMapsLoader.load((google) => {
       if(this.polyline) {
         this.polyline.setMap(null);

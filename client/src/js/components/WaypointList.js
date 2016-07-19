@@ -1,17 +1,19 @@
 import React from 'react';
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 import { connect } from 'react-redux';
 import * as routeDataActions from '../actions/routeDataActions';
 
-const SortableItem = SortableElement(({value}) => <li>{value.name}</li>);
+const DragHandle = SortableHandle(() => <span style={{cursor: 'ns-resize'}}> || </span>);
+
+const SortableItem = SortableElement(({value}) => <div><DragHandle /> {value.name}</div>);
 
 const SortableList = SortableContainer(({items}) => {
   return (
-    <ul>
+    <div>
       {items.map((value, index) =>
-          <SortableItem key={`item-${value.key}`} index={index} value={value} />
+        <SortableItem key={`item-${value.key}`} index={index} value={value} />
       )}
-    </ul>
+    </div>
   );
 });
 
@@ -27,7 +29,7 @@ export default class WaypointList extends React.Component {
   render() {
 
     return (
-      <SortableList items={this.props.waypoints} onSortEnd={this.onSortEnd.bind(this)} />
+      <SortableList items={this.props.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
     );
   }
 
