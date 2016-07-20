@@ -1,7 +1,40 @@
+import * as secrets from '../secrets';
+
+const GoogleMapsLoader = require('google-maps');
+GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY;
+GoogleMapsLoader.LIBRARIES = ['geometry'];
+
 const initialState = {
   waypoints: [],
   weather: {},
 };
+
+function setNavInfo(waypoints) {
+  GoogleMapsLoader.load((google) => {
+    _.forEach(waypoints, (wp,i) => {
+      let next = waypoints[i+1]
+      if(next !== undefined) {
+        console.log('calculate heading')
+        let heading = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
+        if (heading<0) {
+          heading += 360
+        }
+        waypoints[i] = {
+          ...wp,
+          heading,
+          distance: google.maps.geometry.spherical.computeLength([wp.latLng, next.latLng]),
+        }
+      } else {
+        waypoints[i] = {
+          ...wp,
+          heading: null,
+          distance: null,
+        }
+      }
+    })
+  })
+  // return waypoints;
+}
 
 export default function reducer(state=initialState, action) {
   switch (action.type) {
@@ -12,12 +45,14 @@ export default function reducer(state=initialState, action) {
       } else {
         newState.waypoints.splice(action.payload.position, 0, action.payload.waypoint);
       }
+      setNavInfo(newState.waypoints)
       return newState;
       break;
     }
     case 'WAYPOINT_REORDER': {
       let newState = _.cloneDeep(state);
       newState.waypoints = action.payload;
+      setNavInfo(newState.waypoints)
       return newState;
       break;
     }
@@ -26,6 +61,7 @@ export default function reducer(state=initialState, action) {
       let newState = _.cloneDeep(state);
       let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key]);
       newState.waypoints[i] = waypointToUpdate;
+      setNavInfo(newState.waypoints)
       return newState;
       break;
     }

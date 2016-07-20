@@ -5,7 +5,7 @@ import * as routeDataActions from '../actions/routeDataActions';
 
 const DragHandle = SortableHandle(() => <span style={{cursor: 'ns-resize'}}> || </span>);
 
-const SortableItem = SortableElement(({value}) => <div><DragHandle /> {value.name}</div>);
+const SortableItem = SortableElement(({value}) => <div><DragHandle /> {value.name} {value.heading} {value.distance}</div>);
 
 const SortableList = SortableContainer(({items}) => {
   return (

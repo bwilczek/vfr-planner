@@ -42,7 +42,6 @@ export default class Plan extends React.Component {
   }
 
   plotRoute() {
-    console.log('plotRoute')
     GoogleMapsLoader.load((google) => {
       if(this.polyline) {
         this.polyline.setMap(null);
@@ -58,9 +57,6 @@ export default class Plan extends React.Component {
         clickable: false,
       });
       this.polyline.addListener('mousedown', (e) => {
-        console.log('poly:mousedown');
-        console.log(e);
-        console.log(e.latLng.toString());
         if(e.vertex !== undefined) {
           this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
         }
@@ -68,17 +64,16 @@ export default class Plan extends React.Component {
       this.polyline.addListener('mouseup', (e) => {
         // FIXME: please excuse this ugly hack - e.latLng is buggy and shows same location as onmousedown. Need to report it to Google Maps API
         setTimeout(() => {
-          console.log('poly:mouseup deferred');
           // WAYPOINT MOVED/CLICKED
           if(e.vertex !== undefined) {
             if(e.latLng == this.polyline.getPath().getAt(e.vertex)) {
               // WAYPOINT CLICKED
               console.log(`seems that waypoint ${this.props.waypoints[e.vertex].name} was clicked`)
+              alert(`context menu for waypoint ${this.props.waypoints[e.vertex].name} will apear here`)
               e.stop();
               return;
             }
             let newLatLng = this.polyline.getPath().getAt(e.vertex)
-            console.log(newLatLng.toString());
             let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
             waypoint.latLng = newLatLng ;
             this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
