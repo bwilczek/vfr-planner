@@ -42,14 +42,11 @@ export default class Plan extends React.Component {
   }
 
   plotRoute() {
+    console.log('plotRoute')
     GoogleMapsLoader.load((google) => {
       if(this.polyline) {
         this.polyline.setMap(null);
       }
-      //if(this.markers.length > 0) {
-      //  this.markers.forEach((m)=>m.setMap(null));
-      //  this.markers = [];
-      //}
       this.polyline = new google.maps.Polyline({
         path: this.props.waypoints.map((wp)=>wp.latLng),
         strokeColor: '#FF0000',
@@ -57,60 +54,48 @@ export default class Plan extends React.Component {
         strokeWeight: 3,
         editable: true,
         geodesic: true,
-        //draggable: true,
         suppressUndo: true,
         clickable: false,
       });
       this.polyline.addListener('mousedown', (e) => {
         console.log('poly:mousedown');
+        console.log(e);
         console.log(e.latLng.toString());
         if(e.vertex !== undefined) {
           this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
         }
-        console.log(this.keyOfWaypointBeingDragged);
-        //console.log(this.props.waypoints[e.vertex]);
-        //console.log(this.polyline.getPath().getAt(e.vertex))
       });
       this.polyline.addListener('mouseup', (e) => {
-        console.log('poly:mouseup');
-        console.log(e.latLng.toString());
+        // FIXME: please excuse this ugly hack - e.latLng is buggy and shows same location as onmousedown. Need to report it to Google Maps API
         setTimeout(() => {
-          //console.log(this.polyline.getPath().getAt(e.vertex));
-          //console.log(this.props.waypoints[e.vertex].latLng.toString());
-          let newLatLng = this.polyline.getPath().getAt(e.vertex)
-          console.log(newLatLng.toString());
-          let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
-          // console.log(waypoint.latLng.toString());
-          // console.log(e.latLng.toString());
-          waypoint.latLng = newLatLng ;
-          this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
-          this.keyOfWaypointBeingDragged = null;
-        }, 50);
+          console.log('poly:mouseup deferred');
+          // WAYPOINT MOVED/CLICKED
+          if(e.vertex !== undefined) {
+            if(e.latLng == this.polyline.getPath().getAt(e.vertex)) {
+              // WAYPOINT CLICKED
+              console.log(`seems that waypoint ${this.props.waypoints[e.vertex].name} was clicked`)
+              e.stop();
+              return;
+            }
+            let newLatLng = this.polyline.getPath().getAt(e.vertex)
+            console.log(newLatLng.toString());
+            let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
+            waypoint.latLng = newLatLng ;
+            this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
+            this.keyOfWaypointBeingDragged = null;
+          } else if(e.edge !== undefined) {
+            // WAYPOINT INSERTED
+            let newLatLng = this.polyline.getPath().getAt(e.edge+1)
+            let waypoint = {
+              latLng: newLatLng,
+              name: `WPT ${this.props.waypoints.length+1}`,
+              key: `${_.random(10000,99999)}-${Date.now()}`,
+            }
+            this.props.dispatch(routeDataActions.addWaypointWithName(waypoint, e.edge+1));
+          }
+        }, 1);
       });
       this.polyline.setMap(this.map);
-
-      /*
-      _.forEach(this.props.waypoints, (wp, i) => {
-        let marker = new google.maps.Marker({
-          position: wp.latLng,
-          map: this.map,
-          title: wp.name,
-          draggable: true,
-        });
-        marker.waypoint = wp;
-        marker.addListener('dragstart', (e) => {
-          this.keyOfWaypointBeingDragged = marker.waypoint.key;
-        });
-        marker.addListener('dragend', (e) => {
-          let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
-          waypoint.latLng = e.latLng;
-          this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
-          this.keyOfWaypointBeingDragged = null;
-        });
-        this.markers.push(marker);
-      }); //forEach
-      */
-
     })
   }
 
@@ -133,7 +118,6 @@ export default class Plan extends React.Component {
           latLng: e.latLng,
           name: `WPT ${this.props.waypoints.length+1}`,
           key: `${_.random(10000,99999)}-${Date.now()}`,
-          marker: null,
         }
         this.props.dispatch(routeDataActions.addWaypointWithName(waypoint));
       });

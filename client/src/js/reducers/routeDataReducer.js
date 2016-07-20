@@ -7,7 +7,11 @@ export default function reducer(state=initialState, action) {
   switch (action.type) {
     case 'WAYPOINT_ADDED': {
       let newState = _.cloneDeep(state);
-      newState.waypoints.push(action.payload);
+      if(action.payload.position == null) {
+        newState.waypoints.push(action.payload.waypoint);
+      } else {
+        newState.waypoints.splice(action.payload.position, 0, action.payload.waypoint);
+      }
       return newState;
       break;
     }
