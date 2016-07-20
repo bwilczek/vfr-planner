@@ -1,7 +1,6 @@
 const initialState = {
   waypoints: [],
   weather: {},
-  runGeocode: null,
 };
 
 export default function reducer(state=initialState, action) {
@@ -9,7 +8,6 @@ export default function reducer(state=initialState, action) {
     case 'WAYPOINT_ADDED': {
       let newState = _.cloneDeep(state);
       newState.waypoints.push(action.payload);
-      newState.runGeocode = action.payload;
       return newState;
       break;
     }
@@ -24,7 +22,6 @@ export default function reducer(state=initialState, action) {
       let newState = _.cloneDeep(state);
       let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key]);
       newState.waypoints[i] = waypointToUpdate;
-      newState.runGeocode = waypointToUpdate;
       return newState;
       break;
     }

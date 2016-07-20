@@ -11,28 +11,9 @@ class NavPointsController < ApplicationController
   end
 
   def find
-    # https://maps.googleapis.com/maps/api/geocode/json?latlng=51.20763622191245,16.99808120727539
     url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=#{params[:lat]},#{params[:lng]}"
     geo_data = JSON.parse(Net::HTTP.get(URI.parse(url)))
-    logger.info(geo_data)
-    name = geo_data['results'][0]['address_components'].select{|o| o['types'] == ['locality', 'political']}.first['short_name']
-    render json: {name: name, key: params[:key]}
+    geo_data = geo_data['results'][0]['address_components'].select{|o| o['types'].include?('political')}.map{|o| o['short_name']}
+    render json: {name: geo_data.first, key: params[:key], lat: params[:lat], lng: params[:lng] }
   end
-
 end
-
-
-# {
-#    "results" : [
-#       {
-#          "address_components" : [
-#             {
-#                "long_name" : "Unnamed Road",
-#                "short_name" : "Unnamed Road",
-#                "types" : [ "route" ]
-#             },
-#             {
-#                "long_name" : "Szymanów",
-#                "short_name" : "Szymanów",
-#                "types" : [ "locality", "political" ]
-#             },

@@ -2,17 +2,31 @@ import axios from 'axios';
 import * as secrets from '../secrets';
 
 
-export function addWaypoint(latLng) {
+function addWaypoint(waypoint) {
   return {
     type: 'WAYPOINT_ADDED',
-    payload: latLng,
+    payload: waypoint,
   }
 }
 
-export function updateWaypoint(waypoint) {
+export function addWaypointWithName(waypoint) {
+  return (dispatch) => {
+    dispatch(addWaypoint(waypoint));
+    dispatch(reverseGeocode(waypoint));
+  }
+}
+
+function updateWaypoint(waypoint) {
   return {
     type: 'WAYPOINT_UPDATE',
     payload: waypoint,
+  }
+}
+
+export function updateWaypointWithName(waypoint) {
+  return (dispatch) => {
+    dispatch(updateWaypoint(waypoint));
+    dispatch(reverseGeocode(waypoint));
   }
 }
 

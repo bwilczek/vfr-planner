@@ -34,11 +34,6 @@ export default class Plan extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('runGeocode');
-    console.log(this.props.runGeocode);
-    if(this.props.runGeocode) {
-      this.props.dispatch(routeDataActions.reverseGeocode(this.props.runGeocode));
-    }
     this.plotRoute();
   }
 
@@ -77,7 +72,7 @@ export default class Plan extends React.Component {
         marker.addListener('dragend', (e) => {
           let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
           waypoint.latLng = e.latLng;
-          this.props.dispatch(routeDataActions.updateWaypoint(waypoint));
+          this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
           this.keyOfWaypointBeingDragged = null;
         });
         this.markers.push(marker);
@@ -107,7 +102,7 @@ export default class Plan extends React.Component {
           key: `${_.random(10000,99999)}-${Date.now()}`,
           marker: null,
         }
-        this.props.dispatch(routeDataActions.addWaypoint(waypoint));
+        this.props.dispatch(routeDataActions.addWaypointWithName(waypoint));
       });
 
       this.map.addListener('idle', (e) => {
@@ -117,6 +112,7 @@ export default class Plan extends React.Component {
   }
 
   render() {
+    console.log('render!')
     const mapStyle = {
       height: 'calc( 100vh - 45px )',
       overflow: 'hidden',
