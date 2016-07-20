@@ -46,18 +46,50 @@ export default class Plan extends React.Component {
       if(this.polyline) {
         this.polyline.setMap(null);
       }
-      if(this.markers.length > 0) {
-        this.markers.forEach((m)=>m.setMap(null));
-        this.markers = [];
-      }
+      //if(this.markers.length > 0) {
+      //  this.markers.forEach((m)=>m.setMap(null));
+      //  this.markers = [];
+      //}
       this.polyline = new google.maps.Polyline({
         path: this.props.waypoints.map((wp)=>wp.latLng),
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
-        strokeWeight: 2
+        strokeWeight: 3,
+        editable: true,
+        geodesic: true,
+        //draggable: true,
+        suppressUndo: true,
+        clickable: false,
+      });
+      this.polyline.addListener('mousedown', (e) => {
+        console.log('poly:mousedown');
+        console.log(e.latLng.toString());
+        if(e.vertex !== undefined) {
+          this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
+        }
+        console.log(this.keyOfWaypointBeingDragged);
+        //console.log(this.props.waypoints[e.vertex]);
+        //console.log(this.polyline.getPath().getAt(e.vertex))
+      });
+      this.polyline.addListener('mouseup', (e) => {
+        console.log('poly:mouseup');
+        console.log(e.latLng.toString());
+        setTimeout(() => {
+          //console.log(this.polyline.getPath().getAt(e.vertex));
+          //console.log(this.props.waypoints[e.vertex].latLng.toString());
+          let newLatLng = this.polyline.getPath().getAt(e.vertex)
+          console.log(newLatLng.toString());
+          let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
+          // console.log(waypoint.latLng.toString());
+          // console.log(e.latLng.toString());
+          waypoint.latLng = newLatLng ;
+          this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
+          this.keyOfWaypointBeingDragged = null;
+        }, 50);
       });
       this.polyline.setMap(this.map);
 
+      /*
       _.forEach(this.props.waypoints, (wp, i) => {
         let marker = new google.maps.Marker({
           position: wp.latLng,
@@ -77,6 +109,7 @@ export default class Plan extends React.Component {
         });
         this.markers.push(marker);
       }); //forEach
+      */
 
     })
   }
@@ -112,7 +145,6 @@ export default class Plan extends React.Component {
   }
 
   render() {
-    console.log('render!')
     const mapStyle = {
       height: 'calc( 100vh - 45px )',
       overflow: 'hidden',
