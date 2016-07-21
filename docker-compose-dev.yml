@@ -19,4 +19,4 @@ services:
       MYSQL_USER: vfr
       MYSQL_PASSWORD: vfr
     volumes:
-     - /tmp/mysql_data:/var/lib/mysql
+     - /var/lib/mysql

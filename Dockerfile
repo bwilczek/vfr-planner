@@ -1,7 +1,7 @@
 FROM ruby:2.3
 
 RUN apt-get update
-RUN apt-get install -y build-essential
+RUN apt-get install -y build-essential mysql-client
 
 RUN set -ex \
   && for key in \
@@ -36,11 +36,13 @@ WORKDIR /app
 RUN bundle install
 
 RUN cd /app/client && npm install
-
+RUN cd /app/client && ./node_modules/.bin/webpack -p
+RUN cp /app/client/src/*.html /app/public/
+RUN cp /app/client/src/*.css /app/public/
 RUN chown -R rails:rails /app
 USER rails
 
 EXPOSE 3000
 EXPOSE 8080
 
-CMD [ "rails", "s", "-b", "0.0.0.0" ]
+CMD [ "/app/bin/container_cmd.sh" ]
