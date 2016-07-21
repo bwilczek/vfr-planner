@@ -36,9 +36,6 @@ WORKDIR /app
 RUN bundle install
 
 RUN cd /app/client && npm install
-RUN cd /app/client && ./node_modules/.bin/webpack -p
-RUN cp /app/client/src/*.html /app/public/
-RUN cp /app/client/src/*.css /app/public/
 RUN chown -R rails:rails /app
 USER rails
 
