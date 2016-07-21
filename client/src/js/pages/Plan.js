@@ -68,7 +68,7 @@ export default class Plan extends React.Component {
           if(e.vertex !== undefined) {
             if(e.latLng == this.polyline.getPath().getAt(e.vertex)) {
               // WAYPOINT CLICKED
-              console.log(`seems that waypoint ${this.props.waypoints[e.vertex].name} was clicked`)
+              // console.log(`seems that waypoint ${this.props.waypoints[e.vertex].name} was clicked`)
               alert(`context menu for waypoint ${this.props.waypoints[e.vertex].name} will apear here`)
               e.stop();
               return;
@@ -105,7 +105,8 @@ export default class Plan extends React.Component {
     GoogleMapsLoader.load((google) => {
       this.map = new google.maps.Map(this.refs.map, {
         center: center,
-        zoom: zoom
+        zoom: zoom,
+        draggableCursor: 'crosshair',
       });
 
       this.map.addListener('click', (e) => {

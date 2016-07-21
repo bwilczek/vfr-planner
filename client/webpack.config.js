@@ -2,8 +2,6 @@ var debug = process.env.NODE_ENV !== "production";
 var webpack = require('webpack');
 var path = require('path');
 
-// import 'react-anything-sortable/sortable.css';
-
 module.exports = {
   context: path.join(__dirname, "src"),
   devtool: debug ? "inline-sourcemap" : null,
@@ -27,7 +25,7 @@ module.exports = {
   },
   devServer: {
     proxy: {
-        '/*': {
+      '/*': {
         target: 'http://localhost:3000/',
         secure: false
       }

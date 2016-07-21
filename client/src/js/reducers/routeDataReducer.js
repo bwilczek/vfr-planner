@@ -14,7 +14,6 @@ function setNavInfo(waypoints) {
     _.forEach(waypoints, (wp,i) => {
       let next = waypoints[i+1]
       if(next !== undefined) {
-        console.log('calculate heading')
         let heading = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
         if (heading<0) {
           heading += 360
