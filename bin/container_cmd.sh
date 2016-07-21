@@ -2,9 +2,9 @@
 
 # generate /app/clients/src/js/secrets.js basing on env variables
 
-echo "export const FACEBOOK_APP_ID='$FACEBOOK_APP_ID'" > /app/clients/src/js/secrets.js
-echo "export const GOOGLE_APP_ID='$GOOGLE_APP_ID'" >> /app/clients/src/js/secrets.js
-echo "export const GOOGLE_MAPS_KEY='$GOOGLE_MAPS_KEY'" >> /app/clients/src/js/secrets.js
+echo "export const FACEBOOK_APP_ID='$FACEBOOK_APP_ID'" > /app/client/src/js/secrets.js
+echo "export const GOOGLE_APP_ID='$GOOGLE_APP_ID'" >> /app/client/src/js/secrets.js
+echo "export const GOOGLE_MAPS_KEY='$GOOGLE_MAPS_KEY'" >> /app/client/src/js/secrets.js
 
 cd /app/client && ./node_modules/.bin/webpack -p
 cp /app/client/src/*.html /app/public/
