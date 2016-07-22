@@ -16,3 +16,4 @@
 /public/client.min.js
 .bash_history
 /client/src/js/secrets.js
+/client/src/js/secrets.js.ignore
