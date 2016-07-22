@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { Router, Route, IndexRoute, hashHistory } from "react-router";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 
 import { Provider } from 'react-redux'
 
-import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import Plan from "./pages/Plan";
-import Summary from "./pages/Summary";
+import Layout from './pages/Layout'
+import Home from './pages/Home'
+import Plan from './pages/Plan'
+import Summary from './pages/Summary'
 
 import store from './store'
 
-const _ = require('lodash');
+const _ = require('lodash')
 
-const app = document.getElementById('app');
+const app = document.getElementById('app')
 
 ReactDOM.render(
   <Provider store={store}>

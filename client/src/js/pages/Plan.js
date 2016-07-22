@@ -1,12 +1,15 @@
-import React from "react";
-import { connect } from 'react-redux';
-import * as routeDataActions from '../actions/routeDataActions';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+const _ = require('lodash')
 
-const GoogleMapsLoader = require('google-maps');
-GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY;
+import * as routeDataActions from '../actions/routeDataActions'
 
-import * as secrets from '../secrets';
-import WaypointList from '../components/WaypointList';
+const GoogleMapsLoader = require('google-maps')
+GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
+
+import * as secrets from '../secrets'
+import WaypointList from '../components/WaypointList'
 import { localStorageGetObject, localStorageSetObject } from '../lib/LocalStorageForObjects'
 
 @connect((store) => {
@@ -66,14 +69,16 @@ export default class Plan extends React.Component {
         setTimeout(() => {
           // WAYPOINT MOVED/CLICKED
           if(e.vertex !== undefined) {
+            let newLatLng = this.polyline.getPath().getAt(e.vertex)
             if(e.latLng == this.polyline.getPath().getAt(e.vertex)) {
               // WAYPOINT CLICKED
-              // console.log(`seems that waypoint ${this.props.waypoints[e.vertex].name} was clicked`)
-              alert(`context menu for waypoint ${this.props.waypoints[e.vertex].name} will apear here`)
+              let iw = new google.maps.InfoWindow()
+              iw.setContent(this.generateInfoWindowContent(iw, this.props.waypoints[e.vertex]))
+              iw.setPosition(newLatLng)
+              iw.open(this.map)
               e.stop();
               return;
             }
-            let newLatLng = this.polyline.getPath().getAt(e.vertex)
             let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
             waypoint.latLng = newLatLng ;
             this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
@@ -86,12 +91,27 @@ export default class Plan extends React.Component {
               name: `WPT ${this.props.waypoints.length+1}`,
               key: `${_.random(10000,99999)}-${Date.now()}`,
             }
-            this.props.dispatch(routeDataActions.addWaypointWithName(waypoint, e.edge+1));
+            this.props.dispatch(routeDataActions.addWaypointWithName(waypoint, e.edge+1))
           }
         }, 1);
       });
       this.polyline.setMap(this.map);
     })
+  }
+
+  deleteWaypoint(waypoint) {
+    this.props.dispatch(routeDataActions.deleteWaypoint(waypoint))
+  }
+
+  generateInfoWindowContent(iw, waypoint) {
+    let a = document.createElement("div")
+    ReactDOM.render(
+      <div>
+        {waypoint.name}
+        <button onClick={()=> { this.props.dispatch(routeDataActions.deleteWaypoint(waypoint)); iw.close(); } }>delete</button>
+      </div>
+    , a)
+    return a
   }
 
   initMap() {

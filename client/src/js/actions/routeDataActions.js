@@ -1,6 +1,5 @@
-import axios from 'axios';
-import * as secrets from '../secrets';
-
+import axios from 'axios'
+import * as secrets from '../secrets'
 
 function addWaypoint(waypoint, position = null) {
   return {
@@ -11,8 +10,15 @@ function addWaypoint(waypoint, position = null) {
 
 export function addWaypointWithName(waypoint, position = null) {
   return (dispatch) => {
-    dispatch(addWaypoint(waypoint, position));
-    dispatch(reverseGeocode(waypoint));
+    dispatch(addWaypoint(waypoint, position))
+    dispatch(reverseGeocode(waypoint))
+  }
+}
+
+export function deleteWaypoint(waypoint) {
+  return {
+    type: 'WAYPOINT_DELETE',
+    payload: waypoint,
   }
 }
 
@@ -25,8 +31,8 @@ function updateWaypoint(waypoint) {
 
 export function updateWaypointWithName(waypoint) {
   return (dispatch) => {
-    dispatch(updateWaypoint(waypoint));
-    dispatch(reverseGeocode(waypoint));
+    dispatch(updateWaypoint(waypoint))
+    dispatch(reverseGeocode(waypoint))
   }
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export default class Summary extends React.Component {
 
@@ -7,6 +7,6 @@ export default class Summary extends React.Component {
       <div>
         Summary
       </div>
-    );
+    )
   }
 }

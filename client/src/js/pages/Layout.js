@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-import Navigation from "../components/Navigation";
+import Navigation from '../components/Navigation'
 
 export default class Layout extends React.Component {
 
@@ -11,6 +11,6 @@ export default class Layout extends React.Component {
         <Navigation pathname={this.props.location.pathname}/>
         {this.props.children}
       </div>
-    );
+    )
   }
 }
