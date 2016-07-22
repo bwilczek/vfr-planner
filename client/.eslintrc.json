@@ -1,0 +1,15 @@
+{
+  "extends": "standard",
+  "plugins": [
+    "react"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false
+  },
+  "rules": {
+    "strict": 1,
+    "space-before-function-paren": 0
+  }
+}
