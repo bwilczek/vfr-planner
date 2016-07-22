@@ -1,0 +1,16 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+Rails:
+  Enabled: true
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 150
+Metrics/AbcSize:
+  Enabled: false
+Metrics/MethodLength:
+  CountComments: false
+  Max: 25
+

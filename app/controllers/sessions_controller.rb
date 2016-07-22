@@ -1,12 +1,10 @@
 class SessionsController < ApplicationController
-
-  skip_before_action :require_authorization, only: [ :create ]
+  skip_before_action :require_authorization, only: [:create]
 
   def create
-
     if params[:provider] == 'facebook'
       graph = Koala::Facebook::API.new(params[:token])
-      profile = graph.get_object("me")
+      profile = graph.get_object('me')
       name = profile['name']
       provider_id = "facebook:#{profile['id']}"
     elsif params[:provider] == 'google'
@@ -16,21 +14,20 @@ class SessionsController < ApplicationController
       provider_id = "google:#{profile['email']}"
     end
 
-    # todo: check status
+    # TODO: check status
     @user = User.find_by_provider_id(provider_id)
-    if(@user)
-      @user.update(last_login: Time.now)
+    if @user
+      @user.update(last_login: Time.zone.now)
     else
-      @user = User.create(provider_id: provider_id, name: name, status: 0, admin: false, last_login: Time.now)
+      @user = User.create(provider_id: provider_id, name: name, status: 0, admin: false, last_login: Time.zone.now)
     end
 
     # delete session for this @user.id
     Session.where(user_id: @user.id).destroy_all
 
     # and generate another session entry
-    @session = Session.create(user_id: @user.id, token: SecureRandom.base58(24), last_used: Time.now)
+    @session = Session.create(user_id: @user.id, token: SecureRandom.base58(24), last_used: Time.zone.now)
 
-    render json: {id: provider_id, name: @user.name, token: @session.token}
+    render json: { id: provider_id, name: @user.name, token: @session.token }
   end
-
 end
