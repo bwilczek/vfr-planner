@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, ButtonGroup, DropdownButton, MenuItem } from "react-bootstrap";
 import { connect } from 'react-redux';
 
 import * as actions from '../actions/authActions';
@@ -23,21 +24,30 @@ export default class Auth extends React.Component {
   };
 
   render() {
+    if(this.props.name) {
+      return <span>{this.props.name}</span>
+    }
     return (
       <span>
-      {this.props.name}
-      <FacebookLogin
-        appId={secrets.FACEBOOK_APP_ID}
-        autoLoad={false}
-        fields="name,picture"
-        callback={this.responseFacebook}
-        cssClass="my-facebook-button-class"
-        icon="fa-facebook"
-      />
-      <GoogleLogin
+      <DropdownButton title="Login">
+        <MenuItem onClick={(e)=>{this.refs.auth_button_fb.click(e)}}>Facebook</MenuItem>
+        <MenuItem onClick={(e)=>{console.log(this.refs.auth_button_google); this.refs.auth_button_google.onBtnClick(e)}}>Google</MenuItem>
+      </DropdownButton>
+        <FacebookLogin
+          ref="auth_button_fb"
+          appId={secrets.FACEBOOK_APP_ID}
+          autoLoad={false}
+          fields="name,picture"
+          callback={this.responseFacebook}
+          cssClass="hidden"
+          textButton="Facebook"
+        />
+        <GoogleLogin
+          ref="auth_button_google"
           clientId={secrets.GOOGLE_APP_ID}
           buttonText="Login"
-          callback={this.responseGoogle} />
+          cssClass="hidden"
+          callback={this.responseGoogle}>Google</GoogleLogin>
       </span>
     );
   }

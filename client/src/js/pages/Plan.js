@@ -146,7 +146,7 @@ export default class Plan extends React.Component {
 
   render() {
     const mapStyle = {
-      height: 'calc( 100vh - 45px )',
+      height: 'calc( 100vh - 34px )',
       overflow: 'hidden',
       float: 'left',
       width: '100%',
@@ -166,7 +166,7 @@ export default class Plan extends React.Component {
       <div style={wrapperStyle}>
         <div ref='map' style={mapStyle}>loading map...</div>
         <div ref='sidebar' style={sidebarStyle} >
-          <WaypointList />
+          <WaypointList map={this.map} />
         </div>
         <div style={clearStyle} />
       </div>

@@ -26,7 +26,7 @@ export default class Navigation extends React.Component {
     });
 
     return (
-      <div>
+      <div style={{marginBottom: '1px'}}>
         <Auth />
         <ButtonGroup>
           {buttons}
