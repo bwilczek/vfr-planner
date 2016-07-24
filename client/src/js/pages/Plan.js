@@ -19,35 +19,38 @@ export default class Plan extends React.Component {
 
   constructor() {
     super();
-    this.initMap = this.initMap.bind(this);
-    this.saveMapState = this.saveMapState.bind(this);
-    this.map = null;
-    this.polyline = null;
-    this.markers = [];
-    this.keyOfWaypointBeingDragged = null;
+    this.initMap = this.initMap.bind(this)
+    this.saveMapState = this.saveMapState.bind(this)
+    this.map = null
+    this.polyline = null
+    this.markers = []
+    this.keyOfWaypointBeingDragged = null
   }
 
   componentDidMount() {
-    this.initMap();
-    this.plotRoute();
+    if(this.props.params.plan_id) {
+      console.log(`Plan ID=${this.props.params.plan_id}. Trigger XHR and fetch it.`)
+    }
+    this.initMap()
+    this.plotRoute()
   }
 
   componentWillUnmount() {
-    this.saveMapState();
+    this.saveMapState()
   }
 
   componentDidUpdate() {
-    this.plotRoute();
+    this.plotRoute()
   }
 
   saveMapState() {
-    localStorageSetObject('mapState', {center: this.map.getCenter(), zoom: this.map.getZoom()});
+    localStorageSetObject('mapState', {center: this.map.getCenter(), zoom: this.map.getZoom()})
   }
 
   plotRoute() {
     GoogleMapsLoader.load((google) => {
       if(this.polyline) {
-        this.polyline.setMap(null);
+        this.polyline.setMap(null)
       }
       this.polyline = new google.maps.Polyline({
         path: this.props.waypoints.map((wp)=>wp.latLng),
@@ -58,12 +61,12 @@ export default class Plan extends React.Component {
         geodesic: true,
         suppressUndo: true,
         clickable: false,
-      });
+      })
       this.polyline.addListener('mousedown', (e) => {
         if(e.vertex !== undefined) {
           this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
         }
-      });
+      })
       this.polyline.addListener('mouseup', (e) => {
         // FIXME: please excuse this ugly hack - e.latLng is buggy and shows same location as onmousedown. Need to report it to Google Maps API
         setTimeout(() => {
@@ -76,13 +79,13 @@ export default class Plan extends React.Component {
               iw.setContent(this.generateInfoWindowContent(iw, this.props.waypoints[e.vertex]))
               iw.setPosition(newLatLng)
               iw.open(this.map)
-              e.stop();
-              return;
+              e.stop()
+              return
             }
-            let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0];
-            waypoint.latLng = newLatLng ;
-            this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint));
-            this.keyOfWaypointBeingDragged = null;
+            let waypoint = this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0]
+            waypoint.latLng = newLatLng
+            this.props.dispatch(routeDataActions.updateWaypointWithName(waypoint))
+            this.keyOfWaypointBeingDragged = null
           } else if(e.edge !== undefined) {
             // WAYPOINT INSERTED
             let newLatLng = this.polyline.getPath().getAt(e.edge+1)
@@ -93,9 +96,9 @@ export default class Plan extends React.Component {
             }
             this.props.dispatch(routeDataActions.addWaypointWithName(waypoint, e.edge+1))
           }
-        }, 1);
-      });
-      this.polyline.setMap(this.map);
+        }, 1)
+      })
+      this.polyline.setMap(this.map)
     })
   }
 
@@ -115,19 +118,19 @@ export default class Plan extends React.Component {
   }
 
   initMap() {
-    let center = {lat: 51, lng: 17};
-    let zoom = 8;
-    const mapState = localStorageGetObject('mapState');
+    let center = {lat: 51, lng: 17}
+    let zoom = 8
+    const mapState = localStorageGetObject('mapState')
     if(mapState !== null) {
-      center = mapState.center;
-      zoom = mapState.zoom;
+      center = mapState.center
+      zoom = mapState.zoom
     }
     GoogleMapsLoader.load((google) => {
       this.map = new google.maps.Map(this.refs.map, {
         center: center,
         zoom: zoom,
         draggableCursor: 'crosshair',
-      });
+      })
 
       this.map.addListener('click', (e) => {
         let waypoint = {
@@ -136,12 +139,12 @@ export default class Plan extends React.Component {
           key: `${_.random(10000,99999)}-${Date.now()}`,
         }
         this.props.dispatch(routeDataActions.addWaypointWithName(waypoint));
-      });
+      })
 
       this.map.addListener('idle', (e) => {
-        this.saveMapState();
-      });
-    });
+        this.saveMapState()
+      })
+    })
   }
 
   render() {
@@ -170,6 +173,6 @@ export default class Plan extends React.Component {
         </div>
         <div style={clearStyle} />
       </div>
-    );
+    )
   }
 }

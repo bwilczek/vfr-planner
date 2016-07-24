@@ -39,13 +39,15 @@ export default class Auth extends React.Component {
     return (
       <Dropdown id="dropdown-settings-1" pullRight="true">
         <Dropdown.Toggle>
-          <FontAwesome size="2x" name="cogs" />
+          <FontAwesome size="2x" name="cogs" title="Settings" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <div style={{margin: '5px'}}>
             Language: EN
             <br />
             Units: kt/nm/feet
+            <br />
+            Headings: Mag
           </div>
         </Dropdown.Menu>
       </Dropdown>
