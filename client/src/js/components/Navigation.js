@@ -1,14 +1,13 @@
-import React from "react";
+import React from 'react'
 
-import { Link } from "react-router";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Link } from 'react-router'
+import { Button, ButtonGroup } from 'react-bootstrap'
 
-import Auth from "./Auth";
+import Auth from './Auth'
 
 export default class Navigation extends React.Component {
 
   render() {
-
     const links = {
       "Home": "/",
       "Plan": "/plan",
@@ -26,12 +25,17 @@ export default class Navigation extends React.Component {
     });
 
     return (
-      <div style={{marginBottom: '1px'}}>
-        <Auth />
-        <ButtonGroup>
-          {buttons}
-        </ButtonGroup>
+      <div style={{marginBottom: '1px', borderBottom: '1px solid #000000', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+        <div>
+          <img src="img/lecimy_icon.png" />
+          <ButtonGroup>
+            {buttons}
+          </ButtonGroup>
+          </div>
+        <div style={{lineHeight: '52px'}}>
+          <Auth />
+        </div>
       </div>
     );
-  }
+  } // render2
 }

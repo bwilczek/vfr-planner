@@ -7,11 +7,13 @@ class SessionsController < ApplicationController
       profile = graph.get_object('me')
       name = profile['name']
       provider_id = "facebook:#{profile['id']}"
+      img_url = "http://graph.facebook.com/#{profile['id']}/picture?type=small"
     elsif params[:provider] == 'google'
       url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{params[:token]}"
       profile = JSON.parse(Net::HTTP.get(URI.parse(url)))
       name = profile['name']
       provider_id = "google:#{profile['email']}"
+      img_url = profile['picture']
     end
 
     # TODO: check status
@@ -28,6 +30,6 @@ class SessionsController < ApplicationController
     # and generate another session entry
     @session = Session.create(user_id: @user.id, token: SecureRandom.base58(24), last_used: Time.zone.now)
 
-    render json: { id: provider_id, name: @user.name, token: @session.token }
+    render json: { id: provider_id, name: @user.name, token: @session.token, img: img_url }
   end
 end

@@ -146,7 +146,7 @@ export default class Plan extends React.Component {
 
   render() {
     const mapStyle = {
-      height: 'calc( 100vh - 34px )',
+      height: 'calc( 100vh - 54px )',
       overflow: 'hidden',
       float: 'left',
       width: '100%',
