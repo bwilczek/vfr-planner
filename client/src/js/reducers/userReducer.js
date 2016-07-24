@@ -24,6 +24,7 @@ export default function reducer(state = initialState, action) {
         name: data.name,
         id: data.id,
         token: data.token,
+        img: data.img,
       }
     }
   }
