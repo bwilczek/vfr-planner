@@ -153,6 +153,7 @@ export default class Plan extends React.Component {
       overflow: 'hidden',
       float: 'left',
       width: '100%',
+      borderRight: '1px solid #000000',
     }
     const sidebarStyle = {
       float: 'left',

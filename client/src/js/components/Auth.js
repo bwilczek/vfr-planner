@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Dropdown, MenuItem } from 'react-bootstrap'
+import { Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
 var FontAwesome = require('react-fontawesome')
 import { connect } from 'react-redux'
 
@@ -30,25 +30,37 @@ export default class Auth extends React.Component {
         <span>{this.props.name}</span>
         <img style={{width: '42px', marginLeft: '5px', borderRadius: '21px'}} src={this.props.img}/>
         &nbsp;
-        {this.settingsDropdow()}
+        <ButtonGroup>
+          <Dropdown id="dropdown-route-1" pullRight="true" noCaret="true" style={{verticalAlign: 'middle'}}>
+            <Dropdown.Toggle  noCaret="true" style={{verticalAlign: 'middle'}}>
+              <FontAwesome title="My flight plans" size='2x' name="list" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <MenuItem>New</MenuItem>
+              <MenuItem>Open</MenuItem>
+              <MenuItem>Save</MenuItem>
+              <MenuItem>Save as</MenuItem>
+              <MenuItem>Edit</MenuItem>
+              <MenuItem>Delete</MenuItem>
+            </Dropdown.Menu>
+          </Dropdown>
+          {this.settingsDropdown()}
+        </ButtonGroup>
       </div>
     )
   }
 
-  settingsDropdow() {
+  settingsDropdown() {
     return (
-      <Dropdown id="dropdown-settings-1" pullRight="true">
-        <Dropdown.Toggle>
-          <FontAwesome size="2x" name="cogs" title="Settings" />
+      // <Button style={{height: '43px'}}><FontAwesome title="Settings" size='2x' name="cogs" style={{verticalAlign: 'middle'}}/></Button>
+      <Dropdown pullRight="true" id="dropdown-settings-1" noCaret="true" style={{verticalAlign: 'middle', height: '43px'}}>
+        <Dropdown.Toggle  noCaret="true" style={{verticalAlign: 'middle', height: '43px'}}>
+          <FontAwesome title="Settings" size='2x' name="cogs" style={{verticalAlign: 'middle'}}/>
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <div style={{margin: '5px'}}>
-            Language: EN
-            <br />
-            Units: kt/nm/feet
-            <br />
-            Headings: Mag
-          </div>
+        <Dropdown.Menu style={{padding: '5px'}}>
+          <div>Units: kt/nm/feet</div>
+          <div>Language: EN</div>
+          <div>Heading: Mag</div>
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -61,7 +73,7 @@ export default class Auth extends React.Component {
         &nbsp;
         <FontAwesome title="Login with Google" name="google" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_google.onBtnClick(e)}}/>
         &nbsp;
-        {this.settingsDropdow()}
+        {this.settingsDropdown()}
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}
