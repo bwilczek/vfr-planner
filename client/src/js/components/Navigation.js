@@ -1,11 +1,19 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
-var FontAwesome = require('react-fontawesome')
+import { Modal, Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
+const FontAwesome = require('react-fontawesome')
+
+import * as modalActions from '../actions/modalActions'
 
 import Auth from './Auth'
 
+@connect((store) => {
+  // don't need any state props here - only access to dispatch method
+  return {}
+})
 export default class Navigation extends React.Component {
 
   leftSideButtons() {
@@ -18,7 +26,7 @@ export default class Navigation extends React.Component {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <MenuItem>Status</MenuItem>
-            <MenuItem>Contact</MenuItem>
+            <MenuItem onClick={() => {this.props.dispatch(modalActions.showContact())}}>Contact</MenuItem>
             <MenuItem>Help</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
@@ -34,6 +42,7 @@ export default class Navigation extends React.Component {
       <div style={{marginBottom: '1px', borderBottom: '1px solid #000000', width: '100%', display: 'flex', justifyContent: 'space-between'}}>
         <div>
           <img src="img/lecimy_icon.png" />
+          <span ref="modalNode" />
           {this.leftSideButtons()}
         </div>
         <div style={{marginTop: '5px'}}>
@@ -41,6 +50,5 @@ export default class Navigation extends React.Component {
         </div>
       </div>
     );
-  } // render2
+  }
 }
-// <FontAwesome title="System information" size='3x' name="info-circle" style={{verticalAlign: 'middle', cursor: 'pointer', marginLeft: '15px'}} />

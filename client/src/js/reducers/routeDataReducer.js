@@ -7,23 +7,34 @@ GoogleMapsLoader.LIBRARIES = ['geometry']
 
 const initialState = {
   waypoints: [],
-  weather: {},
+  airSpeed: null,
+  windSpeed: null,
+  windDirection: null,
+  totalDistance: 0,
+  totalDuration: 0,
 }
 
 function setNavInfo(waypoints) {
+  let totalDistance = 0
   GoogleMapsLoader.load((google) => {
+    let segmentDistance = 0
+    let next = null
     _.forEach(waypoints, (wp,i) => {
-      let next = waypoints[i+1]
+      segmentDistance = 0
+      next = waypoints[i+1]
       if(next !== undefined) {
         let heading = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
         if (heading<0) {
           heading += 360
         }
+        segmentDistance = google.maps.geometry.spherical.computeLength([wp.latLng, next.latLng])
         waypoints[i] = {
           ...wp,
           heading,
-          distance: google.maps.geometry.spherical.computeLength([wp.latLng, next.latLng]),
+          distance: segmentDistance,
+          // TODO: calculate GS and segment time
         }
+        totalDistance += segmentDistance
       } else {
         waypoints[i] = {
           ...wp,
@@ -33,44 +44,52 @@ function setNavInfo(waypoints) {
       }
     })
   })
-  // return waypoints;
+  return { totalDistance }
 }
 
 export default function reducer(state=initialState, action) {
   switch (action.type) {
     case 'WAYPOINT_ADDED': {
       let newState = _.cloneDeep(state)
+      let summary = null
       if(action.payload.position == null) {
         newState.waypoints.push(action.payload.waypoint)
       } else {
         newState.waypoints.splice(action.payload.position, 0, action.payload.waypoint)
       }
-      setNavInfo(newState.waypoints)
+      summary = setNavInfo(newState.waypoints)
+      newState.totalDistance = summary.totalDistance
       return newState
       break
     }
     case 'WAYPOINT_REORDER': {
       let newState = _.cloneDeep(state)
+      let summary = null
       newState.waypoints = action.payload
-      setNavInfo(newState.waypoints)
+      summary = setNavInfo(newState.waypoints)
+      newState.totalDistance = summary.totalDistance
       return newState
       break
     }
     case 'WAYPOINT_UPDATE': {
       let waypointToUpdate = action.payload
       let newState = _.cloneDeep(state)
+      let summary = null
       let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key])
       newState.waypoints[i] = waypointToUpdate
-      setNavInfo(newState.waypoints)
+      summary = setNavInfo(newState.waypoints)
+      newState.totalDistance = summary.totalDistance
       return newState
       break
     }
     case 'WAYPOINT_DELETE': {
       let newState = _.cloneDeep(state)
+      let summary = null
       _.remove(newState.waypoints, (wp) => {
         return wp.key == action.payload.key
       })
-      setNavInfo(newState.waypoints)
+      summary = setNavInfo(newState.waypoints)
+      newState.totalDistance = summary.totalDistance
       return newState
       break
     }
