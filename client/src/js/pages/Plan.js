@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
+import { Button, Modal } from 'react-bootstrap'
+const FontAwesome = require('react-fontawesome')
 const _ = require('lodash')
 
 import * as routeDataActions from '../actions/routeDataActions'
+import * as modalActions from '../actions/modalActions'
 
 const GoogleMapsLoader = require('google-maps')
 GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
@@ -75,10 +78,9 @@ export default class Plan extends React.Component {
             let newLatLng = this.polyline.getPath().getAt(e.vertex)
             if(e.latLng == this.polyline.getPath().getAt(e.vertex)) {
               // WAYPOINT CLICKED
-              let iw = new google.maps.InfoWindow()
-              iw.setContent(this.generateInfoWindowContent(iw, this.props.waypoints[e.vertex]))
-              iw.setPosition(newLatLng)
-              iw.open(this.map)
+              this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
+              this.infoWindow.setPosition(newLatLng)
+              this.infoWindow.open(this.map)
               e.stop()
               return
             }
@@ -107,11 +109,13 @@ export default class Plan extends React.Component {
   }
 
   generateInfoWindowContent(iw, waypoint) {
-    let a = document.createElement("div")
+    let a = document.createElement('div')
     ReactDOM.render(
       <div>
-        {waypoint.name}
-        <button onClick={()=> { this.props.dispatch(routeDataActions.deleteWaypoint(waypoint)); iw.close(); } }>delete</button>
+        <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
+        <Button bsSize="xsmall" title="Center" onClick={()=> { this.map.setCenter(waypoint.latLng) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.dispatch(modalActions.showRename(waypoint)); iw.close(); } }><FontAwesome name="edit" /></Button>
+        <Button bsSize="xsmall" title="Remove" onClick={()=> { this.props.dispatch(routeDataActions.deleteWaypoint(waypoint)); iw.close(); } }><FontAwesome name="trash" /></Button>
       </div>
     , a)
     return a
@@ -131,6 +135,7 @@ export default class Plan extends React.Component {
         zoom: zoom,
         draggableCursor: 'crosshair',
       })
+      this.infoWindow = new google.maps.InfoWindow()
 
       this.map.addListener('click', (e) => {
         let waypoint = {
@@ -170,7 +175,7 @@ export default class Plan extends React.Component {
       <div style={wrapperStyle}>
         <div ref='map' style={mapStyle}>loading map...</div>
         <div ref='sidebar' style={sidebarStyle} >
-          <WaypointList map={this.map} />
+          <WaypointList map={this.map} showRenamePrompt={this.showRenamePrompt} />
         </div>
         <div style={clearStyle} />
       </div>

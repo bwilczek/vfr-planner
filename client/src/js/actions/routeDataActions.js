@@ -22,7 +22,7 @@ export function deleteWaypoint(waypoint) {
   }
 }
 
-function updateWaypoint(waypoint) {
+export function updateWaypoint(waypoint) {
   return {
     type: 'WAYPOINT_UPDATE',
     payload: waypoint,
