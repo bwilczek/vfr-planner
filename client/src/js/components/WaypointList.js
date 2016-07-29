@@ -1,11 +1,14 @@
 import React from 'react'
-const FontAwesome = require('react-fontawesome')
+import FontAwesome from 'react-fontawesome'
+import * as _ from 'lodash'
 import { DropdownButton, Button, MenuItem, Glyphicon } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import { connect } from 'react-redux'
 
 import * as routeDataActions from '../actions/routeDataActions'
 import * as modalActions from '../actions/modalActions'
+
+import * as format from '../lib/Formatter'
 
 const dragHandleStyle = {
   marginLeft: '2px',
@@ -28,8 +31,22 @@ const DragHandle = SortableHandle(() => <div style={dragHandleStyle}><div style=
 
 const SortableItem = SortableElement(({value, dispatch, map}) => {
   let navInfo = ''
-  if (value.distance) {
-    navInfo = <div style={{borderBottom: '1px dotted #999999', width: '100%', marginBottom: '3px'}}>{value.heading}&deg;<br />{value.distance}m</div>
+  if (value.segmentDistance) {
+    navInfo = (
+      <div style={{borderBottom: '1px dotted #999999', width: '100%', marginBottom: '3px'}}>
+        <table>
+          <tbody>
+            <tr>
+              <td rowSpan="2" style={{fontSize: '24px', width: '65px', paddingRight: '10px', textAlign: 'right'}}>{format.heading(value.heading)}</td>
+              <td>{format.distance(value.segmentDistance)}</td>
+            </tr>
+            <tr>
+              <td dangerouslySetInnerHTML={{__html: format.duration(value.segmentDuration)}} />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   return (
@@ -38,7 +55,7 @@ const SortableItem = SortableElement(({value, dispatch, map}) => {
         <DragHandle />
       </div>
       <div style={{width: '100%'}}>
-        <DropdownButton bsStyle="default" pullRight="true" bsSize="xsmall" title="&#9660;" noCaret="true" id={`dropdown-${value.key}`}>
+        <DropdownButton bsStyle="default" pullRight={true} bsSize="xsmall" title="&#9660;" noCaret={true} id={`dropdown-${value.key}`}>
           <MenuItem onClick={()=>{map.setCenter(value.latLng)}}><FontAwesome name="crosshairs" style={{width: '17px'}}/> Center</MenuItem>
           <MenuItem onClick={()=>{dispatch(modalActions.showRename(value))}}><FontAwesome name="edit" style={{width: '17px'}} /> Rename</MenuItem>
           <MenuItem onClick={()=>{dispatch(routeDataActions.deleteWaypoint(value))}}><FontAwesome name="trash" style={{width: '17px'}} /> Delete</MenuItem>
@@ -78,7 +95,10 @@ export default class WaypointList extends React.Component {
     return (
       <div>
         <SortableList dispatch={this.props.dispatch} map={this.props.map} items={this.props.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
-        <div style={{borderTop: '1px solid', marginTop: '5px'}}>Total distance: {this.props.totalDistance}</div>
+        <div style={{borderTop: '1px solid', marginTop: '5px'}}>
+          Total distance: {format.distance(this.props.totalDistance)}<br />
+          Total duration: <span dangerouslySetInnerHTML={{__html: format.duration(this.props.totalDuration)}} />
+        </div>
       </div>
     )
   }

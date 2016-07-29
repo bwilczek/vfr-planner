@@ -49,3 +49,10 @@ export function reverseGeocode(waypoint) {
     payload: axios.get(`/nav_points/find?lat=${waypoint.latLng.lat()}&lng=${waypoint.latLng.lng()}&key=${waypoint.key}`),
   }
 }
+
+export function updateFlightSettings(change) {
+  return {
+    type: 'FLIGHT_SETTINGS_UPDATE',
+    payload: change,
+  }
+}

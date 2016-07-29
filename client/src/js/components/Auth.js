@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
-var FontAwesome = require('react-fontawesome')
+import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 
 import * as actions from '../actions/authActions'
@@ -31,8 +31,8 @@ export default class Auth extends React.Component {
         <img style={{width: '42px', marginLeft: '5px', borderRadius: '21px'}} src={this.props.img}/>
         &nbsp;
         <ButtonGroup>
-          <Dropdown id="dropdown-route-1" pullRight="true" noCaret="true" style={{verticalAlign: 'middle'}}>
-            <Dropdown.Toggle  noCaret="true" style={{verticalAlign: 'middle'}}>
+          <Dropdown id="dropdown-routemenu-1" pullRight={true} style={{verticalAlign: 'middle'}}>
+            <Dropdown.Toggle  noCaret={true} style={{verticalAlign: 'middle'}}>
               <FontAwesome title="My flight plans" size='2x' name="list" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -53,14 +53,14 @@ export default class Auth extends React.Component {
   settingsDropdown() {
     return (
       // <Button style={{height: '43px'}}><FontAwesome title="Settings" size='2x' name="cogs" style={{verticalAlign: 'middle'}}/></Button>
-      <Dropdown pullRight="true" id="dropdown-settings-1" noCaret="true" style={{verticalAlign: 'middle', height: '43px'}}>
-        <Dropdown.Toggle  noCaret="true" style={{verticalAlign: 'middle', height: '43px'}}>
+      <Dropdown id="dropdown-settnigs-1" pullRight={true} id="dropdown-settings-1" style={{verticalAlign: 'middle', height: '43px'}}>
+        <Dropdown.Toggle  noCaret={true} style={{verticalAlign: 'middle', height: '43px'}}>
           <FontAwesome title="Settings" size='2x' name="cogs" style={{verticalAlign: 'middle'}}/>
         </Dropdown.Toggle>
         <Dropdown.Menu style={{padding: '5px'}}>
           <div>Units: kt/nm/feet</div>
           <div>Language: EN</div>
-          <div>Heading: Mag</div>
+          <div>Heading: Geo</div>
         </Dropdown.Menu>
       </Dropdown>
     )
