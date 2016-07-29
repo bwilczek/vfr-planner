@@ -1,4 +1,5 @@
 import * as secrets from '../secrets'
+import * as navUtils from '../lib/NavigationUtils'
 
 const _ = require('lodash')
 const GoogleMapsLoader = require('google-maps')
@@ -7,44 +8,54 @@ GoogleMapsLoader.LIBRARIES = ['geometry']
 
 const initialState = {
   waypoints: [],
-  airSpeed: null,
-  windSpeed: null,
-  windDirection: null,
+  airSpeed: 70,
+  windSpeed: 0,
+  windDirection: 0,
+  levelMin: 1200,
+  levelMax: 1500,
+  flightStartTime: 800,
+  flightEndTime: 1200,
   totalDistance: 0,
   totalDuration: 0,
+  declination: 0,
 }
 
-function setNavInfo(waypoints) {
-  let totalDistance = 0
+function computeNavData(newState) {
+  newState.totalDistance = 0
+  newState.totalDuration = 0
   GoogleMapsLoader.load((google) => {
     let segmentDistance = 0
     let next = null
-    _.forEach(waypoints, (wp,i) => {
+    _.forEach(newState.waypoints, (wp,i) => {
       segmentDistance = 0
-      next = waypoints[i+1]
+      next = newState.waypoints[i+1]
       if(next !== undefined) {
-        let heading = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
-        if (heading<0) {
-          heading += 360
+        let course = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
+        if (course<0) {
+          course += 360
         }
         segmentDistance = google.maps.geometry.spherical.computeLength([wp.latLng, next.latLng])
-        waypoints[i] = {
+        let nav = navUtils.computeWindTriange(newState.airSpeed, course, segmentDistance, newState.windSpeed, newState.windDirection, newState.declination)
+        newState.waypoints[i] = {
           ...wp,
-          heading,
-          distance: segmentDistance,
-          // TODO: calculate GS and segment time
+          course,
+          segmentDistance,
+          ...nav,
         }
-        totalDistance += segmentDistance
+        newState.totalDistance += segmentDistance
+        newState.totalDuration += nav.segmentDuration
       } else {
-        waypoints[i] = {
+        newState.waypoints[i] = {
           ...wp,
           heading: null,
-          distance: null,
+          segmentDistance: null,
+          course: null,
+          groundSpeed: null,
+          segmentDuration: null,
         }
       }
     })
   })
-  return { totalDistance }
 }
 
 export default function reducer(state=initialState, action) {
@@ -57,8 +68,7 @@ export default function reducer(state=initialState, action) {
       } else {
         newState.waypoints.splice(action.payload.position, 0, action.payload.waypoint)
       }
-      summary = setNavInfo(newState.waypoints)
-      newState.totalDistance = summary.totalDistance
+      computeNavData(newState)
       return newState
       break
     }
@@ -66,8 +76,7 @@ export default function reducer(state=initialState, action) {
       let newState = _.cloneDeep(state)
       let summary = null
       newState.waypoints = action.payload
-      summary = setNavInfo(newState.waypoints)
-      newState.totalDistance = summary.totalDistance
+      computeNavData(newState)
       return newState
       break
     }
@@ -77,8 +86,7 @@ export default function reducer(state=initialState, action) {
       let summary = null
       let i = _.findIndex(newState.waypoints, ['key', waypointToUpdate.key])
       newState.waypoints[i] = waypointToUpdate
-      summary = setNavInfo(newState.waypoints)
-      newState.totalDistance = summary.totalDistance
+      computeNavData(newState)
       return newState
       break
     }
@@ -88,8 +96,7 @@ export default function reducer(state=initialState, action) {
       _.remove(newState.waypoints, (wp) => {
         return wp.key == action.payload.key
       })
-      summary = setNavInfo(newState.waypoints)
-      newState.totalDistance = summary.totalDistance
+      computeNavData(newState)
       return newState
       break
     }
@@ -111,6 +118,13 @@ export default function reducer(state=initialState, action) {
       let i = _.findIndex(newState.waypoints, ['key', action.payload.data.key])
       newState.waypoints[i].name = action.payload.data.name
       newState.runGeocode = null
+      return newState
+      break
+    }
+    case 'FLIGHT_SETTINGS_UPDATE': {
+      let newState = _.cloneDeep(state)
+      newState = { ...newState, ...action.payload }
+      computeNavData(newState)
       return newState
       break
     }

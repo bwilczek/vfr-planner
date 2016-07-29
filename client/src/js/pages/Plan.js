@@ -16,7 +16,7 @@ import WaypointList from '../components/WaypointList'
 import { localStorageGetObject, localStorageSetObject } from '../lib/LocalStorageForObjects'
 
 @connect((store) => {
-  return _.cloneDeep(store.routeData);
+  return _.cloneDeep(store.routeData)
 })
 export default class Plan extends React.Component {
 

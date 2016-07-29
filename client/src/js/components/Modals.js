@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { FormControl, Modal, Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
-var FontAwesome = require('react-fontawesome')
+import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 
 import * as modalActions from '../actions/modalActions'

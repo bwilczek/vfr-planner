@@ -1,3 +1,5 @@
+require('rc-slider/assets/index.css')
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router'
