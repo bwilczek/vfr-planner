@@ -49,6 +49,7 @@ const SortableItem = SortableElement(({value, dispatch, map}) => {
     )
   }
 
+  // TODO: handle too long waypoint names with { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }
   return (
     <div style={{display: 'flex'}}>
       <div>
