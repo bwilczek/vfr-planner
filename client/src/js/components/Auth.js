@@ -71,7 +71,7 @@ export default class Auth extends React.Component {
       <div style={{marginRight: '5px'}}>
         <FontAwesome title="Login with Facebook" name="facebook-official" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
         &nbsp;
-        <FontAwesome title="Login with Google" name="google" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_google.onBtnClick(e)}}/>
+        <FontAwesome title="Login with Google" name="google" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
         &nbsp;
         {this.settingsDropdown()}
         <FacebookLogin
@@ -87,8 +87,10 @@ export default class Auth extends React.Component {
           ref="auth_button_google"
           clientId={secrets.GOOGLE_APP_ID}
           buttonText="Login"
-          cssClass="hidden"
-          callback={this.responseGoogle}>Google</GoogleLogin>
+          class="hidden"
+          onSuccess={this.responseGoogle}
+          onFailure={(e) => console.log(e)}
+          >Login with Google</GoogleLogin>
       </div>
     )
   }

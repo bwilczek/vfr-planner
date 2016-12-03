@@ -1,7 +1,25 @@
 # vfr-planner
 Re-implementation VFR planning web application lecimy.org from ancient PHP to react/redux SPA with rails API as backend.
 
-This is a very early stage of development - lots of prototyping going on, an functionality is limited.
+This is a very early stage of development - lots of prototyping going on and functionality is limited.
+
+## Setting up development environment
+
+```
+# clone this repo
+cd vfr-planner
+
+# set secrets.js
+# set up database
+
+rails db:migrate
+rails server --daemon -b 0.0.0.0
+
+cd client
+npm install
+npm run dev
+
+```
 
 ## Running it
 
