@@ -29,13 +29,12 @@ module.exports = {
   },
   devServer: {
     // historyApiFallback: true,
-    proxy: [
-      {
-        context: ['/sessions', '/nav_points', '/areas', , '/routes'],
+    proxy: {
+      '/api': {
         target: 'http://localhost:3000/',
         secure: false
       }
-    ]
+    }
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),

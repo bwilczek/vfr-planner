@@ -46,7 +46,7 @@ export function reorderWaypoints(newWaypoints) {
 export function reverseGeocode(waypoint) {
   return {
     type: 'WAYPOINT_REVERSE_GEOCODE',
-    payload: axios.get(`/nav_points/find?lat=${waypoint.latLng.lat()}&lng=${waypoint.latLng.lng()}&key=${waypoint.key}`),
+    payload: axios.get(`/api/nav_points/find?lat=${waypoint.latLng.lat()}&lng=${waypoint.latLng.lng()}&key=${waypoint.key}`),
   }
 }
 

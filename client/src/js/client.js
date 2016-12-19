@@ -12,7 +12,7 @@ import StaticPage from './pages/StaticPage'
 
 import store from './store'
 
-const _ = require('lodash')
+import _ from 'lodash'
 
 const app = document.getElementById('app')
 
