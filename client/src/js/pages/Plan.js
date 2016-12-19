@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Button, Modal } from 'react-bootstrap'
-const FontAwesome = require('react-fontawesome')
-const _ = require('lodash')
+import FontAwesome from 'react-fontawesome'
+import _ from 'lodash'
 
 import * as routeDataActions from '../actions/routeDataActions'
 import * as modalActions from '../actions/modalActions'

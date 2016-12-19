@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715145148) do
+ActiveRecord::Schema.define(version: 20161217190228) do
 
   create_table "nav_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.float    "lat",         limit: 24
     t.float    "lng",         limit: 24
-    t.integer  "type"
+    t.integer  "kind"
     t.integer  "status"
     t.string   "height"
     t.string   "elevation"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(version: 20160715145148) do
     t.string   "radio"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "country",     limit: 6
+    t.index ["country"], name: "index_nav_points_on_country", using: :btree
   end
 
   create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -28,12 +28,14 @@ module.exports = {
     filename: "client.min.js"
   },
   devServer: {
-    proxy: {
-      '**': {
-        target: 'http://localhost:3000',
+    // historyApiFallback: true,
+    proxy: [
+      {
+        context: ['/sessions', '/nav_points', '/areas', , '/routes'],
+        target: 'http://localhost:3000/',
         secure: false
       }
-    }
+    ]
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),

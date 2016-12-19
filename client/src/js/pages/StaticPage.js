@@ -1,5 +1,5 @@
 import React from 'react'
-var FontAwesome = require('react-fontawesome')
+import FontAwesome from 'react-fontawesome'
 import { Button } from 'react-bootstrap'
 
 export default class StaticPage extends React.Component {
