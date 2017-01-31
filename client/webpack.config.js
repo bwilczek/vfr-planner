@@ -1,16 +1,21 @@
-var debug = process.env.NODE_ENV !== "production";
-var webpack = require('webpack');
 var path = require('path');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  context: path.join(__dirname, "src"),
-  devtool: debug ? "inline-sourcemap" : null,
-  entry: "./js/client.js",
+  context: path.join(__dirname, 'src'),
+  entry: './js/index.js',
+  output: {
+    path: path.resolve(__dirname, '../public'),
+    filename: 'index.min.js',
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json']
+  },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015', 'stage-0'],
@@ -18,17 +23,37 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        loader: "style-loader!css-loader",
+          test: /\.json$/,
+          loader: 'json'
+      },
+      {
+        test: /\.s?css$/,
+        loaders: ['style', 'css', 'sass']
+      },
+      {
+        test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      },
+      {
+        test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=20000&mimetype=image/png"
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
       }
     ]
   },
-  output: {
-    path: __dirname + "/../public",
-    filename: "client.min.js"
-  },
   devServer: {
-    // historyApiFallback: true,
+    historyApiFallback: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3000/',
@@ -36,9 +61,9 @@ module.exports = {
       }
     }
   },
-  plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-  ],
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: 'index.html', to: 'index.html' }
+    ]),
+  ]
 };

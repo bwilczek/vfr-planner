@@ -1,12 +1,18 @@
 import { applyMiddleware, createStore } from 'redux'
-
 // import logger from 'redux-logger'
 import promise from 'redux-promise-middleware'
 import thunk from 'redux-thunk'
 
-import reducer from './reducers'
+import combinedReducer from './reducers'
 
-// const middleware = applyMiddleware(promise(), thunk, logger())
-const middleware = applyMiddleware(promise(), thunk)
+let middleware = null;
 
-export default createStore(reducer, middleware)
+if(process.env.NODE_ENV !== 'production') {
+  middleware = applyMiddleware(promise(), thunk, require('redux-immutable-state-invariant')())
+} else {
+  middleware = applyMiddleware(promise(), thunk)
+}
+
+const store = createStore(combinedReducer, middleware)
+
+export default store
