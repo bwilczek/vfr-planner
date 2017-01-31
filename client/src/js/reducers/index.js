@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import { intlReducer } from 'react-intl-redux'
+import intl from './intl'
 
 export default combineReducers({
-  intl: intlReducer
+  intl
 })
