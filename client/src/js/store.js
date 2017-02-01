@@ -13,6 +13,13 @@ if(process.env.NODE_ENV !== 'production') {
   middleware = applyMiddleware(promise(), thunk)
 }
 
-const store = createStore(combinedReducer, middleware)
+// TODO: evaluate replacing with localforage
+const cacheKey = 'reduxState3'
+const persistedState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
+const store = createStore(combinedReducer, persistedState, middleware)
+store.subscribe(() => {
+  // TODO: reject certain keys that don't need to be stored
+  localStorage.setItem(cacheKey, JSON.stringify(store.getState()))
+})
 
 export default store
