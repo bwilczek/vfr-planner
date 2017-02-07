@@ -2,8 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 
+import TopMenu from './TopMenu'
+
 import '../../css/font-awesome.min.css'
 import '../../css/bootstrap.min.css'
+import '../../css/application.scss'
 
 import { fetchIntl } from '../actions/intlActions'
 
@@ -16,7 +19,8 @@ import { fetchIntl } from '../actions/intlActions'
       fetchDefaultIntl: () => { dispatch(fetchIntl('en')) }
     }
   }
-)export default class Application extends React.Component {
+)
+export default class Application extends React.Component {
 
   componentWillMount() {
     if(isEmpty(this.props.messages)) {
@@ -26,7 +30,8 @@ import { fetchIntl } from '../actions/intlActions'
 
   render() {
     return (
-      <div>
+      <div style={{height: '100vh', margin: 0}}>
+        <TopMenu />
         <div>
           {this.props.children}
         </div>

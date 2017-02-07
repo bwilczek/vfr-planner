@@ -1,0 +1,51 @@
+$top-menu-height: 54px;
+$test-bg-color: #fee;
+$planner-left-col-width: 200px;
+$planner-right-col-width: 200px;
+
+body {
+  height: 100vh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+div.top-menu {
+  border-bottom-style: solid;
+  border-bottom-width: 1px
+}
+
+div#application {
+  height: 100vh;
+}
+
+div.planner-main {
+  float: left;
+  width: calc( 100vw - ($planner-left-col-width+$planner-right-col-width) );
+  border: none;
+  height: calc( 100vh - #{$top-menu-height} );
+}
+
+div.planner-left {
+  float: left;
+  width: $planner-left-col-width;
+  border-right-width: 1px;
+  border-right-style: solid;
+  height: calc( 100vh - #{$top-menu-height} );
+}
+
+div.planner-right {
+  float: right;
+  width: $planner-right-col-width;
+  border-left-width: 1px;
+  border-left-style: solid;
+  height: calc( 100vh - #{$top-menu-height} );
+}
+
+div.clear {
+  clear: both;
+}
+
+div.planner-wrapper {
+  width: 100vw;
+  margin: 0 auto;
+  background-color: $test-bg-color;
+}

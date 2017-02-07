@@ -3,11 +3,33 @@
    <head>
       <meta charset="UTF-8" />
       <title>Lecimy.org</title>
+      <style>
+        div.init-please-wait {
+          background-color: #eee;
+          width: 200px;
+          height: 37px;
+          position:absolute;
+          left:0; right:0;
+          top:0; bottom:0;
+          margin:auto;
+          max-width:100%;
+          max-height:100%;
+          overflow:none;
+          border-style: solid;
+          border-color: #aaa;
+          padding: 5px;
+          border-radius: 5px;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+      </style>
    </head>
 
    <body>
       <div id="application">
-        Please wait while this awesome application is being loaded...
+        <div class="init-please-wait">
+          Please wait... <br />
+          Proszę czekać...
+        </div>
       </div>
       <script src="index.min.js" async></script>
    </body>
