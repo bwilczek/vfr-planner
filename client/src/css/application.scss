@@ -12,8 +12,13 @@ div.top-menu {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   width: 100%;
+  height: $top-menu-height;
   display: flex;
   justify-content: space-between;
+}
+
+div.top-menu-right {
+  margin-top: 6px;
 }
 
 div#application {

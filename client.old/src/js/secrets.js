@@ -1,3 +1,0 @@
-export const FACEBOOK_APP_ID='158878217483331'
-export const GOOGLE_APP_ID='764783517310-9c6tolut59e3aeamor8tgqop0q5gqq5m.apps.googleusercontent.com'
-export const GOOGLE_MAPS_KEY='AIzaSyBq2ovRo5VZogos0yoantLEztQiYcI2K3c'

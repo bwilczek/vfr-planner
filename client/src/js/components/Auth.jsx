@@ -13,7 +13,8 @@ import * as actions from '../actions/authActions'
   (state) => {
     return {
       user: {
-        name: state.user.name
+        name: state.user.name,
+        img: state.user.img
       }
     }
   },
@@ -23,6 +24,7 @@ import * as actions from '../actions/authActions'
         dispatch(actions.authenticate('facebook', response.accessToken))
       },
       handleResponseGoogle: (googleUser) => {
+        console.log(googleUser)
         dispatch(actions.authenticate('google', googleUser.getAuthResponse().id_token))
       }
     }
@@ -32,7 +34,10 @@ export default class Auth extends React.Component {
 
   renderAuthorized() {
     return (
-      <div>{this.props.user.name}</div>
+      <div style={{marginRight: '5px'}}>
+        <span>{this.props.user.name}</span>
+        <img style={{width: '42px', marginLeft: '5px', borderRadius: '21px'}} src={this.props.user.img} />
+      </div>
     )
   }
 
