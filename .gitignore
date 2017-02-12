@@ -19,3 +19,5 @@
 .bash_history
 /client/src/js/secrets.js
 /client/src/js/secrets.js.ignore
+/client.old/src/js/secrets.js
+/client.old/src/js/secrets.js.ignore
