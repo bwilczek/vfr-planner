@@ -10,7 +10,10 @@ body {
 
 div.top-menu {
   border-bottom-style: solid;
-  border-bottom-width: 1px
+  border-bottom-width: 1px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 div#application {

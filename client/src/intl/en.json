@@ -1,3 +1,5 @@
 {
-  "airport": "Airport"
+  "airport": "Airport",
+  "loginWithFacebook": "Login with Facebook",
+  "loginWithGoogle": "Login with Google"
 }

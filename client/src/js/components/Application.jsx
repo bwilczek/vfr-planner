@@ -30,7 +30,7 @@ export default class Application extends React.Component {
 
   render() {
     return (
-      <div style={{height: '100vh', margin: 0}}>
+      <div>
         <TopMenu />
         <div>
           {this.props.children}

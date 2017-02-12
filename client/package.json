@@ -26,7 +26,9 @@
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.1",
+    "react-facebook-login": "^3.4.3",
     "react-fontawesome": "^1.5.0",
+    "react-google-login": "^2.8.0",
     "react-intl": "^2.2.3",
     "react-intl-redux": "^0.3.0",
     "react-redux": "^5.0.1",
@@ -46,7 +48,6 @@
     "build": "./node_modules/.bin/webpack -p --define process.env.NODE_ENV='\"production\"'"
   },
   "devDependencies": {
-    "webpack-dev-server": "^1.16.2",
     "eslint": "^3.13.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-config-standard-jsx": "^3.2.0",
@@ -56,6 +57,7 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "^6.9.0",
     "eslint-plugin-standard": "^2.0.1",
-    "redux-immutable-state-invariant": "^1.2.4"
+    "redux-immutable-state-invariant": "^1.2.4",
+    "webpack-dev-server": "^1.16.2"
   }
 }

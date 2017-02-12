@@ -1,3 +1,5 @@
 {
-  "airport": "Port lotniczy"
+  "airport": "Port lotniczy",
+  "loginWithFacebook": "Zaloguj się przez Facebook",
+  "loginWithGoogle": "Zaloguj się przez Google"
 }
