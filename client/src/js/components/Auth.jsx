@@ -46,8 +46,8 @@ export default class Auth extends React.Component {
 
     return (
       <div>
-        <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
-        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" style={{verticalAlign: 'middle', cursor: 'pointer'}} size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
+        <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
+        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}
