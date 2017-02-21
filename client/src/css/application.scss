@@ -2,6 +2,7 @@ $top-menu-height: 54px;
 $test-bg-color: #fee;
 $planner-left-col-width: 200px;
 $planner-right-col-width: 200px;
+$planner-side-columns-width: calc( $planner-left-col-width + $planner-right-col-width );
 
 body {
   height: 100vh;
@@ -33,9 +34,16 @@ div#application {
 
 div.planner-main {
   float: left;
-  width: calc( 100vw - ($planner-left-col-width+$planner-right-col-width) );
+  width: calc( 100vw - $planner-side-columns-width );
   border: none;
+  background-color: #eef;
   height: calc( 100vh - #{$top-menu-height} );
+}
+
+div#map {
+  height: 100%;
+  background-color: #efe;
+  width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
 }
 
 div.planner-left {
