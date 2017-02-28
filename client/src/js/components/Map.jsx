@@ -5,6 +5,7 @@ import { isEqual, each } from 'lodash'
 import GoogleMapsLoader from 'google-maps'
 
 import * as secrets from '../secrets'
+import { updateUi } from '../actions/uiActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 
@@ -14,16 +15,26 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
   (state) => {
     return {
       navPoints: state.navPoints,
-      areas: state.areas
+      areas: state.areas,
+      ui: state.ui
+    }
+  },
+  (dispatch) => {
+    return {
+      updateUi: (fields) => {
+        dispatch(updateUi(fields))
+      }
     }
   }
 )
 export default class Map extends React.Component {
 
-  defaultMapSettings = {
-    center: {lat: 51, lng: 17}, // TODO: store center and zoom in state
-    zoom: 8,
-    draggableCursor: 'crosshair'
+  defaultMapSettings() {
+    return {
+      center: this.props.ui.mapCenter,
+      zoom: this.props.ui.mapZoom,
+      draggableCursor: 'crosshair'
+    }
   }
 
   constructor() {
@@ -49,6 +60,14 @@ export default class Map extends React.Component {
 
   onMapClick(e) {
     // console.log('Map clicked')
+  }
+
+  onMapIdle(e) {
+    this.props.updateUi({mapCenter: {lat: this.map.getCenter().lat(), lng: this.map.getCenter().lng()}})
+  }
+
+  onZoomChanged(e) {
+    this.props.updateUi({mapZoom: this.map.getZoom()})
   }
 
   plotNavPoints() {
@@ -79,8 +98,10 @@ export default class Map extends React.Component {
 
   initMap() {
     GoogleMapsLoader.load((google) => {
-      this.map = new google.maps.Map(this.refs.map, this.defaultMapSettings)
+      this.map = new google.maps.Map(this.refs.map, this.defaultMapSettings())
       this.map.addListener('click', this.onMapClick.bind(this))
+      this.map.addListener('idle', this.onMapIdle.bind(this))
+      this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
       this.plotNavPoints()
       this.plotAreas()
     })
