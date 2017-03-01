@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { isEqual, each } from 'lodash'
+import { injectIntl } from 'react-intl'
 
 import GoogleMapsLoader from 'google-maps'
 
@@ -11,6 +12,7 @@ import iconNavPointUncontrolled from '../../img/airfield.png'
 
 GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
 
+@injectIntl
 @connect(
   (state) => {
     return {
@@ -54,8 +56,16 @@ export default class Map extends React.Component {
     }
   }
 
-  onMarkerClick(marker) {
-    console.log('Marker clicked ', marker.title, marker.navPoint)
+  onMarkerRightClick(marker) {
+    const { formatMessage } = this.props.intl
+    // console.log('Marker clicked ', marker.title, marker.navPoint)
+    const content = `
+      <strong>${marker.navPoint.name}</strong><br />
+      ${formatMessage({id: 'navPointKind_'+marker.navPoint.kind})}
+    `
+    // radio, description, elevation
+    const infowindow = new google.maps.InfoWindow({ content })
+    infowindow.open(this.map, marker)
   }
 
   onMapClick(e) {
@@ -81,20 +91,25 @@ export default class Map extends React.Component {
         anchor: new google.maps.Point(12, 12)
       }
     });
-    newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
+    newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
     return newMarker
   }
 
   plotNavPoints() {
-    // CLEAR navPointMarkers
-    each(this.navPointMarkers, (marker) => {
-      marker.setMap(null)
-    })
-    this.navPointMarkers = []
-    // PLOT navPointMarkers
-    each(this.props.navPoints, (navPoint) => {
-      this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
-    })
+    if(!this.map) {
+      console.log("Waiting for the map before drawing NavPoints")
+      setTimeout(this.plotNavPoints.bind(this), 50)
+    } else {
+      // CLEAR navPointMarkers
+      each(this.navPointMarkers, (marker) => {
+        marker.setMap(null)
+      })
+      this.navPointMarkers = []
+      // PLOT navPointMarkers
+      each(this.props.navPoints, (navPoint) => {
+        this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
+      })
+    }
   }
 
   plotAreas() {
@@ -107,8 +122,6 @@ export default class Map extends React.Component {
       this.map.addListener('click', this.onMapClick.bind(this))
       this.map.addListener('idle', this.onMapIdle.bind(this))
       this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
-      this.plotNavPoints()
-      this.plotAreas()
     })
   }
 
