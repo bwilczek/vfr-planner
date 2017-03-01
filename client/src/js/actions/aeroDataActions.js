@@ -13,3 +13,10 @@ export function clearNavPoints() {
     payload: null
   }
 }
+
+export function clearNavPointsByKind(kinds) {
+  return {
+    type: 'CLEAR_NAV_POINTS_BY_KIND',
+    payload: kinds
+  }
+}

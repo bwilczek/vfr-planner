@@ -55,7 +55,7 @@ export default class Map extends React.Component {
   }
 
   onMarkerClick(marker) {
-    console.log('Marker clicked ', marker.title)
+    console.log('Marker clicked ', marker.title, marker.navPoint)
   }
 
   onMapClick(e) {
@@ -70,6 +70,21 @@ export default class Map extends React.Component {
     this.props.updateUi({mapZoom: this.map.getZoom()})
   }
 
+  createNavPointMarker(navPoint) {
+    const newMarker = new google.maps.Marker({
+      position: {lat: navPoint.lat, lng: navPoint.lng},
+      map: this.map,
+      title: navPoint.name,
+      navPoint: navPoint,
+      icon: {
+        url: iconNavPointUncontrolled, // TODO: replace with proper mapping of kind2image
+        anchor: new google.maps.Point(12, 12)
+      }
+    });
+    newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
+    return newMarker
+  }
+
   plotNavPoints() {
     // CLEAR navPointMarkers
     each(this.navPointMarkers, (marker) => {
@@ -77,18 +92,8 @@ export default class Map extends React.Component {
     })
     this.navPointMarkers = []
     // PLOT navPointMarkers
-    each(this.props.navPoints, (item) => {
-      const newMarker = new google.maps.Marker({
-        position: {lat: item.lat, lng: item.lng},
-        map: this.map,
-        title: item.name,
-        icon: {
-          url: iconNavPointUncontrolled, // TODO: replace with proper mapping of kind2image
-          anchor: new google.maps.Point(12, 12)
-        }
-      });
-      newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
-      this.navPointMarkers = [...this.navPointMarkers, newMarker]
+    each(this.props.navPoints, (navPoint) => {
+      this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
     })
   }
 

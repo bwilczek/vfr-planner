@@ -1,5 +1,6 @@
 {
-  "airport": "Airport",
+  "airports": "Airports",
+  "airstrips": "Airstrips",
   "loginWithFacebook": "Login with Facebook",
   "loginWithGoogle": "Login with Google"
 }

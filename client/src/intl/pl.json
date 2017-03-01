@@ -1,5 +1,6 @@
 {
-  "airport": "Port lotniczy",
+  "airports": "Lotniska",
+  "airstrips": "Lądowiska",
   "loginWithFacebook": "Zaloguj się przez Facebook",
   "loginWithGoogle": "Zaloguj się przez Google"
 }
