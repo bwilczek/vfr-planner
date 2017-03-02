@@ -36,13 +36,11 @@ div.planner-main {
   float: left;
   width: calc( 100vw - $planner-side-columns-width );
   border: none;
-  background-color: #eef;
   height: calc( 100vh - #{$top-menu-height} );
 }
 
 div#map {
   height: 100%;
-  background-color: #efe;
   width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
 }
 
@@ -69,5 +67,4 @@ div.clear {
 div.planner-wrapper {
   width: 100vw;
   margin: 0 auto;
-  background-color: $test-bg-color;
 }
