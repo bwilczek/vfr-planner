@@ -3,5 +3,9 @@
   "airports": "Airports",
   "airstrips": "Airstrips",
   "loginWithFacebook": "Login with Facebook",
-  "loginWithGoogle": "Login with Google"
+  "loginWithGoogle": "Login with Google",
+  "aeronauticalData": "Aeronautical data",
+  "windSpeed": "Wind speed",
+  "windDirection": "Wind direction",
+  "TAS": "TAS"
 }

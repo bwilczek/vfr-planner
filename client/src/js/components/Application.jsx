@@ -16,7 +16,7 @@ import { fetchIntl } from '../actions/intlActions'
   },
   (dispatch) => {
     return {
-      fetchDefaultIntl: () => { dispatch(fetchIntl('en')) }
+      fetchDefaultIntl: () => { dispatch(fetchIntl('pl')) }
     }
   }
 )

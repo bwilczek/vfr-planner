@@ -50,6 +50,7 @@ div.planner-left {
   border-right-width: 1px;
   border-right-style: solid;
   height: calc( 100vh - #{$top-menu-height} );
+  margin: 5px;
 }
 
 div.planner-right {

@@ -3,5 +3,9 @@
   "airports": "Lotniska",
   "airstrips": "Lądowiska",
   "loginWithFacebook": "Zaloguj się przez Facebook",
-  "loginWithGoogle": "Zaloguj się przez Google"
+  "loginWithGoogle": "Zaloguj się przez Google",
+  "aeronauticalData": "Treść lotnicza",
+  "windSpeed": "Prędkość wiatru",
+  "windDirection": "Kierunek wiatru",
+  "TAS": "TAS"
 }
