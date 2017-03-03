@@ -19,3 +19,13 @@ NavPoint.create(
   status: :active,
   kind: :uncontrolled,
 )
+
+NavPoint.create(
+  name: 'EPWR BRAVO',
+  icao_code: 'EPWRB',
+  lat: 51.13,
+  lng: 16.98,
+  country: 'pl',
+  status: :active,
+  kind: :vfr_point,
+)

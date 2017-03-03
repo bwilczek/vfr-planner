@@ -40,7 +40,7 @@ export default class NavPointCheckbox extends React.Component {
   render() {
     // ucfirst
     return (
-      <div>
+      <div style={{fontSize: '12px'}}>
         <input
           type="checkbox"
           defaultChecked={this.props.value}

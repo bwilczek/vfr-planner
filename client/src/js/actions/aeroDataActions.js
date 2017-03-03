@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export function fetchNavPoints(countries, types) {
+export function fetchNavPoints(countries, kinds) {
   return {
     type: 'FETCH_NAV_POINTS',
-    payload: axios.get('/api/nav_points', {countries, types})
+    payload: axios.get('/api/nav_points', { params: {countries, kinds} })
   }
 }
 

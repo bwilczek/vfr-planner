@@ -2,7 +2,7 @@ class NavPointsController < ApplicationController
   skip_before_action :require_authorization, only: [:show, :index, :find]
 
   def index
-    render json: NavPoint.all
+    render json: NavPoint.where(kind: params[:kinds], country: params[:countries], status: :active)
   end
 
   def show

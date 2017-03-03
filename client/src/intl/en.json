@@ -7,5 +7,6 @@
   "aeronauticalData": "Aeronautical data",
   "windSpeed": "Wind speed",
   "windDirection": "Wind direction",
-  "tas": "True airspeed"
+  "tas": "True airspeed",
+  "vfrPoints": "VFR points"
 }

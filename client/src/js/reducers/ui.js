@@ -1,7 +1,8 @@
 const initialState = {
   mapZoom: 8,
   mapCenter: {lat: 51, lng: 17},
-  checkboxAirports: false
+  checkboxAirports: false,
+  checkboxVfrPoints: false
 }
 
 export default function reducer(state = initialState, action) {
