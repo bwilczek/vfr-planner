@@ -7,5 +7,5 @@
   "aeronauticalData": "Treść lotnicza",
   "windSpeed": "Prędkość wiatru",
   "windDirection": "Kierunek wiatru",
-  "TAS": "TAS"
+  "tas": "Prędkość przyrządowa"
 }

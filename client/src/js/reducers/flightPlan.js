@@ -1,6 +1,7 @@
 const initialState = {
   windSpeed: 0,
   windDirection: 0,
+  tas: 70
 }
 
 export default function reducer(state = initialState, action) {

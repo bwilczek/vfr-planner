@@ -4,9 +4,10 @@ import { injectIntl, FormattedMessage } from 'react-intl'
 import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 import FlightPlanSlider from './FlightPlanSlider'
+import NavPointCheckbox from './NavPointCheckbox'
 import LocaleSelector from './LocaleSelector'
 
-import * as actions from '../actions/aeroDataActions'
+import { fetchNavPoints } from '../actions/aeroDataActions'
 import { updateUi } from '../actions/uiActions'
 
 @injectIntl
@@ -16,38 +17,14 @@ import { updateUi } from '../actions/uiActions'
       ui: state.ui,
       flightPlan: state.flightPlan
     }
-  },
-  (dispatch) => {
-    return {
-      fetchAirports: () => {
-        dispatch(actions.fetchNavPoints(['pl'], ['controlled', 'uncontrolled', 'military']))
-      },
-      clearAirports: () => {
-        dispatch(actions.clearNavPointsByKind(['controlled', 'uncontrolled', 'military']))
-      },
-      handleCheckboxClick: (fields) => {
-        dispatch(updateUi(fields))
-      }
-    }
   }
 )
 export default class FlightPlanSettings extends React.Component {
 
-  checkboxClicked(checkboxName) {
-    const fields = {}
-    fields[checkboxName] = !this.props.ui[checkboxName]
-    this.props.handleCheckboxClick(fields)
-    if(this.props.ui[checkboxName]) {
-      this.props.clearAirports()
-    } else {
-      this.props.fetchAirports()
-    }
-  }
-
   componentDidMount() {
     // make map content reflect the UI state
     if(this.props.ui.checkboxAirports) {
-      this.props.fetchAirports()
+      this.props.dispatch(fetchNavPoints(['pl'], ['controlled', 'uncontrolled', 'military']))
     }
   }
 
@@ -55,9 +32,9 @@ export default class FlightPlanSettings extends React.Component {
     return (
       <div>
         <FormattedMessage id="aeronauticalData" /><br />
-        <input type="checkbox" defaultChecked={this.props.ui.checkboxAirports} onChange={this.checkboxClicked.bind(this, 'checkboxAirports')}/>
-        &nbsp;<FormattedMessage id="airports" />
+        <NavPointCheckbox name="airports" value={this.props.ui.checkboxAirports} kinds={['controlled', 'uncontrolled', 'military']} />
         <br />
+        <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
         <LocaleSelector />

@@ -7,5 +7,5 @@
   "aeronauticalData": "Aeronautical data",
   "windSpeed": "Wind speed",
   "windDirection": "Wind direction",
-  "TAS": "TAS"
+  "tas": "True airspeed"
 }
