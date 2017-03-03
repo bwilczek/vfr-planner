@@ -1,5 +1,6 @@
 {
   "navPointKind_uncontrolled": "Uncontrolled aerodrome",
+  "navPointKind_vfr_point": "VFR point",
   "airports": "Airports",
   "airstrips": "Airstrips",
   "loginWithFacebook": "Login with Facebook",
