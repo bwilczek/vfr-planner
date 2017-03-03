@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import ReactBootstrapSlider from 'react-bootstrap-slider'
 
+import FlightPlanSlider from './FlightPlanSlider'
+import LocaleSelector from './LocaleSelector'
+
 import * as actions from '../actions/aeroDataActions'
 import { updateUi } from '../actions/uiActions'
-import { updateFlightPlan } from '../actions/flightPlanActions'
-
-import '../../css/bootstrap-slider.min.css'
-import '../../css/bootstrap-slider.custom.css'
 
 @injectIntl
 @connect(
@@ -28,9 +27,6 @@ import '../../css/bootstrap-slider.custom.css'
       },
       handleCheckboxClick: (fields) => {
         dispatch(updateUi(fields))
-      },
-      handleFlightPlanChange: (fields) => {
-        dispatch(updateFlightPlan(fields))
       }
     }
   }
@@ -48,12 +44,6 @@ export default class FlightPlanSettings extends React.Component {
     }
   }
 
-  sliderMoved(sliderName, e) {
-    const fields = {}
-    fields[sliderName] = e.target.value
-    this.props.handleFlightPlanChange(fields)
-  }
-
   componentDidMount() {
     // make map content reflect the UI state
     if(this.props.ui.checkboxAirports) {
@@ -68,19 +58,9 @@ export default class FlightPlanSettings extends React.Component {
         <input type="checkbox" defaultChecked={this.props.ui.checkboxAirports} onChange={this.checkboxClicked.bind(this, 'checkboxAirports')}/>
         &nbsp;<FormattedMessage id="airports" />
         <br />
-        <FormattedMessage id="windSpeed" /> {this.props.flightPlan.windSpeed}<br />
-        <ReactBootstrapSlider
-          name="windSpeed"
-          value={this.props.flightPlan.windSpeed}
-          change={this.sliderMoved.bind(this, 'windSpeed')}
-          step={5}
-          max={355}
-          min={0}
-          orientation="horizontal"
-          handle="custom"
-          tooltip="hide"
-        />
-
+        <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
+        <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
+        <LocaleSelector />
       </div>
     )
   }

@@ -31,19 +31,19 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
 )
 export default class Map extends React.Component {
 
+  constructor() {
+    super()
+    this.initMap = this.initMap.bind(this)
+    this.map = null
+    this.navPointMarkers = []
+  }
+
   defaultMapSettings() {
     return {
       center: this.props.ui.mapCenter,
       zoom: this.props.ui.mapZoom,
       draggableCursor: 'crosshair'
     }
-  }
-
-  constructor() {
-    super()
-    this.initMap = this.initMap.bind(this)
-    this.map = null
-    this.navPointMarkers = []
   }
 
   componentDidMount() {
