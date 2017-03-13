@@ -9,6 +9,7 @@ import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
+import iconNavPointVfrPoint from '../../img/vfr_point.png'
 
 GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
 
@@ -80,6 +81,15 @@ export default class Map extends React.Component {
     this.props.updateUi({mapZoom: this.map.getZoom()})
   }
 
+  getIconForNavPointKind(kind) {
+    switch(kind) {
+      case 'vfr_point':
+        return iconNavPointVfrPoint
+      case 'uncontrolled':
+        return iconNavPointUncontrolled
+    }
+  }
+
   createNavPointMarker(navPoint) {
     const newMarker = new google.maps.Marker({
       position: {lat: navPoint.lat, lng: navPoint.lng},
@@ -87,7 +97,7 @@ export default class Map extends React.Component {
       title: navPoint.name,
       navPoint: navPoint,
       icon: {
-        url: iconNavPointUncontrolled, // TODO: replace with proper mapping of kind2image
+        url: this.getIconForNavPointKind(navPoint.kind),
         anchor: new google.maps.Point(12, 12)
       }
     });

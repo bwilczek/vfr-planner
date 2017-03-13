@@ -1,3 +1,5 @@
+NavPoint.destroy_all
+
 NavPoint.create(
   name: 'Wrocław-Szymanów',
   icao_code: 'EPWS',
@@ -23,8 +25,8 @@ NavPoint.create(
 NavPoint.create(
   name: 'EPWR BRAVO',
   icao_code: 'EPWRB',
-  lat: 51.13,
-  lng: 16.98,
+  lat: 51.134444,
+  lng: 16.995,
   country: 'pl',
   status: :active,
   kind: :vfr_point,
