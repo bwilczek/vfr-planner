@@ -70,7 +70,7 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    // console.log('Map clicked')
+    console.log('Map clicked', e.latLng.lat(), e.latLng.lng())
   }
 
   onMapIdle(e) {
@@ -102,6 +102,7 @@ export default class Map extends React.Component {
       }
     });
     newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
+    // newMarker.addListener('click', this.onMapClick.bind(this))
     return newMarker
   }
 

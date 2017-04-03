@@ -3611,9 +3611,9 @@ rc@~1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~1.0.4"
 
-react-bootstrap-slider@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-bootstrap-slider/-/react-bootstrap-slider-1.1.4.tgz#3803a9027adccc3ac988ad844ee4dd6b9f02297a"
+react-bootstrap-slider@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-slider/-/react-bootstrap-slider-1.1.5.tgz#c212a44584dfbe4364091d8986927febd783ace2"
   dependencies:
     bootstrap "^3.3.7"
     bootstrap-slider "^9.4.1"
