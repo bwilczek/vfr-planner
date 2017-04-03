@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161217190228) do
+ActiveRecord::Schema.define(version: 20170403172719) do
+
+  create_table "dupa", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer "lat",                    null: false
+    t.integer "lng",                    null: false
+    t.float   "declination", limit: 24, null: false
+    t.index ["lat", "lng"], name: "location", using: :btree
+  end
+
+  create_table "mag_declinations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.integer "lat"
+    t.integer "lng"
+    t.float   "declination", limit: 24
+    t.index ["lat", "lng"], name: "by_location", unique: true, using: :btree
+  end
 
   create_table "nav_points", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
