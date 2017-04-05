@@ -4,3 +4,10 @@ export function updateFlightPlan(fields) {
     payload: fields
   }
 }
+
+export function addWaypoint(waypoint) {
+  return {
+    type: 'ADD_WAYPOINT',
+    payload: waypoint
+  }
+}

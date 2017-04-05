@@ -15,8 +15,8 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 const cacheKey = 'reduxState3'
-const persistedState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
-// const persistedState = undefined
+// const persistedState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
+const persistedState = undefined
 const store = createStore(combinedReducer, persistedState, middleware)
 store.subscribe(() => {
   localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['navPoints', 'user'])))

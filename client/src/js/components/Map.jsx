@@ -7,6 +7,7 @@ import GoogleMapsLoader from 'google-maps'
 
 import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
+import { addWaypoint } from '../actions/flightPlanActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -19,13 +20,17 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
     return {
       navPoints: state.navPoints,
       areas: state.areas,
-      ui: state.ui
+      ui: state.ui,
+      waypoints: state.flightPlan.waypoints
     }
   },
   (dispatch) => {
     return {
       updateUi: (fields) => {
         dispatch(updateUi(fields))
+      },
+      addWaypoint: (waypoint) => {
+        dispatch(addWaypoint(waypoint))
       }
     }
   }
@@ -36,6 +41,7 @@ export default class Map extends React.Component {
     super()
     this.initMap = this.initMap.bind(this)
     this.map = null
+    this.poly = null
     this.navPointMarkers = []
   }
 
@@ -55,11 +61,17 @@ export default class Map extends React.Component {
     if(!isEqual(this.props.navPoints, prevProps.navPoints)) {
       this.plotNavPoints()
     }
+    if(!isEqual(this.props.waypoints, prevProps.waypoints)) {
+      this.plotRoute()
+    }
+  }
+
+  onMarkerClick(marker) {
+    this.props.addWaypoint({name: marker.navPoint.name, id: this.props.waypoints.length+1, latLng: marker.position})
   }
 
   onMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
-    // console.log('Marker clicked ', marker.title, marker.navPoint)
     const content = `
       <strong>${marker.navPoint.name}</strong><br />
       ${formatMessage({id: 'navPointKind_'+marker.navPoint.kind})}
@@ -70,7 +82,8 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    console.log('Map clicked', e.latLng.lat(), e.latLng.lng())
+    this.props.addWaypoint({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, id: this.props.waypoints.length+1})
+    this.poly.getPath().push(e.latLng)
   }
 
   onMapIdle(e) {
@@ -91,8 +104,9 @@ export default class Map extends React.Component {
   }
 
   createNavPointMarker(navPoint) {
+    const latLng = new google.maps.LatLng(navPoint.lat, navPoint.lng)
     const newMarker = new google.maps.Marker({
-      position: {lat: navPoint.lat, lng: navPoint.lng},
+      position: latLng,
       map: this.map,
       title: navPoint.name,
       navPoint: navPoint,
@@ -102,8 +116,12 @@ export default class Map extends React.Component {
       }
     });
     newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
-    // newMarker.addListener('click', this.onMapClick.bind(this))
+    newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
     return newMarker
+  }
+
+  plotRoute() {
+    console.log("Plot route")
   }
 
   plotNavPoints() {
@@ -133,6 +151,14 @@ export default class Map extends React.Component {
       this.map.addListener('click', this.onMapClick.bind(this))
       this.map.addListener('idle', this.onMapIdle.bind(this))
       this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
+      this.poly = new google.maps.Polyline({
+        strokeColor: '#000000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+        geodesic: true,
+        editable: true
+      })
+      this.poly.setMap(this.map)
     })
   }
 
