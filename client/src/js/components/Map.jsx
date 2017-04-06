@@ -7,7 +7,7 @@ import GoogleMapsLoader from 'google-maps'
 
 import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
-import { addWaypoint } from '../actions/flightPlanActions'
+import { addWaypointWithName } from '../actions/flightPlanActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -30,7 +30,7 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
         dispatch(updateUi(fields))
       },
       addWaypoint: (waypoint) => {
-        dispatch(addWaypoint(waypoint))
+        dispatch(addWaypointWithName(waypoint))
       }
     }
   }
@@ -82,7 +82,7 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    this.props.addWaypoint({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, id: this.props.waypoints.length+1})
+    this.props.addWaypoint({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
     this.poly.getPath().push(e.latLng)
   }
 

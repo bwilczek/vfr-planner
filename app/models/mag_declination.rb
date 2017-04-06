@@ -3,7 +3,7 @@ class MagDeclination < ApplicationRecord
   def self.get_declination(location)
     raise "Argument Error" unless location.lat.is_a? Numeric
     raise "Argument Error" unless location.lng.is_a? Numeric
-    sql = "select round(avg(declination)) as declination from mag_declinations
+    sql = "select avg(declination) as declination from mag_declinations
       where lat in (floor(#{location.lat}), ceil(#{location.lat}))
       and lng in (floor(#{location.lng}), ceil(#{location.lng}))"
     ActiveRecord::Base.connection.exec_query(sql).to_hash.first['declination']

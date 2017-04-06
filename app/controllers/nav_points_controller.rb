@@ -10,7 +10,9 @@ class NavPointsController < ApplicationController
   end
 
   def find
-    name = NavPoint.get_name(NavPoint.new(lat: params[:lat], lng: params[:lng]))
-    render json: { name: name, key: params[:key], lat: params[:lat], lng: params[:lng] }
+    point = NavPoint.new(lat: params[:lat], lng: params[:lng])
+    name = NavPoint.get_name point
+    declination = MagDeclination.get_declination point
+    render json: { declination: declination, name: name, key: params[:key], lat: params[:lat], lng: params[:lng] }
   end
 end
