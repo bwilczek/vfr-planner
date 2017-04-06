@@ -83,7 +83,6 @@ export default class Map extends React.Component {
 
   onMapClick(e) {
     this.props.addWaypoint({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
-    this.poly.getPath().push(e.latLng)
   }
 
   onMapIdle(e) {
@@ -121,7 +120,7 @@ export default class Map extends React.Component {
   }
 
   plotRoute() {
-    console.log("Plot route")
+    this.poly.setPath(this.props.waypoints.map((wp)=>wp.latLng))
   }
 
   plotNavPoints() {
@@ -152,11 +151,14 @@ export default class Map extends React.Component {
       this.map.addListener('idle', this.onMapIdle.bind(this))
       this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
       this.poly = new google.maps.Polyline({
-        strokeColor: '#000000',
+        path: this.props.waypoints.map((wp)=>wp.latLng),
+        strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 3,
         geodesic: true,
-        editable: true
+        editable: true,
+        suppressUndo: true,
+        clickable: false,
       })
       this.poly.setMap(this.map)
     })
