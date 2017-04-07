@@ -1,13 +1,16 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { cloneDeep, isEqual, each } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import GoogleMapsLoader from 'google-maps'
+import FontAwesome from 'react-fontawesome'
+import { Button } from 'react-bootstrap'
 
 import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
-import { addWaypointWithName, updateWaypointWithName } from '../actions/flightPlanActions'
+import { addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -32,6 +35,9 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
       addWaypointWithName: (waypoint, position=null) => {
         dispatch(addWaypointWithName(waypoint, position))
       },
+      deleteWaypoint: (waypoint) => {
+        dispatch(deleteWaypoint(waypoint))
+      },
       updateWaypointWithName: (waypoint) => {
         dispatch(updateWaypointWithName(waypoint))
       }
@@ -45,6 +51,7 @@ export default class Map extends React.Component {
     this.initMap = this.initMap.bind(this)
     this.map = null
     this.poly = null
+    this.infoWindow = null
     this.navPointMarkers = []
     this.keyOfWaypointBeingDragged = null
   }
@@ -109,9 +116,9 @@ export default class Map extends React.Component {
         if(e.latLng == this.poly.getPath().getAt(e.vertex)) {
           // WAYPOINT CLICKED
           console.log("waypoint clicked, show infoWindow")
-          // this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
-          // this.infoWindow.setPosition(newLatLng)
-          // this.infoWindow.open(this.map)
+           this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
+           this.infoWindow.setPosition(newLatLng)
+           this.infoWindow.open(this.map)
           e.stop()
           return
         }
@@ -144,6 +151,19 @@ export default class Map extends React.Component {
       case 'uncontrolled':
         return iconNavPointUncontrolled
     }
+  }
+
+  generateInfoWindowContent(iw, waypoint) {
+    let a = document.createElement('div')
+    // <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.dispatch(modalActions.showRename(waypoint)); iw.close(); } }><FontAwesome name="edit" /></Button>
+    ReactDOM.render(
+      <div>
+        <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
+        <Button bsSize="xsmall" title="Center" onClick={()=> { this.map.setCenter(waypoint.latLng) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title="Remove" onClick={()=> { this.props.deleteWaypoint(waypoint); iw.close(); } }><FontAwesome name="trash" /></Button>
+      </div>
+    , a)
+    return a
   }
 
   createNavPointMarker(navPoint) {
@@ -194,6 +214,7 @@ export default class Map extends React.Component {
       this.map.addListener('click', this.onMapClick.bind(this))
       this.map.addListener('idle', this.onMapIdle.bind(this))
       this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
+      this.infoWindow = new google.maps.InfoWindow()
       this.poly = new google.maps.Polyline({
         map: this.map,
         path: this.props.waypoints.map((wp)=>wp.latLng),

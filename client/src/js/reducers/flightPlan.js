@@ -1,4 +1,4 @@
-import {findIndex, cloneDeep} from 'lodash'
+import {findIndex, cloneDeep, remove} from 'lodash'
 
 const initialState = {
   windSpeed: 0,
@@ -28,6 +28,13 @@ export default function reducer(state = initialState, action) {
       waypoints[i] = action.payload
       return {...state, waypoints}
       return state
+    }
+    case 'DELETE_WAYPOINT': {
+      let waypoints = cloneDeep(state.waypoints)
+      remove(waypoints, (wp) => {
+        return wp.key == action.payload.key
+      })
+      return {...state, waypoints}
     }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
       //do nothing

@@ -21,6 +21,13 @@ export function updateWaypoint(waypoint) {
   }
 }
 
+export function deleteWaypoint(waypoint) {
+  return {
+    type: 'DELETE_WAYPOINT',
+    payload: waypoint
+  }
+}
+
 export function addWaypointWithName(waypoint, position = null) {
   return (dispatch) => {
     dispatch(addWaypoint(waypoint, position))
