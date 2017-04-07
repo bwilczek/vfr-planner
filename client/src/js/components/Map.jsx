@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { isEqual, each } from 'lodash'
+import { cloneDeep, isEqual, each } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import GoogleMapsLoader from 'google-maps'
 
 import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
-import { addWaypointWithName } from '../actions/flightPlanActions'
+import { addWaypointWithName, updateWaypointWithName } from '../actions/flightPlanActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -29,8 +29,11 @@ GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
       updateUi: (fields) => {
         dispatch(updateUi(fields))
       },
-      addWaypoint: (waypoint) => {
-        dispatch(addWaypointWithName(waypoint))
+      addWaypointWithName: (waypoint, position=null) => {
+        dispatch(addWaypointWithName(waypoint, position))
+      },
+      updateWaypointWithName: (waypoint) => {
+        dispatch(updateWaypointWithName(waypoint))
       }
     }
   }
@@ -43,6 +46,7 @@ export default class Map extends React.Component {
     this.map = null
     this.poly = null
     this.navPointMarkers = []
+    this.keyOfWaypointBeingDragged = null
   }
 
   defaultMapSettings() {
@@ -67,7 +71,7 @@ export default class Map extends React.Component {
   }
 
   onMarkerClick(marker) {
-    this.props.addWaypoint({name: marker.navPoint.name, id: this.props.waypoints.length+1, latLng: marker.position})
+    this.props.addWaypointWithName({name: marker.navPoint.name, id: this.props.waypoints.length+1, latLng: marker.position})
   }
 
   onMarkerRightClick(marker) {
@@ -82,11 +86,51 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    this.props.addWaypoint({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
+    this.props.addWaypointWithName({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
   }
 
   onMapIdle(e) {
     this.props.updateUi({mapCenter: {lat: this.map.getCenter().lat(), lng: this.map.getCenter().lng()}})
+  }
+
+  onPolyMouseDown(e) {
+    console.log("polyline mouse down", e, e.latLng.lat(), e.latLng.lng())
+    if(e.vertex !== undefined) {
+      this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
+    }
+  }
+
+  onPolyMouseUp(e) {
+    setTimeout( () => {
+      console.log(this)
+      // WAYPOINT MOVED/CLICKED
+      if(e.vertex !== undefined) {
+        let newLatLng = this.poly.getPath().getAt(e.vertex)
+        if(e.latLng == this.poly.getPath().getAt(e.vertex)) {
+          // WAYPOINT CLICKED
+          console.log("waypoint clicked, show infoWindow")
+          // this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
+          // this.infoWindow.setPosition(newLatLng)
+          // this.infoWindow.open(this.map)
+          e.stop()
+          return
+        }
+        let waypoint = cloneDeep(this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0])
+        waypoint.latLng = newLatLng
+        this.props.updateWaypointWithName(waypoint)
+        this.keyOfWaypointBeingDragged = null
+      } else if(e.edge !== undefined) {
+        console.log("inserting waypoint")
+        // WAYPOINT INSERTED
+        let newLatLng = this.poly.getPath().getAt(e.edge+1)
+        let waypoint = {
+          latLng: newLatLng,
+          name: `WPT ${this.props.waypoints.length+1}`,
+          key: `${_.random(10000,99999)}-${Date.now()}`,
+        }
+        this.props.addWaypointWithName(waypoint, e.edge+1)
+      }
+    }, 0)
   }
 
   onZoomChanged(e) {
@@ -151,6 +195,7 @@ export default class Map extends React.Component {
       this.map.addListener('idle', this.onMapIdle.bind(this))
       this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
       this.poly = new google.maps.Polyline({
+        map: this.map,
         path: this.props.waypoints.map((wp)=>wp.latLng),
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
@@ -160,7 +205,8 @@ export default class Map extends React.Component {
         suppressUndo: true,
         clickable: false,
       })
-      this.poly.setMap(this.map)
+      this.poly.addListener('mousedown', this.onPolyMouseDown.bind(this))
+      this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
     })
   }
 

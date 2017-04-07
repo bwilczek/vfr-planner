@@ -10,6 +10,13 @@ export function updateFlightPlan(fields) {
 export function addWaypoint(waypoint, position = null) {
   return {
     type: 'ADD_WAYPOINT',
+    payload: { waypoint, position }
+  }
+}
+
+export function updateWaypoint(waypoint) {
+  return {
+    type: 'UPDATE_WAYPOINT',
     payload: waypoint
   }
 }
@@ -17,6 +24,14 @@ export function addWaypoint(waypoint, position = null) {
 export function addWaypointWithName(waypoint, position = null) {
   return (dispatch) => {
     dispatch(addWaypoint(waypoint, position))
+    dispatch(reverseGeocode(waypoint))
+  }
+}
+
+export function updateWaypointWithName(waypoint) {
+  console.log('updateWaypointWithName')
+  return (dispatch) => {
+    dispatch(updateWaypoint(waypoint))
     dispatch(reverseGeocode(waypoint))
   }
 }

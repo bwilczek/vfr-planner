@@ -13,8 +13,21 @@ export default function reducer(state = initialState, action) {
       return {...state, ...action.payload}
     }
     case 'ADD_WAYPOINT': {
-      const waypoints = [...state.waypoints, action.payload]
+      let waypoints = null
+      if(action.payload.position == null) {
+        waypoints = [...state.waypoints, action.payload.waypoint]
+      } else {
+        waypoints = cloneDeep(state.waypoints)
+        waypoints.splice(action.payload.position, 0, action.payload.waypoint)
+      }
       return {...state, waypoints}
+    }
+    case 'UPDATE_WAYPOINT': {
+      let waypoints = cloneDeep(state.waypoints)
+      let i = findIndex(waypoints, ['key', action.payload.key])
+      waypoints[i] = action.payload
+      return {...state, waypoints}
+      return state
     }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
       //do nothing
@@ -26,7 +39,6 @@ export default function reducer(state = initialState, action) {
       break
     }
     case 'WAYPOINT_REVERSE_GEOCODE_FULFILLED': {
-      console.log(action.payload)
       let waypoints = cloneDeep(state.waypoints)
       let i = findIndex(waypoints, ['key', action.payload.data.key])
       waypoints[i].name = action.payload.data.name
