@@ -75,6 +75,9 @@ export default class Map extends React.Component {
     if(!isEqual(this.props.waypoints, prevProps.waypoints)) {
       this.plotRoute()
     }
+    if(!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
+      this.map.setCenter(this.props.ui.mapCenter)
+    }
   }
 
   onMarkerClick(marker) {
@@ -156,10 +159,11 @@ export default class Map extends React.Component {
   generateInfoWindowContent(iw, waypoint) {
     let a = document.createElement('div')
     // <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.dispatch(modalActions.showRename(waypoint)); iw.close(); } }><FontAwesome name="edit" /></Button>
+    // <Button bsSize="xsmall" title="Center" onClick={()=> { this.map.setCenter(waypoint.latLng) } }><FontAwesome name="crosshairs" /></Button>
     ReactDOM.render(
       <div>
         <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
-        <Button bsSize="xsmall" title="Center" onClick={()=> { this.map.setCenter(waypoint.latLng) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title="Center" onClick={()=> { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
         <Button bsSize="xsmall" title="Remove" onClick={()=> { this.props.deleteWaypoint(waypoint); iw.close(); } }><FontAwesome name="trash" /></Button>
       </div>
     , a)
