@@ -28,6 +28,13 @@ export function deleteWaypoint(waypoint) {
   }
 }
 
+export function reorderWaypoints(newWaypoints) {
+  return {
+    type: 'REORDER_WAYPOINTS',
+    payload: newWaypoints,
+  }
+}
+
 export function addWaypointWithName(waypoint, position = null) {
   return (dispatch) => {
     dispatch(addWaypoint(waypoint, position))

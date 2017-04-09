@@ -8,7 +8,7 @@ import * as _ from 'lodash'
 
 import { getNavigationData } from '../selectors/navigationData'
 import { updateUi } from '../actions/uiActions'
-import { deleteWaypoint } from '../actions/flightPlanActions'
+import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
 
 const dragHandleStyle = {
   marginLeft: '2px',
@@ -89,7 +89,7 @@ const SortableList = SortableContainer(({items, dispatch}) => {
 export default class WaypointList extends React.Component {
 
   onSortEnd = ({oldIndex, newIndex}) => {
-    // this.props.dispatch(routeDataActions.reorderWaypoints(arrayMove(this.props.waypoints, oldIndex, newIndex)))
+    this.props.dispatch(reorderWaypoints(arrayMove(this.props.navigationData, oldIndex, newIndex)))
   }
 
   render() {

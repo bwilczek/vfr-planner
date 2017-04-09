@@ -36,6 +36,9 @@ export default function reducer(state = initialState, action) {
       })
       return {...state, waypoints}
     }
+    case 'REORDER_WAYPOINTS': {
+      return {...state, waypoints: action.payload}
+    }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
       //do nothing
       //return _.cloneDeep(state);
