@@ -4,12 +4,12 @@ import { injectIntl } from 'react-intl'
 import { DropdownButton, Button, MenuItem, Glyphicon } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import FontAwesome from 'react-fontawesome'
-import * as _ from 'lodash'
 
 import { getNavigationData } from '../selectors/navigationData'
 import { updateUi } from '../actions/uiActions'
 import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
 
+// TODO: evaluate if moving styles to CSS files is beneficial, do it if so
 const dragHandleStyle = {
   marginLeft: '2px',
   marginRight: '3px',

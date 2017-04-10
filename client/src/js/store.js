@@ -15,7 +15,7 @@ if(process.env.NODE_ENV !== 'production') {
   middleware = applyMiddleware(promise(), thunk)
 }
 
-const cacheKey = 'reduxState3'
+const cacheKey = 'reduxState_v5'
 let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
 // let defaultState = undefined
 if(defaultState == undefined) {
@@ -28,7 +28,7 @@ if(defaultState == undefined) {
 }
 const store = createStore(combinedReducer, defaultState, middleware)
 store.subscribe(() => {
-  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['navPoints', 'user'])))
+  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['navPoints', 'user', 'google'])))
 })
 
 export default store

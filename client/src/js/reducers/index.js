@@ -4,6 +4,7 @@ import intl from './intl'
 import user from './user'
 import navPoints from './navPoints'
 import ui from './ui'
+import google from './google'
 import flightPlan from './flightPlan'
 
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
   user,
   navPoints,
   ui,
-  flightPlan
+  flightPlan,
+  google
 })

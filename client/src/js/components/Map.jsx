@@ -4,18 +4,14 @@ import { connect } from 'react-redux'
 import { cloneDeep, isEqual, each } from 'lodash'
 import { injectIntl } from 'react-intl'
 
-import GoogleMapsLoader from 'google-maps'
 import FontAwesome from 'react-fontawesome'
 import { Button } from 'react-bootstrap'
 
-import * as secrets from '../secrets'
 import { updateUi } from '../actions/uiActions'
 import { addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
-
-GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
 
 @injectIntl
 @connect(
@@ -159,7 +155,6 @@ export default class Map extends React.Component {
   generateInfoWindowContent(iw, waypoint) {
     let a = document.createElement('div')
     // <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.dispatch(modalActions.showRename(waypoint)); iw.close(); } }><FontAwesome name="edit" /></Button>
-    // <Button bsSize="xsmall" title="Center" onClick={()=> { this.map.setCenter(waypoint.latLng) } }><FontAwesome name="crosshairs" /></Button>
     ReactDOM.render(
       <div>
         <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
@@ -213,26 +208,24 @@ export default class Map extends React.Component {
   }
 
   initMap() {
-    GoogleMapsLoader.load((google) => {
-      this.map = new google.maps.Map(this.refs.map, this.defaultMapSettings())
-      this.map.addListener('click', this.onMapClick.bind(this))
-      this.map.addListener('idle', this.onMapIdle.bind(this))
-      this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
-      this.infoWindow = new google.maps.InfoWindow()
-      this.poly = new google.maps.Polyline({
-        map: this.map,
-        path: this.props.waypoints.map((wp)=>wp.latLng),
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        geodesic: true,
-        editable: true,
-        suppressUndo: true,
-        clickable: false,
-      })
-      this.poly.addListener('mousedown', this.onPolyMouseDown.bind(this))
-      this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
+    this.map = new google.maps.Map(this.refs.map, this.defaultMapSettings())
+    this.map.addListener('click', this.onMapClick.bind(this))
+    this.map.addListener('idle', this.onMapIdle.bind(this))
+    this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
+    this.infoWindow = new google.maps.InfoWindow()
+    this.poly = new google.maps.Polyline({
+      map: this.map,
+      path: this.props.waypoints.map((wp)=>wp.latLng),
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+      geodesic: true,
+      editable: true,
+      suppressUndo: true,
+      clickable: false,
     })
+    this.poly.addListener('mousedown', this.onPolyMouseDown.bind(this))
+    this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
   }
 
   render() {
