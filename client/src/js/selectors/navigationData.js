@@ -1,47 +1,43 @@
 import { createSelector } from 'reselect'
+import { forEach, cloneDeep } from 'lodash'
+
+import * as navUtils from '../lib/NavigationUtils'
 
 const flightPlanSelector = state => state.flightPlan
 
 export const getNavigationData = createSelector(
   flightPlanSelector,
   (flightPlan) => {
-    // TODO: read flightPlan.windDirection, flightPlan.windSpeed, flightPlan.tas and calculate bearings durations, etc
-    return flightPlan.waypoints
-  }
-)
-
-/*
-
-const GoogleMapsLoader = require('google-maps')
-GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
-GoogleMapsLoader.LIBRARIES = ['geometry']
-
-function computeNavData(newState) {
-  newState.totalDistance = 0
-  newState.totalDuration = 0
-  GoogleMapsLoader.load((google) => {
+    let waypoints = []
     let segmentDistance = 0
+    let totalDistance = 0
+    let totalDuration = 0
     let next = null
-    _.forEach(newState.waypoints, (wp,i) => {
+    forEach(flightPlan.waypoints, (wp,i) => {
+      let next = null
+      let newWaypoint = null
       segmentDistance = 0
-      next = newState.waypoints[i+1]
+      next = flightPlan.waypoints[i+1]
+
       if(next !== undefined) {
-        let course = google.maps.geometry.spherical.computeHeading(wp.latLng, next.latLng)
+        let wpLatLng = navUtils.standardizeLatLng(wp.latLng)
+        let nextLatLng = navUtils.standardizeLatLng(next.latLng)
+        let course = google.maps.geometry.spherical.computeHeading(wpLatLng, nextLatLng)
         if (course<0) {
           course += 360
         }
-        segmentDistance = google.maps.geometry.spherical.computeLength([wp.latLng, next.latLng])
-        let nav = navUtils.computeWindTriange(newState.airSpeed, course, segmentDistance, newState.windSpeed, newState.windDirection, newState.declination)
-        newState.waypoints[i] = {
+        segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
+        let nav = navUtils.computeWindTriange(flightPlan.tas, course, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection, wp.declination)
+        newWaypoint = {
           ...wp,
           course,
           segmentDistance,
           ...nav,
         }
-        newState.totalDistance += segmentDistance
-        newState.totalDuration += nav.segmentDuration
+        totalDistance += segmentDistance
+        totalDuration += nav.segmentDuration
       } else {
-        newState.waypoints[i] = {
+        newWaypoint = {
           ...wp,
           heading: null,
           segmentDistance: null,
@@ -50,7 +46,9 @@ function computeNavData(newState) {
           segmentDuration: null,
         }
       }
+
+      waypoints.push(newWaypoint)
     })
-  })
-}
-*/
+    return { waypoints, totalDuration, totalDistance }
+  }
+)

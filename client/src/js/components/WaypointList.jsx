@@ -9,6 +9,8 @@ import { getNavigationData } from '../selectors/navigationData'
 import { updateUi } from '../actions/uiActions'
 import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
 
+import * as format from '../lib/Formatter'
+
 // TODO: evaluate if moving styles to CSS files is beneficial, do it if so
 const dragHandleStyle = {
   marginLeft: '2px',
@@ -37,11 +39,11 @@ const SortableItem = SortableElement(({value, dispatch}) => {
         <table>
           <tbody>
             <tr>
-              <td rowSpan="2" style={{fontSize: '24px', width: '65px', paddingRight: '10px', textAlign: 'right'}}>heading</td>
-              <td>distance</td>
+              <td rowSpan="2" style={{fontSize: '24px', width: '65px', paddingRight: '10px', textAlign: 'right'}}>{format.heading(value.heading)}</td>
+              <td>{format.distance(value.segmentDistance)}</td>
             </tr>
             <tr>
-              <td>duration</td>
+              <td dangerouslySetInnerHTML={{__html: format.duration(value.segmentDuration)}} />
             </tr>
           </tbody>
         </table>
@@ -89,7 +91,7 @@ const SortableList = SortableContainer(({items, dispatch}) => {
 export default class WaypointList extends React.Component {
 
   onSortEnd = ({oldIndex, newIndex}) => {
-    this.props.dispatch(reorderWaypoints(arrayMove(this.props.navigationData, oldIndex, newIndex)))
+    this.props.dispatch(reorderWaypoints(arrayMove(this.props.navigationData.waypoints, oldIndex, newIndex)))
   }
 
   render() {
@@ -98,9 +100,10 @@ export default class WaypointList extends React.Component {
     }
     return (
       <div>
-        <SortableList dispatch={this.props.dispatch} items={this.props.navigationData} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
+        <SortableList dispatch={this.props.dispatch} items={this.props.navigationData.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
         <div style={{borderTop: '1px solid', marginTop: '5px'}}>
-          Summary will come here
+          Total distance: {format.distance(this.props.navigationData.totalDistance)}<br />
+          Total duration: <span dangerouslySetInnerHTML={{__html: format.duration(this.props.navigationData.totalDuration)}} />
         </div>
       </div>
     )

@@ -100,7 +100,6 @@ export default class Map extends React.Component {
   }
 
   onPolyMouseDown(e) {
-    console.log("polyline mouse down", e, e.latLng.lat(), e.latLng.lng())
     if(e.vertex !== undefined) {
       this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
     }
@@ -108,13 +107,11 @@ export default class Map extends React.Component {
 
   onPolyMouseUp(e) {
     setTimeout( () => {
-      console.log(this)
       // WAYPOINT MOVED/CLICKED
       if(e.vertex !== undefined) {
         let newLatLng = this.poly.getPath().getAt(e.vertex)
         if(e.latLng == this.poly.getPath().getAt(e.vertex)) {
           // WAYPOINT CLICKED
-          console.log("waypoint clicked, show infoWindow")
            this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
            this.infoWindow.setPosition(newLatLng)
            this.infoWindow.open(this.map)
@@ -126,7 +123,6 @@ export default class Map extends React.Component {
         this.props.updateWaypointWithName(waypoint)
         this.keyOfWaypointBeingDragged = null
       } else if(e.edge !== undefined) {
-        console.log("inserting waypoint")
         // WAYPOINT INSERTED
         let newLatLng = this.poly.getPath().getAt(e.edge+1)
         let waypoint = {
