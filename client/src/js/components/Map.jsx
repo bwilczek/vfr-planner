@@ -187,20 +187,15 @@ export default class Map extends React.Component {
   }
 
   plotNavPoints() {
-    if(!this.map) {
-      console.log("Waiting for the map before drawing NavPoints")
-      setTimeout(this.plotNavPoints.bind(this), 50)
-    } else {
-      // CLEAR navPointMarkers
-      each(this.navPointMarkers, (marker) => {
-        marker.setMap(null)
-      })
-      this.navPointMarkers = []
-      // PLOT navPointMarkers
-      each(this.props.navPoints, (navPoint) => {
-        this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
-      })
-    }
+    // CLEAR navPointMarkers
+    each(this.navPointMarkers, (marker) => {
+      marker.setMap(null)
+    })
+    this.navPointMarkers = []
+    // PLOT navPointMarkers
+    each(this.props.navPoints, (navPoint) => {
+      this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
+    })
   }
 
   plotAreas() {
