@@ -6,6 +6,7 @@ import navPoints from './navPoints'
 import ui from './ui'
 import google from './google'
 import flightPlan from './flightPlan'
+import modals from './modals'
 
 export default combineReducers({
   intl,
@@ -13,5 +14,6 @@ export default combineReducers({
   navPoints,
   ui,
   flightPlan,
-  google
+  google,
+  modals
 })

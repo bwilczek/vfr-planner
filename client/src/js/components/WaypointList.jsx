@@ -7,6 +7,7 @@ import FontAwesome from 'react-fontawesome'
 
 import { getNavigationData } from '../selectors/navigationData'
 import { updateUi } from '../actions/uiActions'
+import { renameModalShow } from '../actions/modalsActions'
 import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
 
 import * as format from '../lib/Formatter'
@@ -60,7 +61,7 @@ const SortableItem = SortableElement(({value, dispatch}) => {
       <div style={{width: '100%'}}>
         <DropdownButton bsStyle="default" pullRight={true} bsSize="xsmall" title="&#9660;" noCaret={true} id={`dropdown-${value.key}`}>
           <MenuItem onClick={()=>{dispatch(updateUi({mapCenter: value.latLng}))}}><FontAwesome name="crosshairs" style={{width: '17px'}}/> Center</MenuItem>
-          <MenuItem onClick={()=>{console.log('rename')}}><FontAwesome name="edit" style={{width: '17px'}} /> Rename</MenuItem>
+          <MenuItem onClick={()=>{dispatch(renameModalShow(value.key))}}><FontAwesome name="edit" style={{width: '17px'}} /> Rename</MenuItem>
           <MenuItem onClick={()=>{dispatch(deleteWaypoint(value))}}><FontAwesome name="trash" style={{width: '17px'}} /> Delete</MenuItem>
         </DropdownButton>
         &nbsp;<span style={{fontSize: '16px', fontWeight: 'bold'}}>{value.name}</span><br />

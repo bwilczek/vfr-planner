@@ -16,8 +16,8 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 const cacheKey = 'reduxState_v5'
-let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
-// let defaultState = undefined
+// let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
+let defaultState = undefined
 if(defaultState == undefined) {
   defaultState = {
     intl: {

@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap'
 
 import { updateUi } from '../actions/uiActions'
 import { addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { renameModalShow } from '../actions/modalsActions'
 
 import iconNavPointUncontrolled from '../../img/airfield.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -36,6 +37,9 @@ import iconNavPointVfrPoint from '../../img/vfr_point.png'
       },
       updateWaypointWithName: (waypoint) => {
         dispatch(updateWaypointWithName(waypoint))
+      },
+      renameModalShow: (waypoint) => {
+        dispatch(renameModalShow(waypoint.key))
       }
     }
   }
@@ -150,11 +154,11 @@ export default class Map extends React.Component {
 
   generateInfoWindowContent(iw, waypoint) {
     let a = document.createElement('div')
-    // <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.dispatch(modalActions.showRename(waypoint)); iw.close(); } }><FontAwesome name="edit" /></Button>
     ReactDOM.render(
       <div>
         <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
         <Button bsSize="xsmall" title="Center" onClick={()=> { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.renameModalShow(waypoint); iw.close(); } }><FontAwesome name="edit" /></Button>
         <Button bsSize="xsmall" title="Remove" onClick={()=> { this.props.deleteWaypoint(waypoint); iw.close(); } }><FontAwesome name="trash" /></Button>
       </div>
     , a)

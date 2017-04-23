@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 
 import TopMenu from './TopMenu'
+import AllModals from './modals'
 
 import '../../css/font-awesome.min.css'
 import '../../css/bootstrap.min.css'
@@ -31,6 +32,7 @@ export default class Application extends React.Component {
   render() {
     return (
       <div>
+        <AllModals />
         <TopMenu />
         <div>
           {this.props.children}
@@ -38,4 +40,5 @@ export default class Application extends React.Component {
       </div>
     );
   }
+
 }
