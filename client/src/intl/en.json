@@ -1,0 +1,13 @@
+{
+  "navPointKind_uncontrolled": "Uncontrolled aerodrome",
+  "navPointKind_vfr_point": "VFR point",
+  "airports": "Airports",
+  "airstrips": "Airstrips",
+  "loginWithFacebook": "Login with Facebook",
+  "loginWithGoogle": "Login with Google",
+  "aeronauticalData": "Aeronautical data",
+  "windSpeed": "Wind speed",
+  "windDirection": "Wind direction",
+  "tas": "True airspeed",
+  "vfrPoints": "VFR points"
+}

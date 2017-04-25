@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux'
 
-import user from './userReducer'
-import modal from './modalReducer'
-import navPointList from './navPointListReducer'
-import routeData from './routeDataReducer'
+import intl from './intl'
+import user from './user'
+import navPoints from './navPoints'
+import ui from './ui'
+import google from './google'
+import flightPlan from './flightPlan'
+import modals from './modals'
 
 export default combineReducers({
+  intl,
   user,
-  navPointList,
-  routeData,
-  modal,
+  navPoints,
+  ui,
+  flightPlan,
+  google,
+  modals
 })

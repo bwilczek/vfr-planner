@@ -1,0 +1,71 @@
+$top-menu-height: 54px;
+$test-bg-color: #fee;
+$planner-left-col-width: 200px;
+$planner-right-col-width: 200px;
+$planner-side-columns-width: calc( $planner-left-col-width + $planner-right-col-width );
+
+body {
+  height: 100vh;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+div.top-menu {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  width: 100%;
+  height: $top-menu-height;
+  display: flex;
+  justify-content: space-between;
+}
+
+div.top-menu-right {
+  margin-top: 6px;
+}
+
+.auth-button {
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 3px;
+}
+
+div#application {
+  height: 100vh;
+}
+
+div.planner-main {
+  float: left;
+  width: calc( 100vw - $planner-side-columns-width );
+  border: none;
+  height: calc( 100vh - #{$top-menu-height} );
+}
+
+div#map {
+  height: 100%;
+  width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
+}
+
+div.planner-left {
+  float: left;
+  width: $planner-left-col-width;
+  border-right-width: 1px;
+  border-right-style: solid;
+  height: calc( 100vh - #{$top-menu-height} );
+  padding: 5px;
+}
+
+div.planner-right {
+  float: right;
+  width: $planner-right-col-width;
+  border-left-width: 1px;
+  border-left-style: solid;
+  height: calc( 100vh - #{$top-menu-height} );
+}
+
+div.clear {
+  clear: both;
+}
+
+div.planner-wrapper {
+  width: 100vw;
+  margin: 0 auto;
+}

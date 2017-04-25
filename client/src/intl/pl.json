@@ -1,0 +1,13 @@
+{
+  "navPointKind_uncontrolled": "Lotnisko niekontrolowane",
+  "navPointKind_vfr_point": "Punkt VFR",
+  "airports": "Lotniska",
+  "airstrips": "Lądowiska",
+  "loginWithFacebook": "Zaloguj się przez Facebook",
+  "loginWithGoogle": "Zaloguj się przez Google",
+  "aeronauticalData": "Treść lotnicza",
+  "windSpeed": "Prędkość wiatru",
+  "windDirection": "Kierunek wiatru",
+  "tas": "Prędkość przyrządowa",
+  "vfrPoints": "Punkty VFR"
+}

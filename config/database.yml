@@ -11,7 +11,7 @@ development:
   database: vfr
   username: vfr
   password: vfr
-  host: mysql
+  host: localhost
   port: 3306
 
 # Warning: The database defined as "test" will be erased and

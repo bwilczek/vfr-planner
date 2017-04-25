@@ -13,7 +13,11 @@
 .byebug_history
 /client/node_modules
 /client/npm-debug.log
+/client.old/node_modules
+/client.old/npm-debug.log
 /public/client.min.js
 .bash_history
 /client/src/js/secrets.js
 /client/src/js/secrets.js.ignore
+/client.old/src/js/secrets.js
+/client.old/src/js/secrets.js.ignore

@@ -1,8 +1,8 @@
-import _ from 'lodash'
+import { round } from 'lodash'
 import moment from 'moment'
 
 export function distance(meters) {
-  return _.round(meters/1852, 1) + 'NM'
+  return round(meters/1852, 1) + 'NM'
 }
 
 export function duration(secs) {
