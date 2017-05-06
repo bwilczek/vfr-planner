@@ -7,8 +7,10 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/import/*
 !/log/.keep
 !/tmp/.keep
+!/import/.keep
 
 .byebug_history
 /client/node_modules
