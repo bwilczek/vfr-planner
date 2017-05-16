@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403172719) do
+ActiveRecord::Schema.define(version: 20170516185635) do
 
   create_table "mag_declinations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "lat"
@@ -28,10 +28,10 @@ ActiveRecord::Schema.define(version: 20170403172719) do
     t.string   "height"
     t.string   "elevation"
     t.string   "icao_code"
-    t.string   "description"
+    t.text     "description", limit: 65535
     t.string   "radio"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "country",     limit: 6
     t.index ["country"], name: "index_nav_points_on_country", using: :btree
   end
