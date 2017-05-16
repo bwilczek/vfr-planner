@@ -57,7 +57,7 @@ class ImportAtmavio < ApplicationRecord
 
       nav_point.compute_country_code
       nav_point.active!
-      puts nav_point.to_json
+      # puts nav_point.to_json
 
       nav_point.description = description
       nav_point.save
