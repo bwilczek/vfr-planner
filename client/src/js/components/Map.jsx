@@ -11,8 +11,18 @@ import { updateUi } from '../actions/uiActions'
 import { addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 
-import iconNavPointUncontrolled from '../../img/airfield.png'
+import iconNavPointUncontrolled from '../../img/aerodrome.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
+import iconNavPointControlled from '../../img/airport.png'
+import iconNavPointMilitary from '../../img/aerodrome_mil.png'
+import iconNavPointAirstrip from '../../img/airfield.png'
+import iconNavPointHelipad from '../../img/airfield_h.png'
+import iconNavPointVor from '../../img/vor.png'
+import iconNavPointNdb from '../../img/ndb.png'
+import iconNavPointVorDme from '../../img/dvor_dme.png'
+import iconNavPointDme from '../../img/dme.png'
+import iconNavPointOtherAirstrip from '../../img/airfield_other.png'
+import iconNavPointIfrPoint from '../../img/ifr_point.png'
 
 @injectIntl
 @connect(
@@ -149,6 +159,26 @@ export default class Map extends React.Component {
         return iconNavPointVfrPoint
       case 'uncontrolled':
         return iconNavPointUncontrolled
+      case 'controlled':
+        return iconNavPointControlled
+      case 'military':
+        return iconNavPointMilitary
+      case 'airstrip':
+        return iconNavPointAirstrip
+      case 'helipad':
+        return iconNavPointHelipad
+      case 'vor':
+        return iconNavPointVor
+      case 'ndb':
+        return iconNavPointNdb
+      case 'vor_dme':
+        return iconNavPointVorDme
+      case 'dme':
+        return iconNavPointDme
+      case 'other_airstrip':
+        return iconNavPointOtherAirstrip
+      case 'ifr_point':
+        return iconNavPointIfrPoint
     }
   }
 

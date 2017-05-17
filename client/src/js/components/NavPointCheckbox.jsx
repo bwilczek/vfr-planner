@@ -27,6 +27,7 @@ export default class NavPointCheckbox extends React.Component {
 
   checkboxClicked(kinds) {
     const checkboxName = 'checkbox' + this.props.name.charAt(0).toUpperCase() + this.props.name.slice(1)
+    console.log(checkboxName)
     const fields = {}
     fields[checkboxName] = !this.props.value
     this.props.handleCheckboxClick(fields)
