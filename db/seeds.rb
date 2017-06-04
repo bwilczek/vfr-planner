@@ -9,6 +9,7 @@ NavPoint.create(
   radio: '122.8',
   status: :active,
   kind: :uncontrolled,
+  declination: 4,
 )
 
 NavPoint.create(
@@ -20,6 +21,7 @@ NavPoint.create(
   radio: '122.2',
   status: :active,
   kind: :uncontrolled,
+  declination: 4,
 )
 
 NavPoint.create(
@@ -30,4 +32,5 @@ NavPoint.create(
   country: 'pl',
   status: :active,
   kind: :vfr_point,
+  declination: 4,
 )

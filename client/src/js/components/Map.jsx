@@ -8,7 +8,7 @@ import FontAwesome from 'react-fontawesome'
 import { Button } from 'react-bootstrap'
 
 import { updateUi } from '../actions/uiActions'
-import { addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 
 import iconNavPointUncontrolled from '../../img/aerodrome.png'
@@ -38,6 +38,9 @@ import iconNavPointIfrPoint from '../../img/ifr_point.png'
     return {
       updateUi: (fields) => {
         dispatch(updateUi(fields))
+      },
+      addWaypoint: (waypoint, position=null) => {
+        dispatch(addWaypoint(waypoint, position))
       },
       addWaypointWithName: (waypoint, position=null) => {
         dispatch(addWaypointWithName(waypoint, position))
@@ -91,7 +94,7 @@ export default class Map extends React.Component {
   }
 
   onMarkerClick(marker) {
-    this.props.addWaypointWithName({name: marker.navPoint.name, id: this.props.waypoints.length+1, latLng: marker.position})
+    this.props.addWaypoint({name: marker.navPoint.name, declination: marker.navPoint.declination, latLng: marker.position, key: `${_.random(10000,99999)}-${Date.now()}`})
   }
 
   onMarkerRightClick(marker) {
