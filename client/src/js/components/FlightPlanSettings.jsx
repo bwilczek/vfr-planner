@@ -5,7 +5,6 @@ import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 import FlightPlanSlider from './FlightPlanSlider'
 import NavPointCheckbox from './NavPointCheckbox'
-import LocaleSelector from './LocaleSelector'
 
 import { fetchNavPoints } from '../actions/aeroDataActions'
 import { updateUi } from '../actions/uiActions'
@@ -24,13 +23,13 @@ export default class FlightPlanSettings extends React.Component {
   componentDidMount() {
     // make map content reflect the UI state
     if(this.props.ui.checkboxAirports) {
-      this.props.dispatch(fetchNavPoints(['pl'], ['controlled', 'uncontrolled', 'military']))
+      this.props.dispatch(fetchNavPoints(state.ui.countries, ['controlled', 'uncontrolled', 'military']))
     }
     if(this.props.ui.checkboxOtherAerodromes) {
-      this.props.dispatch(fetchNavPoints(['pl'], ['airstrip', 'helipad', 'other_airstrip']))
+      this.props.dispatch(fetchNavPoints(state.ui.countries, ['airstrip', 'helipad', 'other_airstrip']))
     }
     if(this.props.ui.checkboxVfrPoints) {
-      this.props.dispatch(fetchNavPoints(['pl'], ['vfr_point']))
+      this.props.dispatch(fetchNavPoints(state.ui.countries, ['vfr_point']))
     }
   }
 
@@ -44,7 +43,6 @@ export default class FlightPlanSettings extends React.Component {
         <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
-        <LocaleSelector />
       </div>
     )
   }

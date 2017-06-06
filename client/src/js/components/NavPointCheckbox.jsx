@@ -8,11 +8,15 @@ import { updateUi } from '../actions/uiActions'
 
 @injectIntl
 @connect(
-  undefined,
+  (state) => {
+    return {
+      countries: state.ui.countries,
+    }
+  },
   (dispatch) => {
     return {
-      fetchNavPoints: (kinds) => {
-        dispatch(actions.fetchNavPoints(['pl'], kinds))
+      fetchNavPoints: (countries, kinds) => {
+        dispatch(actions.fetchNavPoints(countries, kinds))
       },
       clearNavPoints: (kinds) => {
         dispatch(actions.clearNavPointsByKind(kinds))
@@ -34,7 +38,7 @@ export default class NavPointCheckbox extends React.Component {
     if(this.props.value) {
       this.props.clearNavPoints(kinds)
     } else {
-      this.props.fetchNavPoints(kinds)
+      this.props.fetchNavPoints(this.props.countries, kinds)
     }
   }
 

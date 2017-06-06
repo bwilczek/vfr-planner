@@ -1,4 +1,6 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
+import { FontAwesome } from 'react-fontawesome'
 import logo from '../../img/lecimy_logo.png'
 
 import Auth from './Auth'

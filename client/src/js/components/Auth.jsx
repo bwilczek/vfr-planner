@@ -36,7 +36,8 @@ export default class Auth extends React.Component {
     return (
       <div style={{marginRight: '5px'}}>
         <span>{this.props.user.name}</span>
-        <img style={{width: '42px', marginLeft: '5px', borderRadius: '21px'}} src={this.props.user.img} />
+        <img style={{width: '42px', marginLeft: '5px', marginRight: '5px', borderRadius: '21px'}} src={this.props.user.img} />
+        <FontAwesome name="cogs" size="3x" class="auth-button" title='Settings' />
       </div>
     )
   }
@@ -48,6 +49,7 @@ export default class Auth extends React.Component {
       <div>
         <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
         <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
+        <FontAwesome name="cogs" size="3x" class="auth-button" title='Settings' />
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}

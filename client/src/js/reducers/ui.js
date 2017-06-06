@@ -4,6 +4,7 @@ const initialState = {
   checkboxAirports: false,
   checkboxOtherAerodromes: false,
   checkboxVfrPoints: false,
+  countries: ['pl', 'cz'],
 }
 
 export default function reducer(state = initialState, action) {
