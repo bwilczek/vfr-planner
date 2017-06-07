@@ -102,9 +102,9 @@ export default class Map extends React.Component {
     const { formatMessage } = this.props.intl
     const content = `
       <strong>${marker.navPoint.name}</strong><br />
-      ${formatMessage({id: 'navPointKind_'+marker.navPoint.kind})}
+      ${formatMessage({id: 'navPointKind_'+marker.navPoint.kind})}<br /><hr />
+      ${marker.navPoint.description}
     `
-    // radio, description, elevation
     const infowindow = new google.maps.InfoWindow({ content })
     infowindow.open(this.map, marker)
   }

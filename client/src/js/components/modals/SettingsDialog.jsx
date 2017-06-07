@@ -10,6 +10,7 @@ import LocaleSelector from '../LocaleSelector'
 
 import { settingsModalHide } from '../../actions/modalsActions'
 
+@injectIntl
 @connect(
   (state) => {
     return {
@@ -26,10 +27,12 @@ import { settingsModalHide } from '../../actions/modalsActions'
 )export default class SettingsDialog extends React.Component {
 
   render() {
+    const { formatMessage } = this.props.intl
+
     return (
       <Modal show={this.props.dialogOpen} onHide={this.props.closeDialog}>
         <Modal.Header closeButton>
-          <Modal.Title>Settings</Modal.Title>
+          <Modal.Title>{formatMessage({id: 'settings'})}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <LocaleSelector />

@@ -26,6 +26,9 @@ class NavPoint < ApplicationRecord
   end
 
   def self.get_name(location)
+    point = find_for_lat_lng(location.lat, location.lng)
+    return point.icao_code if point.icao_code
+    return point.name if point.name
     data = fetch_geocode(location)
     return data['results'].first['address_components'].select {|item| item['types'].include?('political') }.first['short_name']
   end

@@ -39,10 +39,13 @@ export default class RenameDialog extends React.Component {
     if(this.props.waypoint === undefined) {
       return null;
     }
+
+    const { formatMessage } = this.props.intl
+
     return (
       <Modal show={this.props.waypoint !== undefined} onEntered={()=>{ReactDOM.findDOMNode(this.refs.renameInput).focus()}} onHide={this.props.renameModalHide}>
         <Modal.Header closeButton>
-          <Modal.Title>Rename waypoint "{this.props.waypoint.name}" to</Modal.Title>
+          <Modal.Title>{formatMessage({id: 'renameHeader'}, {name: this.props.waypoint.name})}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <FormControl

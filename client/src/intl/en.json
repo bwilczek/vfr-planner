@@ -20,5 +20,7 @@
   "windSpeed": "Wind speed",
   "windDirection": "Wind direction",
   "tas": "True airspeed",
-  "vfrPoints": "VFR points"
+  "vfrPoints": "VFR points",
+  "settings": "Settings",
+  "renameHeader": "Rename waypoint \"{name}\" to"
 }

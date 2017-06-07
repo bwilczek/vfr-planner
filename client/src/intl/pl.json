@@ -20,5 +20,7 @@
   "windSpeed": "Prędkość wiatru",
   "windDirection": "Kierunek wiatru",
   "tas": "Prędkość przyrządowa",
-  "vfrPoints": "Punkty VFR"
+  "vfrPoints": "Punkty VFR",
+  "settings": "Ustawienia",
+  "renameHeader": "Zmień nazwę punktu \"{name}\" na"
 }
