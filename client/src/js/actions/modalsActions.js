@@ -11,3 +11,17 @@ export function renameModalHide() {
     payload: null
   }
 }
+
+export function settingsModalShow() {
+  return {
+    type: 'SETTINGS_MODAL_SHOW',
+    payload: null
+  }
+}
+
+export function settingsModalHide() {
+  return {
+    type: 'SETTINGS_MODAL_HIDE',
+    payload: null
+  }
+}

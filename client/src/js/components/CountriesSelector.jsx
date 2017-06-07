@@ -29,7 +29,7 @@ export default class CountriesSelector extends React.Component {
           { this.props.countries.map((c) => <div key={c}>{c}</div>) }
         </div>
         <hr />
-        <DropdownButton bsSize="xsmall" title={this.props.locale} id="bg-nested-dropdown">
+        <DropdownButton bsSize="xsmall" title={this.props.countries} id="bg-nested-dropdown">
           { allCountries.map((l) => <MenuItem key={l}>{l}</MenuItem>) }
         </DropdownButton>
       </div>
