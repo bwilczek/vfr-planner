@@ -1,14 +1,12 @@
 import React from 'react'
-import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
+import FontAwesome from 'react-fontawesome'
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
 import * as secrets from '../secrets'
 import * as actions from '../actions/authActions'
-import { settingsModalShow } from '../actions/modalsActions'
-
 
 @injectIntl
 @connect(
@@ -28,9 +26,6 @@ import { settingsModalShow } from '../actions/modalsActions'
       handleResponseGoogle: (googleUser) => {
         console.log(googleUser)
         dispatch(actions.authenticate('google', googleUser.getAuthResponse().id_token))
-      },
-      showSettingsModal: () => {
-        dispatch(settingsModalShow())
       }
     }
   }
@@ -39,11 +34,10 @@ export default class Auth extends React.Component {
 
   renderAuthorized() {
     return (
-      <div style={{marginRight: '5px'}}>
+      <span style={{marginRight: '5px'}}>
         <span>{this.props.user.name}</span>
         <img style={{width: '42px', marginLeft: '5px', marginRight: '5px', borderRadius: '21px'}} src={this.props.user.img} />
-        <FontAwesome name="cogs" size="3x" class="auth-button" title='Settings' onClick={this.props.showSettingsModal} />
-      </div>
+      </span>
     )
   }
 
@@ -51,10 +45,9 @@ export default class Auth extends React.Component {
     const { formatMessage } = this.props.intl
 
     return (
-      <div>
+      <span>
         <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
         <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
-        <FontAwesome name="cogs" size="3x" class="auth-button" title='Settings' onClick={this.props.showSettingsModal} />
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}
@@ -71,7 +64,7 @@ export default class Auth extends React.Component {
           onSuccess={this.props.handleResponseGoogle}
           onFailure={(e) => console.log(e)}
           >Login with Google</GoogleLogin>
-      </div>
+      </span>
     )
   }
 
