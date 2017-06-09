@@ -43,7 +43,6 @@ export function addWaypointWithName(waypoint, position = null) {
 }
 
 export function updateWaypointWithName(waypoint) {
-  console.log('updateWaypointWithName')
   return (dispatch) => {
     dispatch(updateWaypoint(waypoint))
     dispatch(reverseGeocode(waypoint))

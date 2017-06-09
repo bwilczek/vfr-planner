@@ -1,9 +1,12 @@
 import React from 'react'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
+import { injectIntl, FormattedMessage } from 'react-intl'
+import { forEach } from 'lodash'
 
 import { updateUi } from '../actions/uiActions'
 
+@injectIntl
 @connect(
   (state) => {
     return {
@@ -12,8 +15,12 @@ import { updateUi } from '../actions/uiActions'
   },
   (dispatch) => {
     return {
-      updateCountries: (countries) => {
-        dispatch(updateUi({countries}))
+      updateCountries: (e) => {
+        let multiValue = []
+        forEach(e.target.selectedOptions, (o) => {
+          multiValue.push(o.value)
+        })
+        dispatch(updateUi({countries: multiValue}))
       },
     }
   }
@@ -24,15 +31,9 @@ export default class CountriesSelector extends React.Component {
     const allCountries = ['cz', 'pl', 'de', 'sk', 'lt']
 
     return (
-      <div>
-        <div>
-          { this.props.countries.map((c) => <div key={c}>{c}</div>) }
-        </div>
-        <hr />
-        <DropdownButton bsSize="xsmall" title={this.props.countries} id="bg-nested-dropdown">
-          { allCountries.map((l) => <MenuItem key={l}>{l}</MenuItem>) }
-        </DropdownButton>
-      </div>
+      <FormControl componentClass="select" multiple defaultValue={this.props.countries} onChange={this.props.updateCountries.bind(this)} >
+        { allCountries.map((l) => <option key={l}>{l}</option>) }
+      </FormControl>
     );
   }
 }

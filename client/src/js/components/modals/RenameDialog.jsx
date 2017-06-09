@@ -40,12 +40,10 @@ export default class RenameDialog extends React.Component {
       return null;
     }
 
-    const { formatMessage } = this.props.intl
-
     return (
       <Modal show={this.props.waypoint !== undefined} onEntered={()=>{ReactDOM.findDOMNode(this.refs.renameInput).focus()}} onHide={this.props.renameModalHide}>
         <Modal.Header closeButton>
-          <Modal.Title>{formatMessage({id: 'renameHeader'}, {name: this.props.waypoint.name})}</Modal.Title>
+          <Modal.Title><FormattedMessage id="renameHeader" values={{name: this.props.waypoint.name}} /></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <FormControl
@@ -57,8 +55,8 @@ export default class RenameDialog extends React.Component {
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button bsStyle="danger" onClick={this.props.renameModalHide}>Cancel</Button>
-          <Button bsStyle="success" onClick={() => {this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}>Save</Button>
+          <Button bsStyle="danger" onClick={this.props.renameModalHide}><FormattedMessage id="cancel" /></Button>
+          <Button bsStyle="success" onClick={() => {this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}><FormattedMessage id="save" /></Button>
         </Modal.Footer>
       </Modal>
     );

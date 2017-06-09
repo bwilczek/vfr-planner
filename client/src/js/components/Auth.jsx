@@ -24,7 +24,6 @@ import * as actions from '../actions/authActions'
         dispatch(actions.authenticate('facebook', response.accessToken))
       },
       handleResponseGoogle: (googleUser) => {
-        console.log(googleUser)
         dispatch(actions.authenticate('google', googleUser.getAuthResponse().id_token))
       }
     }

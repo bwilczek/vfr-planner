@@ -22,5 +22,9 @@
   "tas": "Prędkość przyrządowa",
   "vfrPoints": "Punkty VFR",
   "settings": "Ustawienia",
-  "renameHeader": "Zmień nazwę punktu \"{name}\" na"
+  "renameHeader": "Zmień nazwę punktu \"{name}\" na",
+  "save": "Zapisz",
+  "cancel": "Anuluj",
+  "language": "Język",
+  "countries": "Kraje"
 }

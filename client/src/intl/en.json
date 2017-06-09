@@ -22,5 +22,9 @@
   "tas": "True airspeed",
   "vfrPoints": "VFR points",
   "settings": "Settings",
-  "renameHeader": "Rename waypoint \"{name}\" to"
+  "renameHeader": "Rename waypoint \"{name}\" to",
+  "save": "Save",
+  "cancel": "Cancel",
+  "language": "Language",
+  "countries": "Countries"
 }

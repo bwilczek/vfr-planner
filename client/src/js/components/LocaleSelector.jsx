@@ -1,5 +1,5 @@
 import React from 'react'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { without } from 'lodash'
 
@@ -14,7 +14,7 @@ import { fetchIntl } from '../actions/intlActions'
   (dispatch) => {
     return {
       fetchIntl: (e) => {
-        dispatch(fetchIntl(e.target.dataset.locale))
+        dispatch(fetchIntl(e.target.value))
       }
     }
   }
@@ -25,9 +25,11 @@ export default class LocaleSelector extends React.Component {
     const locales = ['en', 'pl']
 
     return (
-      <DropdownButton bsSize="xsmall" title={this.props.locale} id="bg-nested-dropdown">
-        { without(locales, this.props.locale).map((l) => <MenuItem key={l} onClick={this.props.fetchIntl.bind(this)} data-locale={l}>{l}</MenuItem>) }
-      </DropdownButton>
+
+      <FormControl componentClass="select" placeholder={this.props.locale} defaultValue={this.props.locale} onChange={this.props.fetchIntl.bind(this)} >
+        { locales.map((l) => <option key={l}>{l}</option>) }
+      </FormControl>
+
     );
   }
 }
