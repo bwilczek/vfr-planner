@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :sessions
     resources :users
     resources :nav_points
+    resources :airspaces
   end
   get '/*path/index.min.js', :to => "application#index_js"
   get '*unmatched_route', :to => "application#index_html"
