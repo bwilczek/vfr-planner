@@ -114,6 +114,22 @@ export default class Map extends React.Component {
     infowindow.open(this.map, marker)
   }
 
+  makeOnAirspaceRightClick(polygon) {
+    const { formatMessage } = this.props.intl
+    return (e) => {
+      // TODO: iterate over this.airspacePolygons, find all airspaces including e.latLng
+      // google.maps.geometry.poly.containsLocation(e.latLng, poly)
+      const content = `
+        <strong>${polygon.airspace.name}</strong><br />
+        ${polygon.airspace.level_min}ft - ${polygon.airspace.level_max}ft<br />
+        ${polygon.airspace.description}
+      `
+      const infowindow = new google.maps.InfoWindow({ content })
+      infowindow.setPosition(e.latLng)
+      infowindow.open(this.map)
+    }
+  }
+
   onMapClick(e) {
     this.props.addWaypointWithName({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
   }
@@ -221,6 +237,7 @@ export default class Map extends React.Component {
     return newMarker
   }
 
+
   createAirspacePolygon(airspace) {
     let polygon = new google.maps.Polygon({
       paths: extractPointsFromAirspace(airspace),
@@ -228,10 +245,12 @@ export default class Map extends React.Component {
       strokeOpacity: 0.8,
       strokeWeight: 2,
       fillColor: '#FF0000',
-      fillOpacity: 0.35
+      fillOpacity: 0.35,
     })
+    polygon.airspace = airspace
     polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
-    polygon.addListener('rightclick', (e) => {alert('Airspace info will pop-up here')})
+
+    polygon.addListener('rightclick', this.makeOnAirspaceRightClick(polygon).bind(this) )
     polygon.setMap(this.map)
     return polygon
   }
@@ -260,7 +279,14 @@ export default class Map extends React.Component {
     this.airspacePolygons = []
     // PLOT airspacePolygons
     each(this.props.airspaces, (airspace) => {
-      this.airspacePolygons.push(this.createAirspacePolygon(airspace))
+      switch(airspace.kind) {
+        case 'fis':
+        case 'adiz':
+          // TODO: make it a polyline
+          break
+        default:
+          this.airspacePolygons.push(this.createAirspacePolygon(airspace))
+      }
     })
   }
 
