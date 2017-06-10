@@ -16,8 +16,8 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 const cacheKey = 'reduxState_v5'
-// let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
-let defaultState = undefined
+let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
+// let defaultState = undefined
 if(defaultState == undefined) {
   defaultState = {
     intl: {
@@ -26,9 +26,10 @@ if(defaultState == undefined) {
     }
   }
 }
+
 const store = createStore(combinedReducer, defaultState, middleware)
 store.subscribe(() => {
-  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['navPoints', 'user', 'google'])))
+  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['navPoints', 'airspaces', 'user', 'google'])))
 })
 
 export default store

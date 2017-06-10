@@ -21,6 +21,7 @@ import { settingsModalHide } from '../../actions/modalsActions'
   (dispatch) => {
     return {
       closeDialog: () => {
+        console.log("TODO: fetchNavPoints and fetchAirspaces for the new countries (if changed)")
         dispatch(settingsModalHide())
       },
     }

@@ -29,7 +29,7 @@ import iconNavPointIfrPoint from '../../img/ifr_point.png'
   (state) => {
     return {
       navPoints: state.navPoints,
-      areas: state.areas,
+      airspaces: state.airspaces,
       ui: state.ui,
       waypoints: state.flightPlan.waypoints
     }
@@ -84,6 +84,9 @@ export default class Map extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if(!isEqual(this.props.navPoints, prevProps.navPoints)) {
       this.plotNavPoints()
+    }
+    if(!isEqual(this.props.airspaces, prevProps.airspaces)) {
+      this.plotAirspaces()
     }
     if(!isEqual(this.props.waypoints, prevProps.waypoints)) {
       this.plotRoute()
@@ -232,8 +235,8 @@ export default class Map extends React.Component {
     })
   }
 
-  plotAreas() {
-    // console.log("read Areas from state (via prop) and plot them on the map")
+  plotAirspaces() {
+    console.log('Plot Airspaces from', this.props.airspaces)
   }
 
   initMap() {
