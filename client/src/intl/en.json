@@ -26,5 +26,8 @@
   "save": "Save",
   "cancel": "Cancel",
   "language": "Language",
-  "countries": "Countries"
+  "countries": "Countries",
+  "speedUnit": "Speed",
+  "bearings": "Bearings",
+  "ok": "OK"
 }

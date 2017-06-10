@@ -26,5 +26,8 @@
   "save": "Zapisz",
   "cancel": "Anuluj",
   "language": "Język",
-  "countries": "Kraje"
+  "countries": "Kraje",
+  "speedUnit": "Prędkość",
+  "bearings": "Kursy",
+  "ok": "OK"
 }

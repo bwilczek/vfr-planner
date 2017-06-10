@@ -6,6 +6,8 @@ import { forEach } from 'lodash'
 
 import { updateUi } from '../actions/uiActions'
 
+import '../../css/bootstrap-toggle.min.css'
+
 @injectIntl
 @connect(
   (state) => {
