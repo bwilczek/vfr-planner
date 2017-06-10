@@ -29,5 +29,10 @@
   "countries": "Countries",
   "speedUnit": "Speed",
   "bearings": "Bearings",
-  "ok": "OK"
+  "ok": "OK",
+  "airspaces": "Airspaces",
+  "airspaceLabel_none": "None",
+  "airspaceLabel_all": "All",
+  "airspaceLabel_today": "AUP for today",
+  "airspaceLabel_tomorrow": "AUP for tomorrow"
 }

@@ -29,7 +29,7 @@ export default class FlightPlanSlider extends React.Component {
 
   render() {
     return (
-      <div style={{fontSize: '12px', borderTopStyle: 'dotted', borderTopWidth: '1px', paddingTop: '5px'}}>
+      <div class='planner-left-section'>
         <FormattedMessage id={this.props.name} />: {this.props.value}<br />
         <ReactBootstrapSlider
           name={this.props.name}

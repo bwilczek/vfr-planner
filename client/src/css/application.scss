@@ -53,6 +53,13 @@ div.planner-left {
   padding: 5px;
 }
 
+div.planner-left-section {
+ font-size: 12px;
+ border-top-style: dotted;
+ border-top-width: 1px;
+ padding-top: 5px
+}
+
 div.planner-right {
   float: right;
   width: $planner-right-col-width;

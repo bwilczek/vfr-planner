@@ -29,5 +29,10 @@
   "countries": "Kraje",
   "speedUnit": "Prędkość",
   "bearings": "Kursy",
-  "ok": "OK"
+  "ok": "OK",
+  "airspaces": "Przestrzenie",
+  "airspaceLabel_none": "Brak",
+  "airspaceLabel_all": "Wszystkie",
+  "airspaceLabel_today": "AUP na dziś",
+  "airspaceLabel_tomorrow": "AUP na jutro"
 }
