@@ -27,7 +27,6 @@ import { updateUi } from '../actions/uiActions'
 export default class AirspaceSelector extends React.Component {
 
   handleAirspaceSelectionChange() {
-    console.log('Koza!')
     this.props.fetchAirspaces(this.props.countries)
   }
 

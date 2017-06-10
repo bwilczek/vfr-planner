@@ -12,7 +12,7 @@ export default function reducer(state = initialState, action) {
       return [...state]
     }
     case 'FETCH_AIRSPACES_FULFILLED': {
-      return [...state, ...action.payload.data]
+      return action.payload.data
     }
     case 'CLEAR_AIRSPACES': {
       return []

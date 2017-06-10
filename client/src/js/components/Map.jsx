@@ -10,6 +10,7 @@ import { Button } from 'react-bootstrap'
 import { updateUi } from '../actions/uiActions'
 import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
+import { extractPointsFromAirspace } from '../lib/NavigationUtils'
 
 import iconNavPointUncontrolled from '../../img/aerodrome.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -66,6 +67,7 @@ export default class Map extends React.Component {
     this.poly = null
     this.infoWindow = null
     this.navPointMarkers = []
+    this.airspacePolygons = []
     this.keyOfWaypointBeingDragged = null
   }
 
@@ -219,6 +221,18 @@ export default class Map extends React.Component {
     return newMarker
   }
 
+  createAirspacePolygon(airspace) {
+    let polygon = new google.maps.Polygon({
+      paths: extractPointsFromAirspace(airspace),
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35
+    })
+    polygon.setMap(this.map)
+  }
+
   plotRoute() {
     this.poly.setPath(this.props.waypoints.map((wp)=>wp.latLng))
   }
@@ -237,6 +251,10 @@ export default class Map extends React.Component {
 
   plotAirspaces() {
     console.log('Plot Airspaces from', this.props.airspaces)
+    // Should I clear the previous polygons?
+    each(this.props.airspaces, (airspace) => {
+      this.airspacePolygons = [...this.airspacePolygons, this.createAirspacePolygon(airspace)]
+    })
   }
 
   initMap() {
