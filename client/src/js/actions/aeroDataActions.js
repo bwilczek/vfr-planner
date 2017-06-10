@@ -21,10 +21,10 @@ export function clearNavPointsByKind(kinds) {
   }
 }
 
-export function fetchAirspaces(countries) {
+export function fetchAirspaces(countries, mode='all') {
   return {
     type: 'FETCH_AIRSPACES',
-    payload: axios.get('/api/airspaces', { params: {countries} })
+    payload: axios.get('/api/airspaces', { params: {countries, mode} })
   }
 }
 

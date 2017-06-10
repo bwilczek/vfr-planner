@@ -15,19 +15,30 @@ import { updateUi } from '../actions/uiActions'
   },
   (dispatch) => {
     return {
-      fetchAirspaces: (countries) => {
-        dispatch(actions.fetchAirspaces(countries))
+      fetchAirspaces: (countries, mode) => {
+        dispatch(actions.fetchAirspaces(countries, mode))
+        dispatch(updateUi({selectedAirspaces: mode}))
       },
       clearAirspaces: () => {
         dispatch(actions.clearAirspaces())
+        dispatch(updateUi({selectedAirspaces: 'none'}))
       }
     }
   }
 )
 export default class AirspaceSelector extends React.Component {
 
-  handleAirspaceSelectionChange() {
-    this.props.fetchAirspaces(this.props.countries)
+  handleAirspaceSelectionChange(e) {
+    switch(e.target.dataset.mode) {
+      case 'all':
+      case 'today':
+      case 'tomorrow':
+        this.props.fetchAirspaces(this.props.countries, e.target.dataset.mode)
+        break
+      case 'none':
+        this.props.clearAirspaces()
+        break
+    }
   }
 
   render() {
@@ -36,7 +47,10 @@ export default class AirspaceSelector extends React.Component {
         AirspaceSelector <br />
         Countries: {this.props.countries} <br />
         SelectedAirspaces: {this.props.selectedAirspaces} <br />
-        <span onClick={this.handleAirspaceSelectionChange.bind(this)}>fetch!</span>
+        <div data-mode='all' onClick={this.handleAirspaceSelectionChange.bind(this)}>fetch all</div>
+        <div data-mode='today' onClick={this.handleAirspaceSelectionChange.bind(this)}>fetch today</div>
+        <div data-mode='tomorrow' onClick={this.handleAirspaceSelectionChange.bind(this)}>fetch tomorrow</div>
+        <div data-mode='none' onClick={this.handleAirspaceSelectionChange.bind(this)}>clear all</div>
       </div>
     )
   }

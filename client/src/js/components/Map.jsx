@@ -233,6 +233,7 @@ export default class Map extends React.Component {
     polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
     polygon.addListener('rightclick', (e) => {alert('Airspace info will pop-up here')})
     polygon.setMap(this.map)
+    return polygon
   }
 
   plotRoute() {
@@ -259,7 +260,7 @@ export default class Map extends React.Component {
     this.airspacePolygons = []
     // PLOT airspacePolygons
     each(this.props.airspaces, (airspace) => {
-      this.airspacePolygons = [...this.airspacePolygons, this.createAirspacePolygon(airspace)]
+      this.airspacePolygons.push(this.createAirspacePolygon(airspace))
     })
   }
 

@@ -7,7 +7,7 @@ import FlightPlanSlider from './FlightPlanSlider'
 import NavPointCheckbox from './NavPointCheckbox'
 import AirspaceSelector from './AirspaceSelector'
 
-import { fetchNavPoints } from '../actions/aeroDataActions'
+import { fetchNavPoints, fetchAirspaces } from '../actions/aeroDataActions'
 import { updateUi } from '../actions/uiActions'
 
 @injectIntl
@@ -32,6 +32,9 @@ export default class FlightPlanSettings extends React.Component {
     }
     if(this.props.ui.checkboxVfrPoints) {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vfr_point']))
+    }
+    if(this.props.ui.selectedAirspaces !== 'none') {
+      this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces))
     }
   }
 
