@@ -10,7 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170604065708) do
+ActiveRecord::Schema.define(version: 20170610094351) do
+
+  create_table "active_airspaces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "airspace_id"
+    t.integer  "day"
+    t.text     "extra_description", limit: 65535
+    t.integer  "level_min"
+    t.integer  "level_max"
+    t.integer  "time_from"
+    t.integer  "time_to"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["airspace_id"], name: "index_active_airspaces_on_airspace_id", using: :btree
+  end
+
+  create_table "airspaces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.integer  "kind"
+    t.string   "country",     limit: 6
+    t.text     "points",      limit: 65535
+    t.text     "description", limit: 65535
+    t.integer  "level_min"
+    t.integer  "level_max"
+    t.boolean  "permanent"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
 
   create_table "mag_declinations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "lat"
@@ -58,5 +84,6 @@ ActiveRecord::Schema.define(version: 20170604065708) do
     t.index ["provider_id"], name: "index_users_on_provider_id", unique: true, using: :btree
   end
 
+  add_foreign_key "active_airspaces", "airspaces"
   add_foreign_key "sessions", "users"
 end
