@@ -230,6 +230,8 @@ export default class Map extends React.Component {
       fillColor: '#FF0000',
       fillOpacity: 0.35
     })
+    polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
+    polygon.addListener('rightclick', (e) => {alert('Airspace info will pop-up here')})
     polygon.setMap(this.map)
   }
 
@@ -250,8 +252,12 @@ export default class Map extends React.Component {
   }
 
   plotAirspaces() {
-    console.log('Plot Airspaces from', this.props.airspaces)
-    // Should I clear the previous polygons?
+    // CLEAR airspacePolygons
+    each(this.airspacePolygons, (polygon) => {
+      polygon.setMap(null)
+    })
+    this.airspacePolygons = []
+    // PLOT airspacePolygons
     each(this.props.airspaces, (airspace) => {
       this.airspacePolygons = [...this.airspacePolygons, this.createAirspacePolygon(airspace)]
     })

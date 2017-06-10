@@ -33,7 +33,7 @@ export default class AirspaceSelector extends React.Component {
   render() {
     return (
       <div>
-        AirspaceSelector  <br />
+        AirspaceSelector <br />
         Countries: {this.props.countries} <br />
         SelectedAirspaces: {this.props.selectedAirspaces} <br />
         <span onClick={this.handleAirspaceSelectionChange.bind(this)}>fetch!</span>
