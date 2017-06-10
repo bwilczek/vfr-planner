@@ -34,3 +34,16 @@ NavPoint.create(
   kind: :vfr_point,
   declination: 4,
 )
+
+Airspace.destroy_all
+
+Airspace.create(
+  name: 'ATZ EPWS',
+  kind: :atz,
+  country: 'pl',
+  points: '16.8355555555556,51.2944444444444,0 16.8280555555556,51.3122222222222,0 17.0661111111111,51.3219444444444,0 17.1933333333333,51.1963888888889,0 16.8355555555556,51.2944444444444,0',
+  description: 'Strefa ruchu nadlotniskowego lotniska Wrocław-Szymanów',
+  level_min: 0,
+  level_max: 2100,
+  permanent: false
+)
