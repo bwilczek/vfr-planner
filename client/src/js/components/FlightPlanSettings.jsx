@@ -4,6 +4,7 @@ import { injectIntl, FormattedMessage } from 'react-intl'
 import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 import FlightPlanSlider from './FlightPlanSlider'
+import UiRangeSlider from './UiRangeSlider'
 import NavPointCheckbox from './NavPointCheckbox'
 import AirspaceSelector from './AirspaceSelector'
 
@@ -48,6 +49,7 @@ export default class FlightPlanSettings extends React.Component {
         <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
+        <UiRangeSlider name="levels" value={this.props.ui.levels} min={0} max={9500} step={100} />
         <AirspaceSelector />
       </div>
     )

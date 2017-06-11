@@ -34,5 +34,6 @@
   "airspaceLabel_none": "None",
   "airspaceLabel_all": "All",
   "airspaceLabel_today": "AUP for today",
-  "airspaceLabel_tomorrow": "AUP for tomorrow"
+  "airspaceLabel_tomorrow": "AUP for tomorrow",
+  "levels": "Altitude range"
 }
