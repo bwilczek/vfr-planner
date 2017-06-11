@@ -1,9 +1,9 @@
 {
-  "name": "react-training",
+  "name": "vfr-planner",
   "version": "0.0.1",
-  "description": "Sandbox project for yarn/webpack/react/redux/reselect",
+  "description": "SPA reimplementation of flight planning application lecimy.org",
   "main": "index.js",
-  "repository": "git@github.com:bwilczek/react-training.git",
+  "repository": "git@github.com:bwilczek/vfr-planner.git",
   "author": "bwilczek",
   "license": "MIT",
   "dependencies": {
@@ -50,7 +50,8 @@
   },
   "scripts": {
     "dev": "./node_modules/.bin/webpack-dev-server --content-base ../public --inline --hot --host 0.0.0.0",
-    "build": "./node_modules/.bin/webpack -p --define process.env.NODE_ENV='\"production\"'"
+    "build": "./node_modules/.bin/webpack -p --define process.env.NODE_ENV='\"production\"'",
+    "eslint": "./node_modules/.bin/eslint --ext jsx,js --ignore-pattern vendor ./src/js ; exit 0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
