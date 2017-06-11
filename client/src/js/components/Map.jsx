@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { cloneDeep, isEqual, each } from 'lodash'
+import { cloneDeep, isEqual, forEach } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import FontAwesome from 'react-fontawesome'
@@ -115,15 +115,20 @@ export default class Map extends React.Component {
     infowindow.open(this.map, marker)
   }
 
-  onAirspaceRightClick(polygon, e) {
+  onAirspaceRightClick(e) {
     const { formatMessage } = this.props.intl
-    // TODO: iterate over this.airspacePolygons, find all airspaces including e.latLng
-    // google.maps.geometry.poly.containsLocation(e.latLng, poly)
-    const content = `
-      <strong>${polygon.airspace.name}</strong><br />
-      ${polygon.airspace.level_min}ft - ${polygon.airspace.level_max}ft<br />
-      ${polygon.airspace.description}
-    `
+    let content = ''
+    forEach(this.airspacePolygons, (poly) => {
+      if(!google.maps.geometry.poly.containsLocation(e.latLng, poly)) {
+        return
+      }
+      content += `
+      <strong>${poly.airspace.name}</strong><br />
+      ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
+      ${poly.airspace.description}
+      <hr />
+      `
+    })
     const infowindow = new google.maps.InfoWindow({ content })
     infowindow.setPosition(e.latLng)
     infowindow.open(this.map)
@@ -249,7 +254,7 @@ export default class Map extends React.Component {
     polygon.airspace = airspace
     polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
 
-    polygon.addListener('rightclick', this.onAirspaceRightClick.bind(this, polygon) )
+    polygon.addListener('rightclick', this.onAirspaceRightClick.bind(this))
     polygon.setMap(this.map)
     return polygon
   }
@@ -260,24 +265,24 @@ export default class Map extends React.Component {
 
   plotNavPoints() {
     // CLEAR navPointMarkers
-    each(this.navPointMarkers, (marker) => {
+    forEach(this.navPointMarkers, (marker) => {
       marker.setMap(null)
     })
     this.navPointMarkers = []
     // PLOT navPointMarkers
-    each(this.props.navPoints, (navPoint) => {
+    forEach(this.props.navPoints, (navPoint) => {
       this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
     })
   }
 
   plotAirspaces() {
     // CLEAR airspacePolygons
-    each(this.airspacePolygons, (polygon) => {
+    forEach(this.airspacePolygons, (polygon) => {
       polygon.setMap(null)
     })
     this.airspacePolygons = []
     // PLOT airspacePolygons
-    each(this.props.airspaces, (airspace) => {
+    forEach(this.props.airspaces, (airspace) => {
       switch(airspace.kind) {
         case 'fis':
         case 'adiz':
