@@ -115,20 +115,18 @@ export default class Map extends React.Component {
     infowindow.open(this.map, marker)
   }
 
-  makeOnAirspaceRightClick(polygon) {
+  onAirspaceRightClick(polygon, e) {
     const { formatMessage } = this.props.intl
-    return (e) => {
-      // TODO: iterate over this.airspacePolygons, find all airspaces including e.latLng
-      // google.maps.geometry.poly.containsLocation(e.latLng, poly)
-      const content = `
-        <strong>${polygon.airspace.name}</strong><br />
-        ${polygon.airspace.level_min}ft - ${polygon.airspace.level_max}ft<br />
-        ${polygon.airspace.description}
-      `
-      const infowindow = new google.maps.InfoWindow({ content })
-      infowindow.setPosition(e.latLng)
-      infowindow.open(this.map)
-    }
+    // TODO: iterate over this.airspacePolygons, find all airspaces including e.latLng
+    // google.maps.geometry.poly.containsLocation(e.latLng, poly)
+    const content = `
+      <strong>${polygon.airspace.name}</strong><br />
+      ${polygon.airspace.level_min}ft - ${polygon.airspace.level_max}ft<br />
+      ${polygon.airspace.description}
+    `
+    const infowindow = new google.maps.InfoWindow({ content })
+    infowindow.setPosition(e.latLng)
+    infowindow.open(this.map)
   }
 
   onMapClick(e) {
@@ -251,7 +249,7 @@ export default class Map extends React.Component {
     polygon.airspace = airspace
     polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
 
-    polygon.addListener('rightclick', this.makeOnAirspaceRightClick(polygon).bind(this) )
+    polygon.addListener('rightclick', this.onAirspaceRightClick.bind(this, polygon) )
     polygon.setMap(this.map)
     return polygon
   }
