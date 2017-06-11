@@ -1,0 +1,27 @@
+{
+  "env": {
+    "es6": true
+  },
+  "extends": "standard",
+  "plugins": [
+    "react"
+  ],
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "strict": 1,
+    "space-before-function-paren": 0,
+    "comma-dangle": 0,
+    "react/jsx-uses-vars": 1,
+    "react/react-in-jsx-scope": 1
+  }
+}

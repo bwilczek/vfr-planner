@@ -11,6 +11,7 @@ import { updateUi } from '../actions/uiActions'
 import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 import { extractPointsFromAirspace } from '../lib/NavigationUtils'
+import { getAirspacesForFilters } from '../selectors/airspaces'
 
 import iconNavPointUncontrolled from '../../img/aerodrome.png'
 import iconNavPointVfrPoint from '../../img/vfr_point.png'
@@ -30,7 +31,7 @@ import iconNavPointIfrPoint from '../../img/ifr_point.png'
   (state) => {
     return {
       navPoints: state.navPoints,
-      airspaces: state.airspaces,
+      airspaces: getAirspacesForFilters(state),
       ui: state.ui,
       waypoints: state.flightPlan.waypoints
     }
