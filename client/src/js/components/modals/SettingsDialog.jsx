@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { FormControl, Modal, Button, ButtonGroup, Dropdown, MenuItem, FormGroup, Form, Col, ControlLabel } from 'react-bootstrap'
+import { Modal, Button, FormGroup, Form, Col, ControlLabel } from 'react-bootstrap'
 import Toggle from 'react-bootstrap-toggle'
-import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
 import CountriesSelector from '../CountriesSelector'
@@ -21,15 +20,15 @@ import { settingsModalHide } from '../../actions/modalsActions'
   (dispatch) => {
     return {
       closeDialog: () => {
-        console.log("TODO: fetchNavPoints and fetchAirspaces for the new countries (if changed)")
+        console.log('TODO: fetchNavPoints and fetchAirspaces for the new countries (if changed)')
         dispatch(settingsModalHide())
-      },
+      }
     }
   }
-)export default class SettingsDialog extends React.Component {
+)
+export default class SettingsDialog extends React.Component {
 
   render() {
-
     return (
       <Modal show={this.props.dialogOpen} onHide={this.props.closeDialog}>
         <Modal.Header>

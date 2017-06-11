@@ -8,7 +8,7 @@ export function fetchIntl(locale) {
         dispatch(updateIntl(response.data))
       },
       (error) => {
-        dispatch({type: 'XHR_REQUEST_FAILED'})
+        dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
       }
     )
   }

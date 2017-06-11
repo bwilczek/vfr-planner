@@ -24,7 +24,7 @@ import { fetchIntl } from '../actions/intlActions'
 export default class Application extends React.Component {
 
   componentWillMount() {
-    if(isEmpty(this.props.messages)) {
+    if (isEmpty(this.props.messages)) {
       this.props.fetchDefaultIntl()
     }
   }
@@ -38,7 +38,7 @@ export default class Application extends React.Component {
           {this.props.children}
         </div>
       </div>
-    );
+    )
   }
 
 }

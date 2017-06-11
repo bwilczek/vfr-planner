@@ -31,7 +31,7 @@ import { updateUi } from '../actions/uiActions'
 export default class AirspaceSelector extends React.Component {
 
   handleAirspaceSelectionChange(e) {
-    switch(e.target.dataset.mode) {
+    switch (e.target.dataset.mode) {
       case 'all':
       case 'today':
       case 'tomorrow':
@@ -44,24 +44,23 @@ export default class AirspaceSelector extends React.Component {
   }
 
   render() {
-
     const { formatMessage } = this.props.intl
 
     return (
       <div class='planner-left-section'>
         <FormattedMessage id='airspaces'/>: <FormattedMessage id={`airspaceLabel_${this.props.selectedAirspaces}`} />
         <ButtonGroup>
-          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='none' title={formatMessage({id: 'airspaceLabel_none'})} active={this.props.selectedAirspaces=='none'} style={{width: '48px'}}>
-            <FontAwesome onClick={(e)=>{e.target.parentNode.click()}} name="calendar-o"/>
+          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='none' title={formatMessage({id: 'airspaceLabel_none'})} active={this.props.selectedAirspaces === 'none'} style={{width: '48px'}}>
+            <FontAwesome onClick={(e) => { e.target.parentNode.click() }} name="calendar-o"/>
           </Button>
-          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='all' title={formatMessage({id: 'airspaceLabel_all'})} active={this.props.selectedAirspaces=='all'} style={{width: '48px'}}>
-            <FontAwesome onClick={(e)=>{e.target.parentNode.click()}} name="calendar"/>
+          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='all' title={formatMessage({id: 'airspaceLabel_all'})} active={this.props.selectedAirspaces === 'all'} style={{width: '48px'}}>
+            <FontAwesome onClick={(e) => { e.target.parentNode.click() }} name="calendar"/>
           </Button>
-          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='today' title={formatMessage({id: 'airspaceLabel_today'})} active={this.props.selectedAirspaces=='today'} style={{width: '48px'}}>
-            <FontAwesome onClick={(e)=>{e.target.parentNode.click()}}name="calendar-check-o"/>
+          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='today' title={formatMessage({id: 'airspaceLabel_today'})} active={this.props.selectedAirspaces === 'today'} style={{width: '48px'}}>
+            <FontAwesome onClick={(e) => { e.target.parentNode.click() }}name="calendar-check-o"/>
           </Button>
-          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='tomorrow' title={formatMessage({id: 'airspaceLabel_tomorrow'})} active={this.props.selectedAirspaces=='tomorrow'} style={{width: '48px'}}>
-            <FontAwesome onClick={(e)=>{e.target.parentNode.click()}}name="calendar-plus-o"/>
+          <Button onClick={this.handleAirspaceSelectionChange.bind(this)} data-mode='tomorrow' title={formatMessage({id: 'airspaceLabel_tomorrow'})} active={this.props.selectedAirspaces === 'tomorrow'} style={{width: '48px'}}>
+            <FontAwesome onClick={(e) => { e.target.parentNode.click() }}name="calendar-plus-o"/>
           </Button>
         </ButtonGroup>
       </div>

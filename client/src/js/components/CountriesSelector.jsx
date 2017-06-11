@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { injectIntl, FormattedMessage } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import { forEach } from 'lodash'
 
 import { updateUi } from '../actions/uiActions'
@@ -36,6 +36,6 @@ export default class CountriesSelector extends React.Component {
       <FormControl componentClass="select" multiple defaultValue={this.props.countries} onChange={this.props.updateCountries.bind(this)} >
         { allCountries.map((l) => <option key={l}>{l}</option>) }
       </FormControl>
-    );
+    )
   }
 }

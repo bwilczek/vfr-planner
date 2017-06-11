@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl, FormattedMessage } from 'react-intl'
-import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 import * as actions from '../actions/aeroDataActions'
 import { updateUi } from '../actions/uiActions'
@@ -34,7 +33,7 @@ export default class NavPointCheckbox extends React.Component {
     const fields = {}
     fields[checkboxName] = !this.props.value
     this.props.handleCheckboxClick(fields)
-    if(this.props.value) {
+    if (this.props.value) {
       this.props.clearNavPoints(kinds)
     } else {
       this.props.fetchNavPoints(this.props.countries, kinds)

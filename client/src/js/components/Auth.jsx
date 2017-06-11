@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login'
-import { injectIntl, FormattedMessage } from 'react-intl'
+import { injectIntl } from 'react-intl'
 
 import * as secrets from '../secrets'
 import * as actions from '../actions/authActions'
@@ -45,8 +45,8 @@ export default class Auth extends React.Component {
 
     return (
       <span>
-        <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_fb.click(e)}}/>
-        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e)=>{this.refs.auth_button_google.signIn()}}/>
+        <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e) => { this.refs.auth_button_fb.click(e) }}/>
+        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e) => { this.refs.auth_button_google.signIn() }}/>
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}
@@ -68,7 +68,7 @@ export default class Auth extends React.Component {
   }
 
   render() {
-    if(this.props.user.name) {
+    if (this.props.user.name) {
       return this.renderAuthorized()
     }
     return this.renderUnauthorized()

@@ -1,7 +1,6 @@
 import React from 'react'
 import { FormControl } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { without } from 'lodash'
 
 import { fetchIntl } from '../actions/intlActions'
 
@@ -25,11 +24,9 @@ export default class LocaleSelector extends React.Component {
     const locales = ['en', 'pl']
 
     return (
-
       <FormControl componentClass="select" placeholder={this.props.locale} defaultValue={this.props.locale} onChange={this.props.fetchIntl.bind(this)} >
         { locales.map((l) => <option key={l}>{l}</option>) }
       </FormControl>
-
-    );
+    )
   }
 }

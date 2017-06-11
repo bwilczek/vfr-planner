@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { cloneDeep, isEqual, forEach } from 'lodash'
+import { cloneDeep, isEqual, forEach, random } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import FontAwesome from 'react-fontawesome'
@@ -41,10 +41,10 @@ import iconNavPointIfrPoint from '../../img/ifr_point.png'
       updateUi: (fields) => {
         dispatch(updateUi(fields))
       },
-      addWaypoint: (waypoint, position=null) => {
+      addWaypoint: (waypoint, position = null) => {
         dispatch(addWaypoint(waypoint, position))
       },
-      addWaypointWithName: (waypoint, position=null) => {
+      addWaypointWithName: (waypoint, position = null) => {
         dispatch(addWaypointWithName(waypoint, position))
       },
       deleteWaypoint: (waypoint) => {
@@ -85,30 +85,30 @@ export default class Map extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(!isEqual(this.props.navPoints, prevProps.navPoints)) {
+    if (!isEqual(this.props.navPoints, prevProps.navPoints)) {
       this.plotNavPoints()
     }
-    if(!isEqual(this.props.airspaces, prevProps.airspaces)) {
+    if (!isEqual(this.props.airspaces, prevProps.airspaces)) {
       this.plotAirspaces()
     }
-    if(!isEqual(this.props.waypoints, prevProps.waypoints)) {
+    if (!isEqual(this.props.waypoints, prevProps.waypoints)) {
       this.plotRoute()
     }
-    if(!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
+    if (!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
       this.map.setCenter(this.props.ui.mapCenter)
     }
   }
 
   onMarkerClick(marker) {
     let name = marker.navPoint.icao_code ? marker.navPoint.icao_code : marker.navPoint.name
-    this.props.addWaypoint({name: name, declination: marker.navPoint.declination, latLng: marker.position, key: `${_.random(10000,99999)}-${Date.now()}`})
+    this.props.addWaypoint({name: name, declination: marker.navPoint.declination, latLng: marker.position, key: `${random(10000, 99999)}-${Date.now()}`})
   }
 
   onMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
     const content = `
       <strong>${marker.navPoint.name}</strong><br />
-      ${formatMessage({id: 'navPointKind_'+marker.navPoint.kind})}<br /><hr />
+      ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br /><hr />
       ${marker.navPoint.description}
     `
     const infowindow = new google.maps.InfoWindow({ content })
@@ -116,10 +116,9 @@ export default class Map extends React.Component {
   }
 
   onAirspaceRightClick(e) {
-    const { formatMessage } = this.props.intl
     let content = ''
     forEach(this.airspacePolygons, (poly) => {
-      if(!google.maps.geometry.poly.containsLocation(e.latLng, poly)) {
+      if (!google.maps.geometry.poly.containsLocation(e.latLng, poly)) {
         return
       }
       content += `
@@ -135,7 +134,7 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    this.props.addWaypointWithName({name: `WPT ${this.props.waypoints.length+1}`, latLng: e.latLng, key: `${_.random(10000,99999)}-${Date.now()}`})
+    this.props.addWaypointWithName({name: `WPT ${this.props.waypoints.length + 1}`, latLng: e.latLng, key: `${random(10000, 99999)}-${Date.now()}`})
   }
 
   onMapIdle(e) {
@@ -143,37 +142,37 @@ export default class Map extends React.Component {
   }
 
   onPolyMouseDown(e) {
-    if(e.vertex !== undefined) {
-      this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key;
+    if (e.vertex !== undefined) {
+      this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key
     }
   }
 
   onPolyMouseUp(e) {
-    setTimeout( () => {
+    setTimeout(() => {
       // WAYPOINT MOVED/CLICKED
-      if(e.vertex !== undefined) {
+      if (e.vertex !== undefined) {
         let newLatLng = this.poly.getPath().getAt(e.vertex)
-        if(e.latLng == this.poly.getPath().getAt(e.vertex)) {
+        if (e.latLng === this.poly.getPath().getAt(e.vertex)) {
           // WAYPOINT CLICKED
-           this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
-           this.infoWindow.setPosition(newLatLng)
-           this.infoWindow.open(this.map)
+          this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
+          this.infoWindow.setPosition(newLatLng)
+          this.infoWindow.open(this.map)
           e.stop()
           return
         }
-        let waypoint = cloneDeep(this.props.waypoints.filter((v)=>v.key==this.keyOfWaypointBeingDragged)[0])
+        let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === this.keyOfWaypointBeingDragged)[0])
         waypoint.latLng = newLatLng
         this.props.updateWaypointWithName(waypoint)
         this.keyOfWaypointBeingDragged = null
-      } else if(e.edge !== undefined) {
+      } else if (e.edge !== undefined) {
         // WAYPOINT INSERTED
-        let newLatLng = this.poly.getPath().getAt(e.edge+1)
+        let newLatLng = this.poly.getPath().getAt(e.edge + 1)
         let waypoint = {
           latLng: newLatLng,
-          name: `WPT ${this.props.waypoints.length+1}`,
-          key: `${_.random(10000,99999)}-${Date.now()}`,
+          name: `WPT ${this.props.waypoints.length + 1}`,
+          key: `${random(10000, 99999)}-${Date.now()}`,
         }
-        this.props.addWaypointWithName(waypoint, e.edge+1)
+        this.props.addWaypointWithName(waypoint, e.edge + 1)
       }
     }, 0)
   }
@@ -183,7 +182,7 @@ export default class Map extends React.Component {
   }
 
   getIconForNavPointKind(kind) {
-    switch(kind) {
+    switch (kind) {
       case 'vfr_point':
         return iconNavPointVfrPoint
       case 'uncontrolled':
@@ -216,9 +215,9 @@ export default class Map extends React.Component {
     ReactDOM.render(
       <div>
         <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
-        <Button bsSize="xsmall" title="Center" onClick={()=> { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
-        <Button bsSize="xsmall" title="Rename" onClick={()=> { this.props.renameModalShow(waypoint); iw.close(); } }><FontAwesome name="edit" /></Button>
-        <Button bsSize="xsmall" title="Remove" onClick={()=> { this.props.deleteWaypoint(waypoint); iw.close(); } }><FontAwesome name="trash" /></Button>
+        <Button bsSize="xsmall" title="Center" onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title="Rename" onClick={() => { this.props.renameModalShow(waypoint); iw.close() } }><FontAwesome name="edit" /></Button>
+        <Button bsSize="xsmall" title="Remove" onClick={() => { this.props.deleteWaypoint(waypoint); iw.close() } }><FontAwesome name="trash" /></Button>
       </div>
     , a)
     return a
@@ -235,12 +234,11 @@ export default class Map extends React.Component {
         url: this.getIconForNavPointKind(navPoint.kind),
         anchor: new google.maps.Point(12, 12)
       }
-    });
+    })
     newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
     newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
     return newMarker
   }
-
 
   createAirspacePolygon(airspace) {
     let polygon = new google.maps.Polygon({
@@ -252,15 +250,14 @@ export default class Map extends React.Component {
       fillOpacity: 0.35,
     })
     polygon.airspace = airspace
-    polygon.addListener('click', (e) => {google.maps.event.trigger(this.map, 'click', e)})
-
+    polygon.addListener('click', (e) => { google.maps.event.trigger(this.map, 'click', e) })
     polygon.addListener('rightclick', this.onAirspaceRightClick.bind(this))
     polygon.setMap(this.map)
     return polygon
   }
 
   plotRoute() {
-    this.poly.setPath(this.props.waypoints.map((wp)=>wp.latLng))
+    this.poly.setPath(this.props.waypoints.map((wp) => wp.latLng))
   }
 
   plotNavPoints() {
@@ -283,7 +280,7 @@ export default class Map extends React.Component {
     this.airspacePolygons = []
     // PLOT airspacePolygons
     forEach(this.props.airspaces, (airspace) => {
-      switch(airspace.kind) {
+      switch (airspace.kind) {
         case 'fis':
         case 'adiz':
           // TODO: make it a polyline
@@ -302,7 +299,7 @@ export default class Map extends React.Component {
     this.infoWindow = new google.maps.InfoWindow()
     this.poly = new google.maps.Polyline({
       map: this.map,
-      path: this.props.waypoints.map((wp)=>wp.latLng),
+      path: this.props.waypoints.map((wp) => wp.latLng),
       strokeColor: '#FF0000',
       strokeOpacity: 1.0,
       strokeWeight: 3,

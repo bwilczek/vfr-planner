@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import logo from '../../img/lecimy_logo.png'
-import { injectIntl, FormattedMessage } from 'react-intl'
+import { injectIntl } from 'react-intl'
 
 import Auth from './Auth'
 import { settingsModalShow } from '../actions/modalsActions'

@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { find } from 'lodash'
-import { FormControl, Modal, Button, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
-import FontAwesome from 'react-fontawesome'
+import { FormControl, Modal, Button } from 'react-bootstrap'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
 import { renameModalHide } from '../../actions/modalsActions'
@@ -36,12 +35,12 @@ export default class RenameDialog extends React.Component {
   }
 
   render() {
-    if(this.props.waypoint === undefined) {
-      return null;
+    if (this.props.waypoint === undefined) {
+      return null
     }
 
     return (
-      <Modal show={this.props.waypoint !== undefined} onEntered={()=>{ReactDOM.findDOMNode(this.refs.renameInput).focus()}} onHide={this.props.renameModalHide}>
+      <Modal show={this.props.waypoint !== undefined} onEntered={() => { ReactDOM.findDOMNode(this.refs.renameInput).focus() }} onHide={this.props.renameModalHide}>
         <Modal.Header closeButton>
           <Modal.Title><FormattedMessage id="renameHeader" values={{name: this.props.waypoint.name}} /></Modal.Title>
         </Modal.Header>
@@ -50,16 +49,16 @@ export default class RenameDialog extends React.Component {
             type="text"
             placeholder={this.props.waypoint.name}
             ref="renameInput"
-            onChange={(e)=>{this.currentValue = e.target.value}}
-            onKeyPress={(e)=>{{if(e.charCode==13) this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}}
+            onChange={(e) => { this.currentValue = e.target.value }}
+            onKeyPress={(e) => { if (e.charCode === 13) this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}
           />
         </Modal.Body>
         <Modal.Footer>
           <Button bsStyle="danger" onClick={this.props.renameModalHide}><FormattedMessage id="cancel" /></Button>
-          <Button bsStyle="success" onClick={() => {this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}><FormattedMessage id="save" /></Button>
+          <Button bsStyle="success" onClick={() => { this.props.updateWaypoint({...this.props.waypoint, name: this.currentValue}) }}><FormattedMessage id="save" /></Button>
         </Modal.Footer>
       </Modal>
-    );
+    )
   }
 
 }

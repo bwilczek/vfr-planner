@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { DropdownButton, Button, MenuItem, Glyphicon } from 'react-bootstrap'
+import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import FontAwesome from 'react-fontawesome'
 
@@ -60,9 +60,9 @@ const SortableItem = SortableElement(({value, dispatch}) => {
       </div>
       <div style={{width: '100%'}}>
         <DropdownButton bsStyle="default" pullRight={true} bsSize="xsmall" title="&#9660;" noCaret={true} id={`dropdown-${value.key}`}>
-          <MenuItem onClick={()=>{dispatch(updateUi({mapCenter: value.latLng}))}}><FontAwesome name="crosshairs" style={{width: '17px'}}/> Center</MenuItem>
-          <MenuItem onClick={()=>{dispatch(renameModalShow(value.key))}}><FontAwesome name="edit" style={{width: '17px'}} /> Rename</MenuItem>
-          <MenuItem onClick={()=>{dispatch(deleteWaypoint(value))}}><FontAwesome name="trash" style={{width: '17px'}} /> Delete</MenuItem>
+          <MenuItem onClick={() => { dispatch(updateUi({mapCenter: value.latLng})) }}><FontAwesome name="crosshairs" style={{width: '17px'}}/> Center</MenuItem>
+          <MenuItem onClick={() => { dispatch(renameModalShow(value.key)) }}><FontAwesome name="edit" style={{width: '17px'}} /> Rename</MenuItem>
+          <MenuItem onClick={() => { dispatch(deleteWaypoint(value)) }}><FontAwesome name="trash" style={{width: '17px'}} /> Delete</MenuItem>
         </DropdownButton>
         &nbsp;<span style={{fontSize: '16px', fontWeight: 'bold'}}>{value.name}</span><br />
         {navInfo}
@@ -96,7 +96,7 @@ export default class WaypointList extends React.Component {
   }
 
   render() {
-    if(this.props.navigationData.length == 0) {
+    if (this.props.navigationData.length === 0) {
       return <div>This route is empty.<br /><span style={{fontSize: 'x-small'}}>Click on the map to add waypoints.</span></div>
     }
     return (

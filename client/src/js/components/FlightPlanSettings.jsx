@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl, FormattedMessage } from 'react-intl'
-import ReactBootstrapSlider from 'react-bootstrap-slider'
 
 import FlightPlanSlider from './FlightPlanSlider'
 import UiRangeSlider from './UiRangeSlider'
@@ -9,7 +8,6 @@ import NavPointCheckbox from './NavPointCheckbox'
 import AirspaceSelector from './AirspaceSelector'
 
 import { fetchNavPoints, fetchAirspaces } from '../actions/aeroDataActions'
-import { updateUi } from '../actions/uiActions'
 
 @injectIntl
 @connect(
@@ -25,16 +23,16 @@ export default class FlightPlanSettings extends React.Component {
 
   componentDidMount() {
     // make map content reflect the UI state
-    if(this.props.ui.checkboxAirports) {
+    if (this.props.ui.checkboxAirports) {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['controlled', 'uncontrolled', 'military']))
     }
-    if(this.props.ui.checkboxOtherAerodromes) {
+    if (this.props.ui.checkboxOtherAerodromes) {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['airstrip', 'helipad', 'other_airstrip']))
     }
-    if(this.props.ui.checkboxVfrPoints) {
+    if (this.props.ui.checkboxVfrPoints) {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vfr_point']))
     }
-    if(this.props.ui.selectedAirspaces !== 'none') {
+    if (this.props.ui.selectedAirspaces !== 'none') {
       this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces))
     }
   }

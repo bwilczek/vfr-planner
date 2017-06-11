@@ -7,11 +7,10 @@ export default class AllModals extends React.Component {
 
   render() {
     return (
-      <div style={{ display: "none" }}>
+      <div style={{ display: 'none' }}>
         <RenameDialog />
         <SettingsDialog />
       </div>
-    );
+    )
   }
-
 }
