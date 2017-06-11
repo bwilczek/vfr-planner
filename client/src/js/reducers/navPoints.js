@@ -8,7 +8,7 @@ export default function reducer(state = initialState, action) {
       return [...state]
     }
     case 'FETCH_NAV_POINTS_REJECTED': {
-      console.log("TODO: add error reducer and handle this message there")
+      console.log('TODO: add error reducer and handle this message there (toastr?)')
       return [...state]
     }
     case 'FETCH_NAV_POINTS_FULFILLED': {

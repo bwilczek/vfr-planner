@@ -34,7 +34,7 @@ export default class PlannerPage extends React.Component {
   }
 
   render() {
-    if(this.props.googleMapsApiLoaded) {
+    if (this.props.googleMapsApiLoaded) {
       return (
         <div class="planner-wrapper">
           <div class="planner-left"><FlightPlanSettings /></div>
@@ -50,6 +50,5 @@ export default class PlannerPage extends React.Component {
         Waiting for the maps component to load...
       </div>
     )
-
   }
 }

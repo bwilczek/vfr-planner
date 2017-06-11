@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action) {
     }
     case 'ADD_WAYPOINT': {
       let waypoints = null
-      if(action.payload.position == null) {
+      if (action.payload.position == null) {
         waypoints = [...state.waypoints, action.payload.waypoint]
       } else {
         waypoints = cloneDeep(state.waypoints)
@@ -27,12 +27,11 @@ export default function reducer(state = initialState, action) {
       let i = findIndex(waypoints, ['key', action.payload.key])
       waypoints[i] = action.payload
       return {...state, waypoints}
-      return state
     }
     case 'DELETE_WAYPOINT': {
       let waypoints = cloneDeep(state.waypoints)
       remove(waypoints, (wp) => {
-        return wp.key == action.payload.key
+        return wp.key === action.payload.key
       })
       return {...state, waypoints}
     }
@@ -40,8 +39,8 @@ export default function reducer(state = initialState, action) {
       return {...state, waypoints: action.payload}
     }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
-      //do nothing
-      //return _.cloneDeep(state);
+      // do nothing
+      // return _.cloneDeep(state);
       break
     }
     case 'WAYPOINT_REVERSE_GEOCODE_REJECTED': {

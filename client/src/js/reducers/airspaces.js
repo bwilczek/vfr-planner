@@ -1,5 +1,3 @@
-import { filter, includes } from 'lodash'
-
 const initialState = []
 
 export default function reducer(state = initialState, action) {
@@ -8,7 +6,7 @@ export default function reducer(state = initialState, action) {
       return [...state]
     }
     case 'FETCH_AIRSPACES_REJECTED': {
-      console.log("TODO: add error reducer and handle this message there")
+      console.log('TODO: add error reducer and handle this message there (toastr?)')
       return [...state]
     }
     case 'FETCH_AIRSPACES_FULFILLED': {

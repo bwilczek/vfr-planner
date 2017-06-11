@@ -3,13 +3,12 @@ import logger from 'redux-logger'
 import promise from 'redux-promise-middleware'
 import thunk from 'redux-thunk'
 import { omit } from 'lodash'
-import defaultIntlMessage from '../intl/pl.json'
 
 import combinedReducer from './reducers'
 
-let middleware = null;
+let middleware = null
 
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   middleware = applyMiddleware(promise(), thunk, require('redux-immutable-state-invariant')(), logger())
 } else {
   middleware = applyMiddleware(promise(), thunk)
@@ -18,7 +17,7 @@ if(process.env.NODE_ENV !== 'production') {
 const cacheKey = 'reduxState_v5'
 let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
 // let defaultState = undefined
-if(defaultState == undefined) {
+if (defaultState === undefined) {
   defaultState = {
     intl: {
       locale: 'pl',

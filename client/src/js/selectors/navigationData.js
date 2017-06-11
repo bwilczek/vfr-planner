@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { forEach, cloneDeep } from 'lodash'
+import { forEach } from 'lodash'
 
 import * as navUtils from '../lib/NavigationUtils'
 
@@ -12,18 +12,17 @@ export const getNavigationData = createSelector(
     let segmentDistance = 0
     let totalDistance = 0
     let totalDuration = 0
-    let next = null
-    forEach(flightPlan.waypoints, (wp,i) => {
+    forEach(flightPlan.waypoints, (wp, i) => {
       let next = null
       let newWaypoint = null
       segmentDistance = 0
-      next = flightPlan.waypoints[i+1]
+      next = flightPlan.waypoints[i + 1]
 
-      if(next !== undefined) {
+      if (next !== undefined) {
         let wpLatLng = navUtils.standardizeLatLng(wp.latLng)
         let nextLatLng = navUtils.standardizeLatLng(next.latLng)
         let course = google.maps.geometry.spherical.computeHeading(wpLatLng, nextLatLng)
-        if (course<0) {
+        if (course < 0) {
           course += 360
         }
         segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])

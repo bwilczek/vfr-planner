@@ -2,6 +2,10 @@
   "env": {
     "es6": true
   },
+  "globals": {
+    "google": true,
+    "localStorage": true
+  },
   "extends": "standard",
   "plugins": [
     "react"
