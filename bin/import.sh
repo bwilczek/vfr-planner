@@ -12,6 +12,8 @@ docker run --rm \
   -u $(id -u $USER):$(id -g $USER) \
   -e HOME=/tmp \
   -v $APP_DIR/import:/download \
-  onedrive $ONEDRIVE_DATA_URL
+  onedrive $ONEDRIVE_DATA_URL root_files
+
+ls $APP_DIR/import
 
 # echo 'NavPoint.import_atmavio_airports("Lotniska.kml")' | bundle exec rails console
