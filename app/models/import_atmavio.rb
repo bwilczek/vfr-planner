@@ -114,6 +114,7 @@ class ImportAtmavio < ApplicationRecord
   #
   def self.import_airspaces_all(import_directory)
     puts "Started at #{Time.now}"
+    Airspace.destroy_all(country: 'pl')
     kml_path = File.join(import_directory, 'Strefy wszystkie.kml')
     puts "Processing airspaces list"
     xml = Nokogiri::XML(File.open(kml_path))
