@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { throttle } from 'lodash'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import ReactBootstrapSlider from 'react-bootstrap-slider'
 
@@ -34,7 +35,7 @@ export default class UiRangeSlider extends React.Component {
         <ReactBootstrapSlider
           name={this.props.name}
           value={this.props.value}
-          change={this.sliderMoved.bind(this, this.props.name)}
+          change={throttle(this.sliderMoved.bind(this, this.props.name), 200)}
           step={this.props.step}
           max={this.props.max}
           min={this.props.min}
