@@ -12,13 +12,15 @@ import { updateUi } from '../actions/uiActions'
   (state) => {
     return {
       selectedAirspaces: state.ui.selectedAirspaces,
-      countries: state.ui.countries
+      countries: state.ui.countries,
+      levels: state.ui.levels,
+      hours: state.ui.hours
     }
   },
   (dispatch) => {
     return {
-      fetchAirspaces: (countries, mode) => {
-        dispatch(actions.fetchAirspaces(countries, mode))
+      fetchAirspaces: (countries, mode, levels, hours) => {
+        dispatch(actions.fetchAirspaces(countries, mode, levels, hours))
         dispatch(updateUi({selectedAirspaces: mode}))
       },
       clearAirspaces: () => {
@@ -35,7 +37,7 @@ export default class AirspaceSelector extends React.Component {
       case 'all':
       case 'today':
       case 'tomorrow':
-        this.props.fetchAirspaces(this.props.countries, e.target.dataset.mode)
+        this.props.fetchAirspaces(this.props.countries, e.target.dataset.mode, this.props.levels, this.props.hours)
         break
       case 'none':
         this.props.clearAirspaces()

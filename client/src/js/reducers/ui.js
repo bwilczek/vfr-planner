@@ -5,7 +5,7 @@ const initialState = {
   checkboxOtherAerodromes: false,
   checkboxVfrPoints: false,
   countries: ['pl'],
-  selectedAirspaces: 'all',
+  selectedAirspaces: 'today',
   levels: [500, 1800],
   hours: [8, 12]
 }

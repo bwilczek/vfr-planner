@@ -33,7 +33,7 @@ export default class FlightPlanSettings extends React.Component {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vfr_point']))
     }
     if (this.props.ui.selectedAirspaces !== 'none') {
-      this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces))
+      this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces, this.props.ui.levels, this.props.ui.hours))
     }
   }
 
@@ -48,6 +48,7 @@ export default class FlightPlanSettings extends React.Component {
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
         <UiRangeSlider name="levels" value={this.props.ui.levels} min={0} max={9500} step={100} />
+        <UiRangeSlider name="hours" value={this.props.ui.hours} min={4} max={24} step={1} />
         <AirspaceSelector />
       </div>
     )
