@@ -33,7 +33,7 @@ export default class FlightPlanSettings extends React.Component {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vfr_point']))
     }
     if (this.props.ui.selectedAirspaces !== 'none') {
-      this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces, this.props.ui.levels, this.props.ui.hours))
+      this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces))
     }
   }
 
