@@ -10,6 +10,7 @@ import Map from '../components/Map'
 import WaypointList from '../components/WaypointList'
 import FlightPlanSettings from '../components/FlightPlanSettings'
 import { setMapsApiLoaded } from '../actions/googleActions'
+import { settingsModalShow } from '../actions/modalsActions'
 
 @connect(
   (state) => {
@@ -21,6 +22,9 @@ import { setMapsApiLoaded } from '../actions/googleActions'
     return {
       setMapsApiLoaded: (value) => {
         dispatch(setMapsApiLoaded(value))
+      },
+      settingsModalShow: () => {
+        dispatch(settingsModalShow())
       }
     }
   }
@@ -31,6 +35,13 @@ export default class PlannerPage extends React.Component {
     GoogleMapsLoader.load((g) => {
       this.props.setMapsApiLoaded(true)
     })
+  }
+
+  componentDidUpdate() {
+    if(this.props.location.pathname === "/settings") {
+      this.props.settingsModalShow()
+    }
+    // TODO: detect if this.props.params.planId is set, if so fetch the data
   }
 
   render() {

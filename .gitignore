@@ -18,6 +18,12 @@
 /client.old/node_modules
 /client.old/npm-debug.log
 /public/client.min.js
+/public/index.min.js
+/public/*.woff
+/public/*.ttf
+/public/*.eot
+/public/*.svg
+/public/*.woff2
 .bash_history
 /client/src/js/secrets.js
 /client/src/js/secrets.js.ignore

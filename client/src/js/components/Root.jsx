@@ -3,6 +3,7 @@ import { Provider } from 'react-intl-redux'
 import { Router, IndexRoute, Route, browserHistory } from 'react-router'
 
 import Application from './Application'
+import NotFound from './NotFound'
 import PlannerPage from '../pages/PlannerPage'
 
 export default class Root extends React.Component {
@@ -18,6 +19,9 @@ export default class Root extends React.Component {
 
           <Route path="/" component={Application}>
             <IndexRoute component={PlannerPage}/>
+            <Route path="/settings" component={PlannerPage} />
+            <Route path="/plan/:planId" component={PlannerPage} />
+            <Route path="*" component={NotFound} />
           </Route>
 
         </Router>

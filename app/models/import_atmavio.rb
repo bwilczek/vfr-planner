@@ -142,6 +142,44 @@ class ImportAtmavio < ApplicationRecord
     puts "Finished at #{Time.now}"
   end
 
+  ##
+  # Example: echo 'ImportAtmavio.import_airspaces_active("/some/path/vfr-planner/import")' | bundle exec rails console
+  #
+  def self.import_airspaces_active(import_directory)
+    puts "Started at #{Time.now}"
+    today_file = "Strefy_AUP_#{Date.today.strftime("%Y-%m-%d")}.kml"
+    tomorrow_file = "Strefy_AUP_#{Date.tomorrow.strftime("%Y-%m-%d")}.kml"
+    import_airspaces_active_for_day(:today, File.join(import_directory, today_file))
+    # import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file))
+  end
+
+  def self.import_airspaces_active_for_day(day, kml_path)
+    xml = Nokogiri::XML(File.open(kml_path))
+    xml.xpath('//xmlns:Folder/xmlns:Placemark').each do |placemark|
+      name = placemark.xpath('./xmlns:name').text.strip
+      description = placemark.xpath('./xmlns:description').text.strip
+      puts "==============="
+      puts name
+      puts description
+
+      # VALIDITY FORMAT:
+      # Min: 0 ft, Max: 1500 ft
+      # Ważne od: 17-06-17 do: 17-06-17 # no hour here
+      #   or
+      # GND - 1500FT AMSL, 17 JUN 21:30 2017 UNTIL 17 JUN 21:40 2017. CREATED
+      #   or
+      # GND - 1700FT AMSL, 0200-1900, 22 MAY 02:00 2017 UNTIL 30 SEP 19:00 2017. CREATED
+      #   or
+      # Strefa aktywowana w AUP na dzień 17-06-17:
+      # - od 00:00 do 05:30 wys. 0-1500 ft
+      # - od 06:00 do 24:00 wys. 0-1500 ft
+
+      airspace = Airspace.find_by_name name
+      puts airspace.id
+    end
+    puts "Finished at #{Time.now}"
+  end
+
   def self.import_atmavio_vfr_points
     puts "Started at #{Time.now}"
     puts "Downloading #{GPX_URL_NAV_POINTS}"

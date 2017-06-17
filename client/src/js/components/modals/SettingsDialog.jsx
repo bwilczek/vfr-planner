@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 import { Modal, Button, FormGroup, Form, Col, ControlLabel } from 'react-bootstrap'
 import Toggle from 'react-bootstrap-toggle'
@@ -20,6 +21,7 @@ import { settingsModalHide } from '../../actions/modalsActions'
   (dispatch) => {
     return {
       closeDialog: () => {
+        browserHistory.goBack()
         console.log('TODO: fetchNavPoints and fetchAirspaces for the new countries (if changed)')
         dispatch(settingsModalHide())
       }

@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import logo from '../../img/lecimy_logo.png'
 import { injectIntl } from 'react-intl'
+import { Link } from 'react-router'
+import { browserHistory } from 'react-router'
 
 import Auth from './Auth'
-import { settingsModalShow } from '../actions/modalsActions'
 
 @injectIntl
 @connect(
@@ -30,7 +31,11 @@ export default class TopMenu extends React.Component {
         </div>
         <div class="top-menu-right">
           <Auth />
-          <FontAwesome name="cogs" size="3x" class="auth-button" title={formatMessage({id: 'settings'})} onClick={this.props.showSettingsModal} />
+          <FontAwesome name="cogs" size="3x"
+            onClick={() => { browserHistory.push('/settings') }}
+            class="auth-button"
+            title={formatMessage({id: 'settings'})}
+          />
         </div>
       </div>
     )
