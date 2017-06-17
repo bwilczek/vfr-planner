@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import { omit } from 'lodash'
 
 import combinedReducer from './reducers'
+import defaultIntlMessages from '../intl/pl.json'
 
 let middleware = null
 
@@ -21,7 +22,7 @@ if (defaultState === undefined) {
   defaultState = {
     intl: {
       locale: 'pl',
-      message: JSON
+      messages: defaultIntlMessages
     }
   }
 }
