@@ -151,28 +151,47 @@ class ImportAtmavio < ApplicationRecord
     today_file = "Strefy_AUP_#{Date.today.strftime("%Y-%m-%d")}.kml"
     tomorrow_file = "Strefy_AUP_#{Date.tomorrow.strftime("%Y-%m-%d")}.kml"
     import_airspaces_active_for_day(:today, File.join(import_directory, today_file))
-    # import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file))
+    import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file))
   end
 
   def self.import_airspaces_active_for_day(day, kml_path)
+    unless File.exists? kml_path
+      STDERR.puts "KML file for #{day} does not exist (#{kml_path})"
+      return
+    end
     xml = Nokogiri::XML(File.open(kml_path))
     xml.xpath('//xmlns:Folder/xmlns:Placemark').each do |placemark|
       name = placemark.xpath('./xmlns:name').text.strip
       description = placemark.xpath('./xmlns:description').text.strip
       puts "==============="
       puts name
-      hours_and_levels = parse_active_airspace_description(description)
-      puts hours_and_levels
 
-      # airspace = Airspace.find_by_name name
-      # puts airspace.id
+      airspace = Airspace.find_by_name name
+      unless airspace
+        STDERR.puts "Airspace with given name (#{name}) not found, skipping."
+        next
+      end
+
+      hours_and_levels = parse_active_airspace_description(description)
+      hours_and_levels.each do |limits|
+        active_airspace = ActiveAirspace.new
+        active_airspace.airspace = airspace
+        active_airspace.country = 'pl'
+        active_airspace.day = day
+        active_airspace.extra_description = description
+        active_airspace.time_from = limits[:time_from]
+        active_airspace.time_to = limits[:time_to]
+        active_airspace.level_min = limits[:level_min]
+        active_airspace.level_max = limits[:level_max]
+        active_airspace.save
+      end
+
     end
     puts "Finished at #{Time.now}"
   end
 
   def self.parse_active_airspace_description(description)
     ret = []
-    puts description
 
     # - od 00:00 do 05:30 wys. 0-1500 ft
     # - od 06:00 do 24:00 wys. 0-1500 ft
