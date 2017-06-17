@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610094351) do
+ActiveRecord::Schema.define(version: 20170617152557) do
 
   create_table "active_airspaces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "airspace_id"
@@ -22,7 +22,9 @@ ActiveRecord::Schema.define(version: 20170610094351) do
     t.integer  "time_to"
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "country",           limit: 6
     t.index ["airspace_id"], name: "index_active_airspaces_on_airspace_id", using: :btree
+    t.index ["country"], name: "index_active_airspaces_on_country", using: :btree
   end
 
   create_table "airspaces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -36,6 +38,7 @@ ActiveRecord::Schema.define(version: 20170610094351) do
     t.boolean  "permanent"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.index ["country"], name: "index_airspaces_on_country", using: :btree
   end
 
   create_table "mag_declinations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -147,6 +147,7 @@ class ImportAtmavio < ApplicationRecord
   #
   def self.import_airspaces_active(import_directory)
     puts "Started at #{Time.now}"
+    ActiveAirspace.destroy_all(country: 'pl')
     today_file = "Strefy_AUP_#{Date.today.strftime("%Y-%m-%d")}.kml"
     tomorrow_file = "Strefy_AUP_#{Date.tomorrow.strftime("%Y-%m-%d")}.kml"
     import_airspaces_active_for_day(:today, File.join(import_directory, today_file))
@@ -160,24 +161,58 @@ class ImportAtmavio < ApplicationRecord
       description = placemark.xpath('./xmlns:description').text.strip
       puts "==============="
       puts name
-      puts description
+      hours_and_levels = parse_active_airspace_description(description)
+      puts hours_and_levels
 
-      # VALIDITY FORMAT:
-      # Min: 0 ft, Max: 1500 ft
-      # Ważne od: 17-06-17 do: 17-06-17 # no hour here
-      #   or
-      # GND - 1500FT AMSL, 17 JUN 21:30 2017 UNTIL 17 JUN 21:40 2017. CREATED
-      #   or
-      # GND - 1700FT AMSL, 0200-1900, 22 MAY 02:00 2017 UNTIL 30 SEP 19:00 2017. CREATED
-      #   or
-      # Strefa aktywowana w AUP na dzień 17-06-17:
-      # - od 00:00 do 05:30 wys. 0-1500 ft
-      # - od 06:00 do 24:00 wys. 0-1500 ft
-
-      airspace = Airspace.find_by_name name
-      puts airspace.id
+      # airspace = Airspace.find_by_name name
+      # puts airspace.id
     end
     puts "Finished at #{Time.now}"
+  end
+
+  def self.parse_active_airspace_description(description)
+    ret = []
+    puts description
+
+    # - od 00:00 do 05:30 wys. 0-1500 ft
+    # - od 06:00 do 24:00 wys. 0-1500 ft
+    r = /od (?<hour_from>\d+):(?<minute_from>\d+) do (?<hour_to>\d+):(?<minute_to>\d+) wys. (?<level_min>\d+)-(?<level_max>\d+) ft/
+    matches = description.scan(r)
+    unless matches.empty?
+      matches.each do |row|
+        row.map!(&:to_i)
+        o = {
+          time_from: row[0] * 100 + row[1],
+          time_to: row[2] * 100 + row[3],
+          level_min: row[4],
+          level_max: row[5]
+        }
+        ret << o
+      end
+      return ret
+    end
+
+    o = {
+      time_from: 0,
+      time_to: 2359,
+      level_min: 0,
+      level_max: 999999
+    }
+
+    # Min: 0 ft, Max: 1500 ft
+    if matches = description.match(/Min: (\d+) ft, Max: (\d+) ft/)
+      o[:level_min] = matches[1].to_i
+      o[:level_max] = matches[2].to_i
+    end
+
+    # 14 JUN 18:00 2017 UNTIL 18 JUN 16:00 2017
+    if matches = description.match(/(\d\d [A-Z]{3} [^U]+) UNTIL (\d\d [A-Z]{3} \d\d:\d\d \d{4})/)
+      time_from = DateTime.parse(matches[1])
+      time_to = DateTime.parse(matches[2])
+      o[:time_from] = time_from.hour * 100 + time_from.minute if time_from > Date.today
+      o[:time_to] = time_to.hour * 100 + time_to.minute if time_to < Date.tomorrow
+    end
+    [o]
   end
 
   def self.import_atmavio_vfr_points
