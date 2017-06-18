@@ -10,21 +10,8 @@ import { Button } from 'react-bootstrap'
 import { updateUi } from '../actions/uiActions'
 import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
-import { extractPointsFromAirspace } from '../lib/NavigationUtils'
+import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
-
-import iconNavPointUncontrolled from '../../img/aerodrome.png'
-import iconNavPointVfrPoint from '../../img/vfr_point.png'
-import iconNavPointControlled from '../../img/airport.png'
-import iconNavPointMilitary from '../../img/aerodrome_mil.png'
-import iconNavPointAirstrip from '../../img/airfield.png'
-import iconNavPointHelipad from '../../img/airfield_h.png'
-import iconNavPointVor from '../../img/vor.png'
-import iconNavPointNdb from '../../img/ndb.png'
-import iconNavPointVorDme from '../../img/dvor_dme.png'
-import iconNavPointDme from '../../img/dme.png'
-import iconNavPointOtherAirstrip from '../../img/airfield_other.png'
-import iconNavPointIfrPoint from '../../img/ifr_point.png'
 
 @injectIntl
 @connect(
@@ -181,35 +168,6 @@ export default class Map extends React.Component {
     this.props.updateUi({mapZoom: this.map.getZoom()})
   }
 
-  getIconForNavPointKind(kind) {
-    switch (kind) {
-      case 'vfr_point':
-        return iconNavPointVfrPoint
-      case 'uncontrolled':
-        return iconNavPointUncontrolled
-      case 'controlled':
-        return iconNavPointControlled
-      case 'military':
-        return iconNavPointMilitary
-      case 'airstrip':
-        return iconNavPointAirstrip
-      case 'helipad':
-        return iconNavPointHelipad
-      case 'vor':
-        return iconNavPointVor
-      case 'ndb':
-        return iconNavPointNdb
-      case 'vor_dme':
-        return iconNavPointVorDme
-      case 'dme':
-        return iconNavPointDme
-      case 'other_airstrip':
-        return iconNavPointOtherAirstrip
-      case 'ifr_point':
-        return iconNavPointIfrPoint
-    }
-  }
-
   generateInfoWindowContent(iw, waypoint) {
     let a = document.createElement('div')
     ReactDOM.render(
@@ -231,7 +189,7 @@ export default class Map extends React.Component {
       title: navPoint.name,
       navPoint: navPoint,
       icon: {
-        url: this.getIconForNavPointKind(navPoint.kind),
+        url: getIconForNavPointKind(navPoint.kind),
         anchor: new google.maps.Point(12, 12)
       }
     })
@@ -241,15 +199,7 @@ export default class Map extends React.Component {
   }
 
   createAirspacePolygon(airspace) {
-    let polygon = new google.maps.Polygon({
-      paths: extractPointsFromAirspace(airspace),
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-    })
-    polygon.airspace = airspace
+    let polygon = createAirspaceRawPolygon(airspace)
     polygon.addListener('click', (e) => { google.maps.event.trigger(this.map, 'click', e) })
     polygon.addListener('rightclick', this.onAirspaceRightClick.bind(this))
     polygon.setMap(this.map)

@@ -1,16 +1,3 @@
-import { each } from 'lodash'
-
-export function extractPointsFromAirspace(airspace) {
-  let ret = []
-  each(airspace.points.split(' '), (point) => {
-    let tmp = point.split(',')
-    let lat = parseFloat(tmp[1])
-    let lng = parseFloat(tmp[0])
-    ret.push({lat, lng})
-  })
-  return ret
-}
-
 export function computeWindTriange(airSpeed, course, distance, windSpeed, windDirection, declination) {
   let degreesToRadians = (deg) => deg * (Math.PI / 180)
   let radiansToDegrees = (rad) => rad / (Math.PI / 180)

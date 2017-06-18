@@ -27,6 +27,9 @@ export default class FlightPlanDropdown extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl
+
+    const notImplementedYet = () => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }
+
     return (
       <span style={{marginRight: '5px'}}>
         <FontAwesome name="list-ul" size="3x"
@@ -36,14 +39,24 @@ export default class FlightPlanDropdown extends React.Component {
         />
 
         <DropdownButton pullRight ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' style={{top: '+22px'}} class="auth-button hidden">
-          <MenuItem onClick={() => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }} eventKey="1">
+          <MenuItem onClick={notImplementedYet} eventKey="1">
             <FormattedMessage id='flightPlans_new' />
           </MenuItem>
-          <MenuItem eventKey="2"><FormattedMessage id='flightPlans_open' /></MenuItem>
-          <MenuItem eventKey="3"><FormattedMessage id='flightPlans_save' /></MenuItem>
-          <MenuItem eventKey="4"><FormattedMessage id='flightPlans_save_as' /></MenuItem>
-          <MenuItem eventKey="5"><FormattedMessage id='flightPlans_update' /></MenuItem>
-          <MenuItem eventKey="6"><FormattedMessage id='flightPlans_delete' /></MenuItem>
+          <MenuItem onClick={notImplementedYet} eventKey="2">
+            <FormattedMessage id='flightPlans_open' />
+          </MenuItem>
+          <MenuItem onClick={notImplementedYet} eventKey="3">
+            <FormattedMessage id='flightPlans_save' />
+          </MenuItem>
+          <MenuItem onClick={notImplementedYet} eventKey="4">
+            <FormattedMessage id='flightPlans_save_as' />
+          </MenuItem>
+          <MenuItem onClick={notImplementedYet} eventKey="5">
+            <FormattedMessage id='flightPlans_update' />
+          </MenuItem>
+          <MenuItem onClick={notImplementedYet} eventKey="6">
+            <FormattedMessage id='flightPlans_delete' />
+          </MenuItem>
         </DropdownButton>
 
       </span>

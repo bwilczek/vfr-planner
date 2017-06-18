@@ -27,8 +27,10 @@ class ImportAtmavio < ApplicationRecord
     '#Miejscowość' => :notam_point,
     '#MRT' => :mrt,
     '#NWA' => :other,
+    '#NWAPunkt' => :other,
     '#RMZ' => :rmz,
     '#ROL' => :ea,
+    '#EA' => :ea,
     '#TFR' => :tfr,
     '#TMA' => :tma,
     '#TRA' => :tra,
@@ -133,7 +135,7 @@ class ImportAtmavio < ApplicationRecord
       airspace.level_max = level_max
       airspace.country = 'pl'
       airspace.points = placemark.xpath('.//xmlns:coordinates').text.strip
-      airspace.kind = AIRSPACE_KIND_MAP[style_url]
+      airspace.kind = AIRSPACE_KIND_MAP[style_url] || :other
       airspace.permanent = AIRSPACE_PERMANENT_MAP[style_url]
 
       puts airspace.name
