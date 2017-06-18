@@ -25,9 +25,8 @@ export function extractPointsFromAirspace(airspace) {
 }
 
 export function createAirspaceRawPolygon(airspace) {
-
   let color
-  switch(airspace.kind) {
+  switch (airspace.kind) {
     case 'atz':
       color = '#8811CC'
       break
@@ -65,30 +64,30 @@ export function createAirspaceRawPolygon(airspace) {
 }
 
 export function getIconForNavPointKind(kind) {
-    switch (kind) {
-      case 'vfr_point':
-        return iconNavPointVfrPoint
-      case 'uncontrolled':
-        return iconNavPointUncontrolled
-      case 'controlled':
-        return iconNavPointControlled
-      case 'military':
-        return iconNavPointMilitary
-      case 'airstrip':
-        return iconNavPointAirstrip
-      case 'helipad':
-        return iconNavPointHelipad
-      case 'vor':
-        return iconNavPointVor
-      case 'ndb':
-        return iconNavPointNdb
-      case 'vor_dme':
-        return iconNavPointVorDme
-      case 'dme':
-        return iconNavPointDme
-      case 'other_airstrip':
-        return iconNavPointOtherAirstrip
-      case 'ifr_point':
-        return iconNavPointIfrPoint
-    }
+  switch (kind) {
+    case 'vfr_point':
+      return iconNavPointVfrPoint
+    case 'uncontrolled':
+      return iconNavPointUncontrolled
+    case 'controlled':
+      return iconNavPointControlled
+    case 'military':
+      return iconNavPointMilitary
+    case 'airstrip':
+      return iconNavPointAirstrip
+    case 'helipad':
+      return iconNavPointHelipad
+    case 'vor':
+      return iconNavPointVor
+    case 'ndb':
+      return iconNavPointNdb
+    case 'vor_dme':
+      return iconNavPointVorDme
+    case 'dme':
+      return iconNavPointDme
+    case 'other_airstrip':
+      return iconNavPointOtherAirstrip
+    case 'ifr_point':
+      return iconNavPointIfrPoint
   }
+}

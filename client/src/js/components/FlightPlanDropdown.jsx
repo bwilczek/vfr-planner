@@ -34,7 +34,7 @@ export default class FlightPlanDropdown extends React.Component {
       <span style={{marginRight: '5px'}}>
         <FontAwesome name="list-ul" size="3x"
           class="auth-button"
-          onClick={(e) => {document.getElementById('flightPlansDropdown').click(e)}}
+          onClick={(e) => { document.getElementById('flightPlansDropdown').click(e) }}
           title={formatMessage({id: 'flightPlans'})}
         />
 

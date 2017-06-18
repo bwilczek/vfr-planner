@@ -14,13 +14,12 @@ export const getAirspacesForFilters = createSelector(
         (airspace.level_min <= ui.levels[0] && airspace.level_max >= ui.levels[1])
     })
     if (ui.selectedAirspaces === 'today' || ui.selectedAirspaces === 'tomorrow') {
-      // filter by ui.hours[0]*100 / ui.hours[1]*100
-      const hours_min = ui.hours[0] * 100
-      const hours_max = ui.hours[1] * 100
+      const hoursMin = ui.hours[0] * 100
+      const hoursMax = ui.hours[1] * 100
       filtered = filter(filtered, (airspace) => {
-        return (airspace.time_from >= hours_min && airspace.time_from <= hours_max) ||
-          (airspace.time_to >= hours_min && airspace.time_to <= hours_max) ||
-          (airspace.time_from <= hours_min && airspace.time_to >= hours_max)
+        return (airspace.time_from >= hoursMin && airspace.time_from <= hoursMax) ||
+          (airspace.time_to >= hoursMin && airspace.time_to <= hoursMax) ||
+          (airspace.time_from <= hoursMin && airspace.time_to >= hoursMax)
       })
     }
     return filtered

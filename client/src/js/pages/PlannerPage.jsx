@@ -38,7 +38,7 @@ export default class PlannerPage extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.props.location.pathname === "/settings") {
+    if (this.props.location.pathname === '/settings') {
       this.props.settingsModalShow()
     }
     // TODO: detect if this.props.params.planId is set, if so fetch the data
