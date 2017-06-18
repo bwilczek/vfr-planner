@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { reducer as toastr } from 'react-redux-toastr'
 
 import intl from './intl'
 import user from './user'
@@ -11,6 +12,7 @@ import airspaces from './airspaces'
 
 export default combineReducers({
   intl,
+  toastr,
   user,
   navPoints,
   ui,

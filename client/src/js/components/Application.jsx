@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
+import ReduxToastr from 'react-redux-toastr'
 
 import TopMenu from './TopMenu'
 import AllModals from './modals'
 
 import '../../css/font-awesome.min.css'
 import '../../css/bootstrap.min.css'
+import '../../css/react-redux-toastr.min.css'
 import '../../css/application.scss'
 
 import { fetchIntl } from '../actions/intlActions'
@@ -33,6 +35,15 @@ export default class Application extends React.Component {
     return (
       <div>
         <AllModals />
+        <ReduxToastr
+          timeOut={4000}
+          newestOnTop={false}
+          preventDuplicates
+          position="top-left"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar
+        />
         <TopMenu />
         <div>
           {this.props.children}

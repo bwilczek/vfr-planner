@@ -43,5 +43,7 @@
   "flightPlans_save": "Save",
   "flightPlans_save_as": "Save as...",
   "flightPlans_update": "Update details",
-  "flightPlans_delete": "Delete"
+  "flightPlans_delete": "Delete",
+  "notImplementedYet": "Not implemented yet",
+  "featureComingSoon": "Please be patient, this feature is coming soon."
 }

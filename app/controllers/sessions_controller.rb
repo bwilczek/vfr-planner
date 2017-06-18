@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
       profile = graph.get_object('me')
       name = profile['name']
       provider_id = "facebook:#{profile['id']}"
-      img_url = "http://graph.facebook.com/#{profile['id']}/picture?type=small"
+      img_url = "https://graph.facebook.com/#{profile['id']}/picture?type=small"
     elsif params[:provider] == 'google'
       url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{params[:token]}"
       profile = JSON.parse(Net::HTTP.get(URI.parse(url)))
