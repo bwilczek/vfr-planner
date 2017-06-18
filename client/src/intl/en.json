@@ -36,5 +36,12 @@
   "airspaceLabel_today": "AUP for today",
   "airspaceLabel_tomorrow": "AUP for tomorrow",
   "levels": "Altitude range",
-  "hours": "Planned flight time"
+  "hours": "Planned flight time",
+  "flightPlans": "Flight plans",
+  "flightPlans_new": "New flight plan",
+  "flightPlans_open": "Open",
+  "flightPlans_save": "Save",
+  "flightPlans_save_as": "Save as...",
+  "flightPlans_update": "Update details",
+  "flightPlans_delete": "Delete"
 }

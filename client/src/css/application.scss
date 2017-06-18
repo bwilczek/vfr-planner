@@ -76,3 +76,7 @@ div.planner-wrapper {
   width: 100vw;
   margin: 0 auto;
 }
+
+ul[aria-labelledby="flightPlansDropdown"] {
+  top: +20px;
+}
