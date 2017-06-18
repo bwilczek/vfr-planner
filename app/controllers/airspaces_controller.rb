@@ -19,44 +19,22 @@ class AirspacesController < ApplicationController
   end
 
   def active_for_countries_and_day(countries, day)
-    # TODO: re-evaluate this SQL, or even whole datamodel and refactor because it's ugly
-
-    day4sql = case day
-    when :today
-      0
-    when :tomorrow
-      1
-    else
-      666
+    ret = []
+    ActiveAirspace.where(country: countries, day: day).each do |aa|
+      ret << {
+        id: aa.airspace.id,
+        name: aa.airspace.name,
+        kind: aa.airspace.kind,
+        description: aa.extra_description,
+        level_min: aa.level_min,
+        level_max: aa.level_max,
+        time_from: aa.time_from,
+        time_to: aa.time_to,
+        country: aa.airspace.country,
+        points: aa.airspace.points
+      }
     end
-
-    countries4sql = countries.map{|c| c.gsub(/[^a-z]/, '') }.to_s.tr('[]', '()')
-
-    sql = "select
-      a.id,
-      a.name,
-      a.kind,
-      aa.extra_description as description,
-      aa.level_min,
-      aa.level_max,
-      aa.time_from,
-      aa.time_to,
-      a.country,
-      a.points
-      from airspaces a, active_airspaces aa
-      where aa.airspace_id = a.id
-      and aa.day = #{day4sql}
-      and aa.country in #{countries4sql}"
-
-    # TODO: this has to go - to hacky for any standard
-    kinds = [:fis, :atz, :ctr, :mctr, :matz, :prohibited, :restricted, :danger, :tra, :tsa, :ea, :tma, :mrt, :tfr, :rmz, :adiz, :other, :notam_point]
-    res = ActiveRecord::Base.connection.select_all(sql)
-    res.each do |row|
-      i = row['kind']
-      i = 16 if i.nil? # other
-      row['kind'] = kinds[i]
-    end
-    render json: res
+    render json: ret
   end
 
 end
