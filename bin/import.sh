@@ -8,12 +8,13 @@ if [ -z "$ONEDRIVE_DATA_URL" ]; then
   exit 1
 fi
 
+if [ -z "$SAVE_DIRECTORY" ]; then
+  echo "ERROR: ENV variable SAVE_DIRECTORY not set" >&2
+  exit 1
+fi
+
 docker run --rm \
   -u $(id -u $USER):$(id -g $USER) \
   -e HOME=/tmp \
-  -v $APP_DIR/import:/download \
+  -v $SAVE_DIRECTORY:/download \
   onedrive $ONEDRIVE_DATA_URL root_files
-
-ls $APP_DIR/import
-
-# echo 'NavPoint.import_atmavio_airports("Lotniska.kml")' | bundle exec rails console
