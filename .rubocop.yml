@@ -1,9 +1,15 @@
 AllCops:
   Exclude:
-    - 'db/**/*'
+    - 'bin/**/*'
     - 'config/**/*'
     - 'client/**/*'
     - 'client.old/**/*'
+    - 'db/**/*'
+    - 'import/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
 Rails:
   Enabled: true
 Documentation:
