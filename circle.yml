@@ -2,7 +2,7 @@ machine:
   node:
     version: 6.10.2
   ruby:
-    version: 2.4.0
+    version: 2.3.0
 dependencies:
   pre:
     - cd client ; npm install
