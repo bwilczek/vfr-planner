@@ -1,3 +1,5 @@
+![CircleCI build status for master](https://circleci.com/gh/bwilczek/vfr-planner/tree/master.svg?style=shield)
+
 # vfr-planner
 Re-implementation VFR planning web application lecimy.org from ancient PHP to react/redux SPA with rails API as backend.
 
