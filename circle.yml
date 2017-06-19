@@ -8,5 +8,5 @@ dependencies:
     - cd client ; npm install
 test:
   override:
-    - bundle exec rubocop
+    - bundle exec rubocop -c .rubocop.yml
     - cd client ; ./node_modules/.bin/eslint --ext jsx,js --ignore-pattern vendor ./src/js
