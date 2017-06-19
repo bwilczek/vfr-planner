@@ -1,6 +1,5 @@
 class ImportAtmavio < ApplicationRecord
-
-  GPX_URL_NAV_POINTS = 'https://oc.atmavio.pl/index.php/s/UVlhkwKVmTb2lHm/download'
+  GPX_URL_NAV_POINTS = 'https://oc.atmavio.pl/index.php/s/UVlhkwKVmTb2lHm/download'.freeze
 
   NAV_POINT_KIND_MAP = {
     'Lądowisko zarejestrowane' => :uncontrolled,
@@ -11,8 +10,8 @@ class ImportAtmavio < ApplicationRecord
     'Lądowisko' => :airstrip,
     'Drogowy Odcinek Lotniskowy' => :other_airstrip,
     'Lądowisko trudne' => :other_airstrip,
-    'Lądowisko niepotwierdzone' => :other_airstrip,
-  }
+    'Lądowisko niepotwierdzone' => :other_airstrip
+  }.freeze
 
   AIRSPACE_KIND_MAP = {
     '#AAA' => :other,
@@ -34,8 +33,8 @@ class ImportAtmavio < ApplicationRecord
     '#TFR' => :tfr,
     '#TMA' => :tma,
     '#TRA' => :tra,
-    '#TSA' => :tsa,
-  }
+    '#TSA' => :tsa
+  }.freeze
 
   AIRSPACE_PERMANENT_MAP = {
     '#AAA' => false,
@@ -55,8 +54,8 @@ class ImportAtmavio < ApplicationRecord
     '#TFR' => false,
     '#TMA' => true,
     '#TRA' => false,
-    '#TSA' => false,
-  }
+    '#TSA' => false
+  }.freeze
 
   def self.parse_and_set_atmavio_property(nav_point, key, value)
     key.strip!
@@ -78,15 +77,16 @@ class ImportAtmavio < ApplicationRecord
   # Example: echo 'ImportAtmavio.import_airports("/some/path/vfr-planner/import")' | bundle exec rails console
   #
   def self.import_airports(import_directory)
-    puts "Started at #{Time.now}"
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
     kml_path = File.join(import_directory, 'Lotniska.kml')
 
-    puts "Processing airport list"
+    logger.info('Processing airport list')
     xml = Nokogiri::XML(File.open(kml_path))
     xml.xpath('//xmlns:Folder/xmlns:name[contains(text(), "Lotniska i lądowiska")]/../xmlns:Placemark').each do |placemark|
-      puts "================"
+      logger.info('================')
       name = placemark.xpath('./xmlns:name').text.strip
-      puts name
+      logger.info(name)
       lng, lat = placemark.xpath('./xmlns:Point/xmlns:coordinates').text.strip.split(',')
       lng = lng.to_f
       lat = lat.to_f
@@ -108,25 +108,26 @@ class ImportAtmavio < ApplicationRecord
       sleep 0.05
     end
 
-    puts "Finished at #{Time.now}"
+    logger.info("Finished at #{Time.zone.now}")
   end
 
   ##
   # Example: echo 'ImportAtmavio.import_airspaces_all("/some/path/vfr-planner/import")' | bundle exec rails console
   #
   def self.import_airspaces_all(import_directory)
-    puts "Started at #{Time.now}"
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
     Airspace.destroy_all(country: 'pl')
     kml_path = File.join(import_directory, 'Strefy wszystkie.kml')
-    puts "Processing airspaces list"
+    logger.info('Processing airspaces list')
     xml = Nokogiri::XML(File.open(kml_path))
     xml.xpath('//xmlns:Folder/xmlns:Placemark').each do |placemark|
-      puts "================"
+      logger.info('================')
       description = placemark.xpath('./xmlns:description').text.strip
       style_url = placemark.xpath('.//xmlns:styleUrl').text.strip
 
       levels_raw, description = description.split("\n", 2)
-      level_min, level_max = levels_raw.split(',').map{|a| a.gsub(/\D/, '').to_i}
+      level_min, level_max = levels_raw.split(',').map { |a| a.gsub(/\D/, '').to_i }
 
       airspace = Airspace.new
       airspace.name = placemark.xpath('./xmlns:name').text.strip
@@ -138,39 +139,41 @@ class ImportAtmavio < ApplicationRecord
       airspace.kind = AIRSPACE_KIND_MAP[style_url] || :other
       airspace.permanent = AIRSPACE_PERMANENT_MAP[style_url]
 
-      puts airspace.name
+      logger.info(airspace.name)
       airspace.save
     end
-    puts "Finished at #{Time.now}"
+    logger.info("Finished at #{Time.zone.now}")
   end
 
   ##
   # Example: echo 'ImportAtmavio.import_airspaces_active("/some/path/vfr-planner/import")' | bundle exec rails console
   #
   def self.import_airspaces_active(import_directory)
-    puts "Started at #{Time.now}"
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
     ActiveAirspace.destroy_all(country: 'pl')
-    today_file = "Strefy_AUP_#{Date.today.strftime("%Y-%m-%d")}.kml"
-    tomorrow_file = "Strefy_AUP_#{Date.tomorrow.strftime("%Y-%m-%d")}.kml"
+    today_file = "Strefy_AUP_#{Time.zone.today.strftime('%Y-%m-%d')}.kml"
+    tomorrow_file = "Strefy_AUP_#{Time.zone.tomorrow.strftime('%Y-%m-%d')}.kml"
     import_airspaces_active_for_day(:today, File.join(import_directory, today_file))
     import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file))
+    logger.info("Finished at #{Time.zone.now}")
   end
 
-  def self.import_airspaces_active_for_day(day, kml_path)
-    unless File.exists? kml_path
-      STDERR.puts "KML file for #{day} does not exist (#{kml_path})"
+  def self.import_airspaces_active_for_day(day, kml_path, logger)
+    unless File.exist? kml_path
+      logger.error("KML file for #{day} does not exist (#{kml_path})")
       return
     end
     xml = Nokogiri::XML(File.open(kml_path))
     xml.xpath('//xmlns:Folder/xmlns:Placemark').each do |placemark|
       name = placemark.xpath('./xmlns:name').text.strip
       description = placemark.xpath('./xmlns:description').text.strip
-      puts "==============="
-      puts name
+      logger.info('===============')
+      logger.info(name)
 
       airspace = Airspace.find_by_name name
       unless airspace
-        STDERR.puts "Airspace with given name (#{name}) not found, skipping."
+        logger.error("Airspace with given name (#{name}) not found, skipping.")
         next
       end
 
@@ -187,9 +190,7 @@ class ImportAtmavio < ApplicationRecord
         active_airspace.level_max = limits[:level_max]
         active_airspace.save
       end
-
     end
-    puts "Finished at #{Time.now}"
   end
 
   def self.parse_active_airspace_description(description)
@@ -217,29 +218,30 @@ class ImportAtmavio < ApplicationRecord
       time_from: 0,
       time_to: 2359,
       level_min: 0,
-      level_max: 999999
+      level_max: 999_999
     }
 
     # Min: 0 ft, Max: 1500 ft
-    if matches = description.match(/Min: (\d+) ft, Max: (\d+) ft/)
+    matches = description.match(/Min: (\d+) ft, Max: (\d+) ft/)
+    if matches
       o[:level_min] = matches[1].to_i
       o[:level_max] = matches[2].to_i
     end
 
     # 14 JUN 18:00 2017 UNTIL 18 JUN 16:00 2017
-    if matches = description.match(/(\d\d [A-Z]{3} [^U]+) UNTIL (\d\d [A-Z]{3} \d\d:\d\d \d{4})/)
-      time_from = DateTime.parse(matches[1])
-      time_to = DateTime.parse(matches[2])
-      o[:time_from] = time_from.hour * 100 + time_from.minute if time_from > Date.today
-      o[:time_to] = time_to.hour * 100 + time_to.minute if time_to < Date.tomorrow
+    matches = description.match(/(\d\d [A-Z]{3} [^U]+) UNTIL (\d\d [A-Z]{3} \d\d:\d\d \d{4})/)
+    if matches
+      time_from = Time.zone.parse(matches[1])
+      time_to = Time.zone.parse(matches[2])
+      o[:time_from] = time_from.hour * 100 + time_from.minute if time_from > Time.zone.today
+      o[:time_to] = time_to.hour * 100 + time_to.minute if time_to < Time.zone.tomorrow
     end
     [o]
   end
 
   def self.import_atmavio_vfr_points
-    puts "Started at #{Time.now}"
-    puts "Downloading #{GPX_URL_NAV_POINTS}"
-    puts "Finished at #{Time.now}"
+    # puts "Started at #{Time.zone.now}"
+    # puts "Downloading #{GPX_URL_NAV_POINTS}"
+    # puts "Finished at #{Time.zone.now}"
   end
-
 end

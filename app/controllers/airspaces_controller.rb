@@ -36,5 +36,4 @@ class AirspacesController < ApplicationController
     end
     render json: ret
   end
-
 end

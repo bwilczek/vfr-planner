@@ -2,6 +2,8 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'config/**/*'
+    - 'client/**/*'
+    - 'client.old/**/*'
 Rails:
   Enabled: true
 Documentation:
@@ -12,5 +14,6 @@ Metrics/AbcSize:
   Enabled: false
 Metrics/MethodLength:
   CountComments: false
-  Max: 25
-
+  Max: 35
+Metrics/ClassLength:
+  Max: 500

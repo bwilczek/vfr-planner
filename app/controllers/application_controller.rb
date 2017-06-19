@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   before_action :check_session
   before_action :require_authorization
-  skip_before_action :require_authorization, only: [:index_html, :index_js]  
+  skip_before_action :require_authorization, only: [:index_html, :index_js]
 
   def require_authorization
     render(head: true, status: :unauthorized) unless authorized_user
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
   end
 
   def index_html
-    render html: File.read(Rails.root.join('public', 'index.html')).html_safe
+    render file: File.read(Rails.root.join('public', 'index.html')), content_type: 'text/html'
   end
 
   def index_js
