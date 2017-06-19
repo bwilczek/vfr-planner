@@ -23,3 +23,5 @@ Metrics/MethodLength:
   Max: 35
 Metrics/ClassLength:
   Max: 500
+Style/FrozenStringLiteralComment:
+  Enabled: false
