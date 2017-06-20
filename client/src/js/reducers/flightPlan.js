@@ -4,7 +4,13 @@ const initialState = {
   windSpeed: 0,
   windDirection: 0,
   tas: 70,
-  waypoints: []
+  waypoints: [],
+  levels: [500, 1800],
+  hours: [8, 12],
+  name: '',
+  description: '',
+  public: false,
+  id: null
 }
 
 export default function reducer(state = initialState, action) {

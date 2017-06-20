@@ -11,4 +11,8 @@ class PlansController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render nothing: true, status: :not_found
   end
+
+  def create
+    Rails.logger.info(params)
+  end
 end

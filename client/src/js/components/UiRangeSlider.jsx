@@ -4,7 +4,7 @@ import { throttle } from 'lodash'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import ReactBootstrapSlider from 'react-bootstrap-slider'
 
-import { updateUi } from '../actions/uiActions'
+import { updateFlightPlan } from '../actions/flightPlanActions'
 
 import '../../css/bootstrap-slider.min.css'
 import '../../css/bootstrap-slider.custom.css'
@@ -14,8 +14,8 @@ import '../../css/bootstrap-slider.custom.css'
   undefined,
   (dispatch) => {
     return {
-      updateUi: (fields) => {
-        dispatch(updateUi(fields))
+      updateFlightPlan: (fields) => {
+        dispatch(updateFlightPlan(fields))
       }
     }
   }
@@ -25,7 +25,7 @@ export default class UiRangeSlider extends React.Component {
   sliderMoved(fieldName, e) {
     const fields = {}
     fields[fieldName] = e.target.value
-    this.props.updateUi(fields)
+    this.props.updateFlightPlan(fields)
   }
 
   render() {

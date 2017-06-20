@@ -5,9 +5,7 @@ const initialState = {
   checkboxOtherAerodromes: false,
   checkboxVfrPoints: false,
   countries: ['pl'],
-  selectedAirspaces: 'today',
-  levels: [500, 1800],
-  hours: [8, 12]
+  selectedAirspaces: 'today'
 }
 
 export default function reducer(state = initialState, action) {
