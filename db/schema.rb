@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170617152557) do
+ActiveRecord::Schema.define(version: 20170620170246) do
 
   create_table "active_airspaces", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "airspace_id"
@@ -66,6 +66,20 @@ ActiveRecord::Schema.define(version: 20170617152557) do
     t.index ["country"], name: "index_nav_points_on_country", using: :btree
   end
 
+  create_table "plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string  "name"
+    t.text    "waypoints",   limit: 65535
+    t.text    "description", limit: 65535
+    t.integer "status"
+    t.integer "user_id"
+    t.integer "airspeed"
+    t.integer "level_min"
+    t.integer "level_max"
+    t.integer "time_from"
+    t.integer "time_to"
+    t.index ["user_id"], name: "index_plans_on_user_id", using: :btree
+  end
+
   create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "token"
     t.integer  "user_id"
@@ -88,5 +102,6 @@ ActiveRecord::Schema.define(version: 20170617152557) do
   end
 
   add_foreign_key "active_airspaces", "airspaces"
+  add_foreign_key "plans", "users"
   add_foreign_key "sessions", "users"
 end
