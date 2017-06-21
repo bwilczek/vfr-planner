@@ -13,6 +13,7 @@ class PlansController < ApplicationController
   end
 
   def create
-    Rails.logger.info(params)
+    # Rails.logger.info(params)
+    sleep 2
   end
 end

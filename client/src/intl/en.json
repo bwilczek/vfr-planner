@@ -45,5 +45,7 @@
   "flightPlans_update": "Update details",
   "flightPlans_delete": "Delete",
   "notImplementedYet": "Not implemented yet",
-  "featureComingSoon": "Please be patient, this feature is coming soon."
+  "featureComingSoon": "Please be patient, this feature is coming soon.",
+  "pleaseWait": "Please wait",
+  "savingInProgress": "Data is being saved..."
 }
