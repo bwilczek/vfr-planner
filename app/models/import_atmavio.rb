@@ -100,6 +100,7 @@ class ImportAtmavio < ApplicationRecord
       end
 
       nav_point.compute_country_code
+      nav_point.declination = MagDeclination.get_declination nav_point
       nav_point.active!
       # puts nav_point.to_json
 

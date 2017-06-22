@@ -59,11 +59,11 @@ export function reverseGeocode(waypoint) {
 
 export function save(data) {
   return (dispatch) => {
-    axios.post('/api/plans', data).then(
+    axios.post('/api/plans', {plan: data}).then(
       (response) => {
         console.log(response.data)
         dispatch(toastrActions.remove('backgroundActionSaveFlightPlan'))
-        // dispatch(updateFlightPlan(response.data))
+        dispatch(updateFlightPlan(response.data))
       },
       (error) => {
         dispatch({type: 'XHR_REQUEST_FAILED', payload: error})

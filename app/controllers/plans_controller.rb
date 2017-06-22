@@ -13,7 +13,8 @@ class PlansController < ApplicationController
   end
 
   def create
-    # Rails.logger.info(params)
-    sleep 2
+    plan = Plan.from_js_state(params[:plan], authorized_user)
+    plan.save
+    render json: plan.to_js_state
   end
 end
