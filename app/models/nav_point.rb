@@ -12,7 +12,9 @@ class NavPoint < ApplicationRecord
   }.freeze
 
   def self.find_for_lat_lng(lat, lng)
-    NavPoint.find_by(lat: (lat - 0.001)..(lat + 0.001), lng: (lng - 0.001)..(lng + 0.001)) || NavPoint.new(lat: lat, lng: lng)
+    # rubocop:disable Rails/FindBy
+    NavPoint.where(lat: (lat - 0.001)..(lat + 0.001), lng: (lng - 0.001)..(lng + 0.001)).first || NavPoint.new(lat: lat, lng: lng)
+    # rubocop:enable Rails/FindBy
   end
 
   def self.get_country_code(location)

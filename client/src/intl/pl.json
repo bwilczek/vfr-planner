@@ -45,5 +45,7 @@
   "flightPlans_update": "Zmień szczegóły",
   "flightPlans_delete": "Usuń",
   "notImplementedYet": "Ta akcja jeszcze nie działa",
-  "featureComingSoon": "Prosimy o cierpliwość, funkcjonalność zostanie dodana niebawem"
+  "featureComingSoon": "Prosimy o cierpliwość, funkcjonalność zostanie dodana niebawem",
+  "pleaseWait": "Proszę czekać",
+  "savingInProgress": "Trwa zapis danych..."
 }

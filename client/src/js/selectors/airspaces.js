@@ -2,20 +2,22 @@ import { createSelector } from 'reselect'
 import { filter } from 'lodash'
 
 const airspacesSelector = state => state.airspaces
+const flightPlanSelector = state => state.flightPlan
 const uiSelector = state => state.ui
 
 export const getAirspacesForFilters = createSelector(
   airspacesSelector,
+  flightPlanSelector,
   uiSelector,
-  (airspaces, ui) => {
+  (airspaces, flightPlan, ui) => {
     let filtered = filter(airspaces, (airspace) => {
-      return (airspace.level_min >= ui.levels[0] && airspace.level_min <= ui.levels[1]) ||
-        (airspace.level_max >= ui.levels[0] && airspace.level_max <= ui.levels[1]) ||
-        (airspace.level_min <= ui.levels[0] && airspace.level_max >= ui.levels[1])
+      return (airspace.level_min >= flightPlan.levels[0] && airspace.level_min <= flightPlan.levels[1]) ||
+        (airspace.level_max >= flightPlan.levels[0] && airspace.level_max <= flightPlan.levels[1]) ||
+        (airspace.level_min <= flightPlan.levels[0] && airspace.level_max >= flightPlan.levels[1])
     })
     if (ui.selectedAirspaces === 'today' || ui.selectedAirspaces === 'tomorrow') {
-      const hoursMin = ui.hours[0] * 100
-      const hoursMax = ui.hours[1] * 100
+      const hoursMin = flightPlan.hours[0] * 100
+      const hoursMax = flightPlan.hours[1] * 100
       filtered = filter(filtered, (airspace) => {
         return (airspace.time_from >= hoursMin && airspace.time_from <= hoursMax) ||
           (airspace.time_to >= hoursMin && airspace.time_to <= hoursMax) ||

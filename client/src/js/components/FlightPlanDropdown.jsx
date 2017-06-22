@@ -3,23 +3,23 @@ import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { toastr } from 'react-redux-toastr'
+import { actions as toastrActions, toastr } from 'react-redux-toastr'
+import * as flightPlanActions from '../actions/flightPlanActions'
+import * as toastrUtils from '../lib/ToastrUtils'
 
 @injectIntl
 @connect(
   (state) => {
-    return {
-      user: {
-        name: state.user.name,
-        img: state.user.img
-      }
-    }
+    return { flightPlan: state.flightPlan }
   },
   (dispatch) => {
     return {
-      // handleResponseFacebook: (response) => {
-      //   dispatch(actions.authenticate('facebook', response.accessToken))
-      // }
+      save: (data) => {
+        dispatch(flightPlanActions.save(data))
+      },
+      showToastrSaveFlightPlan: (title, message) => {
+        dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
+      }
     }
   }
 )
@@ -29,6 +29,10 @@ export default class FlightPlanDropdown extends React.Component {
     const { formatMessage } = this.props.intl
 
     const notImplementedYet = () => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }
+    const handleSave = () => {
+      this.props.save(this.props.flightPlan)
+      this.props.showToastrSaveFlightPlan(formatMessage({id: 'pleaseWait'}), formatMessage({id: 'savingInProgress'}))
+    }
 
     return (
       <span style={{marginRight: '5px'}}>
@@ -45,7 +49,7 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem onClick={notImplementedYet} eventKey="2">
             <FormattedMessage id='flightPlans_open' />
           </MenuItem>
-          <MenuItem onClick={notImplementedYet} eventKey="3">
+          <MenuItem onClick={handleSave} eventKey="3">
             <FormattedMessage id='flightPlans_save' />
           </MenuItem>
           <MenuItem onClick={notImplementedYet} eventKey="4">

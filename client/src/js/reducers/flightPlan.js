@@ -1,10 +1,16 @@
-import {findIndex, cloneDeep, remove} from 'lodash'
+import { findIndex, cloneDeep, remove } from 'lodash'
 
 const initialState = {
   windSpeed: 0,
   windDirection: 0,
   tas: 70,
-  waypoints: []
+  waypoints: [],
+  levels: [500, 1800],
+  hours: [8, 12],
+  name: '',
+  description: '',
+  public: false,
+  id: null
 }
 
 export default function reducer(state = initialState, action) {
@@ -54,7 +60,6 @@ export default function reducer(state = initialState, action) {
       waypoints[i].declination = action.payload.data.declination
       return {...state, waypoints}
     }
-
   }
   return state
 }

@@ -47,8 +47,8 @@ export default class FlightPlanSettings extends React.Component {
         <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
-        <UiRangeSlider name="levels" value={this.props.ui.levels} min={0} max={9500} step={100} />
-        <UiRangeSlider name="hours" value={this.props.ui.hours} min={4} max={24} step={1} />
+        <UiRangeSlider name="levels" value={this.props.flightPlan.levels} min={0} max={9500} step={100} />
+        <UiRangeSlider name="hours" value={this.props.flightPlan.hours} min={4} max={24} step={1} />
         <AirspaceSelector />
       </div>
     )
