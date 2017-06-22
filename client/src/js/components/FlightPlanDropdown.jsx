@@ -10,7 +10,10 @@ import * as toastrUtils from '../lib/ToastrUtils'
 @injectIntl
 @connect(
   (state) => {
-    return { flightPlan: state.flightPlan }
+    return {
+      flightPlan: state.flightPlan,
+      user: state.user
+    }
   },
   (dispatch) => {
     return {
@@ -46,19 +49,19 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem onClick={notImplementedYet} eventKey="1">
             <FormattedMessage id='flightPlans_new' />
           </MenuItem>
-          <MenuItem onClick={notImplementedYet} eventKey="2">
+          <MenuItem disabled={this.props.user.id === null} onClick={notImplementedYet} eventKey="2">
             <FormattedMessage id='flightPlans_open' />
           </MenuItem>
-          <MenuItem onClick={handleSave} eventKey="3">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={handleSave} eventKey="3">
             <FormattedMessage id='flightPlans_save' />
           </MenuItem>
-          <MenuItem onClick={notImplementedYet} eventKey="4">
+          <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={notImplementedYet} eventKey="4">
             <FormattedMessage id='flightPlans_save_as' />
           </MenuItem>
-          <MenuItem onClick={notImplementedYet} eventKey="5">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="5">
             <FormattedMessage id='flightPlans_update' />
           </MenuItem>
-          <MenuItem onClick={notImplementedYet} eventKey="6">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="6">
             <FormattedMessage id='flightPlans_delete' />
           </MenuItem>
         </DropdownButton>

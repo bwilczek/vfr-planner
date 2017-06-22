@@ -20,7 +20,7 @@ class AirspacesController < ApplicationController
 
   def active_for_countries_and_day(countries, day)
     ret = []
-    ActiveAirspace.where(country: countries, day: day).each do |aa|
+    ActiveAirspace.where(country: countries, day: day).includes(:airspace).each do |aa|
       ret << {
         id: aa.airspace.id,
         name: aa.airspace.name,
