@@ -155,8 +155,8 @@ class ImportAtmavio < ApplicationRecord
     ActiveAirspace.destroy_all(country: 'pl')
     today_file = "Strefy_AUP_#{Time.zone.today.strftime('%Y-%m-%d')}.kml"
     tomorrow_file = "Strefy_AUP_#{Time.zone.tomorrow.strftime('%Y-%m-%d')}.kml"
-    import_airspaces_active_for_day(:today, File.join(import_directory, today_file))
-    import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file))
+    import_airspaces_active_for_day(:today, File.join(import_directory, today_file), logger)
+    import_airspaces_active_for_day(:tomorrow, File.join(import_directory, tomorrow_file), logger)
     logger.info("Finished at #{Time.zone.now}")
   end
 
