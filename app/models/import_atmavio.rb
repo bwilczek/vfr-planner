@@ -234,8 +234,8 @@ class ImportAtmavio < ApplicationRecord
     if matches
       time_from = Time.zone.parse(matches[1])
       time_to = Time.zone.parse(matches[2])
-      o[:time_from] = time_from.hour * 100 + time_from.minute if time_from > Time.zone.today
-      o[:time_to] = time_to.hour * 100 + time_to.minute if time_to < Time.zone.tomorrow
+      o[:time_from] = time_from.hour * 100 + time_from.min if time_from > Time.zone.today
+      o[:time_to] = time_to.hour * 100 + time_to.min if time_to < Time.zone.tomorrow
     end
     [o]
   end
