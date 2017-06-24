@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
 
 import * as toastrUtils from '../lib/ToastrUtils'
+import { updateUi } from './uiActions'
 
 export function updateFlightPlan(fields) {
   return {
@@ -82,6 +83,7 @@ export function fetchFlightPlan(planId) {
     axios.get(`/api/plans/${planId}`).then(
       (response) => {
         dispatch(updateFlightPlan(response.data))
+        dispatch(updateUi({ mapCenter: { lat: response.data.waypoints[0].latLng.lat, lng: response.data.waypoints[0].latLng.lng } }))
       },
       (error) => {
         // TODO: handle 401 Unauthorized

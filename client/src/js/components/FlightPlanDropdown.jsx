@@ -36,8 +36,11 @@ import * as modalsActions from '../actions/modalsActions'
         dispatch(flightPlanActions.fetchFlightPlans())
         dispatch(modalsActions.openFlightPlanModalShow())
       },
-      saveAsOrUpdate: () => {
-        // TODO: unset flightPlan.id on save_as
+      saveAs: () => {
+        dispatch(flightPlanActions.updateFlightPlan({id: null}))
+        dispatch(modalsActions.editFlightPlanModalShow())
+      },
+      update: () => {
         dispatch(modalsActions.editFlightPlanModalShow())
       }
     }
@@ -71,10 +74,10 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={handleSave} eventKey="3">
             <FormattedMessage id='flightPlans_save' />
           </MenuItem>
-          <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={this.props.saveAsOrUpdate.bind(this)} eventKey="4">
+          <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={this.props.saveAs.bind(this)} eventKey="4">
             <FormattedMessage id='flightPlans_save_as' />
           </MenuItem>
-          <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.saveAsOrUpdate.bind(this)} eventKey="5">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.update.bind(this)} eventKey="5">
             <FormattedMessage id='flightPlans_update' />
           </MenuItem>
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="6">
