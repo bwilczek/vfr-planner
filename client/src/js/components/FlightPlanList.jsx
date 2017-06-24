@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
+import { Accordion, Panel, Button } from 'react-bootstrap'
+import { FormattedMessage } from 'react-intl'
 
-import { injectIntl, FormattedMessage } from 'react-intl'
 import { openFlightPlanModalHide } from '../actions/modalsActions'
 
-@injectIntl
 @connect(
   (state) => {
     return {
@@ -39,17 +39,24 @@ export default class FlightPlanList extends React.Component {
   }
 
   renderList () {
+    // TODO: make with work with some really long lists (scroll overflow div wrapper)
     const handleClick = (id) => {
       this.props.closeDialog()
       browserHistory.push(`/plan-${id}`)
     }
     const list = this.props.flightPlans.map((plan) =>
-      <li key={plan.id}><a onClick={handleClick.bind(this, plan.id)}>{plan.name}</a></li>
+      <Panel header={plan.name} eventKey={plan.id}>
+        {plan.description}
+        <br />
+        <Button onClick={handleClick.bind(this, plan.id)}>
+          <FormattedMessage id='flightPlans_open' />
+        </Button>
+      </Panel>
     )
     return (
-      <ul>
+      <Accordion>
         {list}
-      </ul>
+      </Accordion>
     )
   }
 
