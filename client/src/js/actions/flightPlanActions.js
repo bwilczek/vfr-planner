@@ -87,3 +87,10 @@ export function fetchFlightPlan(planId) {
     )
   }
 }
+
+export function fetchFlightPlans() {
+  return {
+    type: 'FETCH_FLIGHT_PLANS',
+    payload: axios.get('/api/plans')
+  }
+}

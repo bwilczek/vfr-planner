@@ -7,6 +7,7 @@ import { actions as toastrActions, toastr } from 'react-redux-toastr'
 import { browserHistory } from 'react-router'
 
 import * as flightPlanActions from '../actions/flightPlanActions'
+import * as modalsActions from '../actions/modalsActions'
 import * as toastrUtils from '../lib/ToastrUtils'
 
 @injectIntl
@@ -23,7 +24,7 @@ import * as toastrUtils from '../lib/ToastrUtils'
         dispatch(flightPlanActions.saveFlightPlan(data))
         dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
       },
-      clearFlightPlan: () => {
+      clear: () => {
         dispatch(flightPlanActions.updateFlightPlan({
             waypoints: [],
             name: '',
@@ -33,6 +34,10 @@ import * as toastrUtils from '../lib/ToastrUtils'
           })
         )
         browserHistory.push('/')
+      },
+      open: () => {
+        dispatch(flightPlanActions.fetchFlightPlans())
+        dispatch(modalsActions.openFlightPlanModalShow())
       }
     }
   }
@@ -56,10 +61,10 @@ export default class FlightPlanDropdown extends React.Component {
         />
 
         <DropdownButton pullRight ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' style={{top: '+22px'}} class="auth-button hidden">
-          <MenuItem onClick={this.props.clearFlightPlan.bind(this)} eventKey="1">
+          <MenuItem onClick={this.props.clear.bind(this)} eventKey="1">
             <FormattedMessage id='flightPlans_new' />
           </MenuItem>
-          <MenuItem disabled={this.props.user.id === null} onClick={notImplementedYet} eventKey="2">
+          <MenuItem disabled={this.props.user.id === null} onClick={this.props.open.bind(this)} eventKey="2">
             <FormattedMessage id='flightPlans_open' />
           </MenuItem>
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={handleSave} eventKey="3">

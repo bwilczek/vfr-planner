@@ -1,6 +1,7 @@
 const initialState = {
   waypointToRenameKey: undefined,
   settingsOpen: false,
+  openFlightPlanOpen: false,
 }
 
 export default function reducer(state = initialState, action) {
@@ -16,6 +17,12 @@ export default function reducer(state = initialState, action) {
     }
     case 'SETTINGS_MODAL_HIDE': {
       return {...state, settingsOpen: false}
+    }
+    case 'FLIGHT_PLAN_OPEN_MODAL_SHOW': {
+      return {...state, openFlightPlanOpen: true}
+    }
+    case 'FLIGHT_PLAN_OPEN_MODAL_HIDE': {
+      return {...state, openFlightPlanOpen: false}
     }
   }
   return state
