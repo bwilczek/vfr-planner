@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { Modal, Button } from 'react-bootstrap'
-import { injectIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 import { openFlightPlanModalHide } from '../../actions/modalsActions'
 import FlightPlanList from '../../components/FlightPlanList'
 
-@injectIntl
 @connect(
   (state) => {
     return {

@@ -47,6 +47,7 @@ export default class PlannerPage extends React.Component {
     }
     if (this.props.params.planId) {
       this.props.fetchFlightPlan(this.props.params.planId)
+      // TODO dispatch(updateUi({ mapCenter: { lat: response.data.waypoints[0].latLng.lat, lng: response.data.waypoints[0].latLng.lng } }))
     }
   }
 

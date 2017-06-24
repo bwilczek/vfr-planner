@@ -49,5 +49,11 @@
   "pleaseWait": "Proszę czekać",
   "savingInProgress": "Trwa zapis danych...",
   "openFlightPlanHeader": "Zapisane plany lotu",
-  "noSavedFlightPlans": "Brak zapisanych planów lotu"
+  "noSavedFlightPlans": "Brak zapisanych planów lotu",
+  "editFlightPlanHeader": "Szczegóły planu lotu",
+  "id": "ID",
+  "name": "Nazwa",
+  "description": "Opis",
+  "isPublic": "Publiczny?",
+  "close": "Zamknij"
 }

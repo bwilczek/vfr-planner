@@ -19,6 +19,6 @@ class PlansController < ApplicationController
   end
 
   def index
-    render json: Plan.where(user: authorized_user).select(:id, :name, :description)
+    render json: Plan.where(user: authorized_user).select(:id, :name, :description).order(id: :desc)
   end
 end

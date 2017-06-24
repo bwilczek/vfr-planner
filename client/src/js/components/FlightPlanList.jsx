@@ -45,7 +45,7 @@ export default class FlightPlanList extends React.Component {
       browserHistory.push(`/plan-${id}`)
     }
     const list = this.props.flightPlans.map((plan) =>
-      <Panel header={plan.name} eventKey={plan.id}>
+      <Panel header={plan.name} key={plan.id} eventKey={plan.id}>
         {plan.description}
         <br />
         <Button onClick={handleClick.bind(this, plan.id)}>

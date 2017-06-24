@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { actions as toastrActions, toastr } from 'react-redux-toastr'
+import { toastr } from 'react-redux-toastr'
 import { browserHistory } from 'react-router'
 
 import * as flightPlanActions from '../actions/flightPlanActions'
 import * as modalsActions from '../actions/modalsActions'
-import * as toastrUtils from '../lib/ToastrUtils'
 
 @injectIntl
 @connect(
@@ -21,8 +20,7 @@ import * as toastrUtils from '../lib/ToastrUtils'
   (dispatch) => {
     return {
       save: (data, title, message) => {
-        dispatch(flightPlanActions.saveFlightPlan(data))
-        dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
+        dispatch(flightPlanActions.saveFlightPlan(data, title, message))
       },
       clear: () => {
         dispatch(flightPlanActions.updateFlightPlan({
@@ -37,6 +35,10 @@ import * as toastrUtils from '../lib/ToastrUtils'
       open: () => {
         dispatch(flightPlanActions.fetchFlightPlans())
         dispatch(modalsActions.openFlightPlanModalShow())
+      },
+      saveAsOrUpdate: () => {
+        // TODO: unset flightPlan.id on save_as
+        dispatch(modalsActions.editFlightPlanModalShow())
       }
     }
   }
@@ -69,10 +71,10 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={handleSave} eventKey="3">
             <FormattedMessage id='flightPlans_save' />
           </MenuItem>
-          <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={notImplementedYet} eventKey="4">
+          <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={this.props.saveAsOrUpdate.bind(this)} eventKey="4">
             <FormattedMessage id='flightPlans_save_as' />
           </MenuItem>
-          <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="5">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.saveAsOrUpdate.bind(this)} eventKey="5">
             <FormattedMessage id='flightPlans_update' />
           </MenuItem>
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="6">

@@ -41,28 +41,28 @@ export default class SettingsDialog extends React.Component {
           <Form horizontal>
 
             <FormGroup controlId="formHorizontalLocale">
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={3}>
                 <FormattedMessage id="language" />
               </Col>
-              <Col sm={10}>
+              <Col sm={9}>
                 <LocaleSelector />
               </Col>
             </FormGroup>
 
             <FormGroup controlId="formHorizontalCountries">
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={3}>
                 <FormattedMessage id="countries" />
               </Col>
-              <Col sm={10}>
+              <Col sm={9}>
                 <CountriesSelector />
               </Col>
             </FormGroup>
 
             <FormGroup controlId="formHorizontalSpeedUnit">
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={3}>
                 <FormattedMessage id="speedUnit" />
               </Col>
-              <Col sm={10}>
+              <Col sm={9}>
                 <Toggle
                   on='kt'
                   off='km/h'
@@ -73,10 +73,10 @@ export default class SettingsDialog extends React.Component {
             </FormGroup>
 
             <FormGroup controlId="formHorizontalBearing">
-              <Col componentClass={ControlLabel} sm={2}>
+              <Col componentClass={ControlLabel} sm={3}>
                 <FormattedMessage id="bearings" />
               </Col>
-              <Col sm={10}>
+              <Col sm={9}>
                 <Toggle
                   on='MAG'
                   off='GEO'
