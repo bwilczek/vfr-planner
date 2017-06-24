@@ -4,6 +4,8 @@ import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { actions as toastrActions, toastr } from 'react-redux-toastr'
+import { browserHistory } from 'react-router'
+
 import * as flightPlanActions from '../actions/flightPlanActions'
 import * as toastrUtils from '../lib/ToastrUtils'
 
@@ -17,11 +19,20 @@ import * as toastrUtils from '../lib/ToastrUtils'
   },
   (dispatch) => {
     return {
-      save: (data) => {
-        dispatch(flightPlanActions.save(data))
-      },
-      showToastrSaveFlightPlan: (title, message) => {
+      save: (data, title, message) => {
+        dispatch(flightPlanActions.saveFlightPlan(data))
         dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
+      },
+      clearFlightPlan: () => {
+        dispatch(flightPlanActions.updateFlightPlan({
+            waypoints: [],
+            name: '',
+            description: '',
+            id: null,
+            public: false
+          })
+        )
+        browserHistory.push('/')
       }
     }
   }
@@ -33,8 +44,7 @@ export default class FlightPlanDropdown extends React.Component {
 
     const notImplementedYet = () => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }
     const handleSave = () => {
-      this.props.save(this.props.flightPlan)
-      this.props.showToastrSaveFlightPlan(formatMessage({id: 'pleaseWait'}), formatMessage({id: 'savingInProgress'}))
+      this.props.save(this.props.flightPlan, formatMessage({id: 'pleaseWait'}), formatMessage({id: 'savingInProgress'}))
     }
 
     return (
@@ -46,7 +56,7 @@ export default class FlightPlanDropdown extends React.Component {
         />
 
         <DropdownButton pullRight ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' style={{top: '+22px'}} class="auth-button hidden">
-          <MenuItem onClick={notImplementedYet} eventKey="1">
+          <MenuItem onClick={this.props.clearFlightPlan.bind(this)} eventKey="1">
             <FormattedMessage id='flightPlans_new' />
           </MenuItem>
           <MenuItem disabled={this.props.user.id === null} onClick={notImplementedYet} eventKey="2">
