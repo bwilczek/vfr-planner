@@ -47,5 +47,13 @@
   "notImplementedYet": "Ta akcja jeszcze nie działa",
   "featureComingSoon": "Prosimy o cierpliwość, funkcjonalność zostanie dodana niebawem",
   "pleaseWait": "Proszę czekać",
-  "savingInProgress": "Trwa zapis danych..."
+  "savingInProgress": "Trwa zapis danych...",
+  "openFlightPlanHeader": "Zapisane plany lotu",
+  "noSavedFlightPlans": "Brak zapisanych planów lotu",
+  "editFlightPlanHeader": "Szczegóły planu lotu",
+  "id": "ID",
+  "name": "Nazwa",
+  "description": "Opis",
+  "isPublic": "Publiczny?",
+  "close": "Zamknij"
 }

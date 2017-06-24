@@ -7,7 +7,7 @@ class PlansController < ApplicationController
       render nothing: true, status: :unauthorized
       return
     end
-    render json: plan
+    render json: plan.to_js_state
   rescue ActiveRecord::RecordNotFound
     render nothing: true, status: :not_found
   end
@@ -16,5 +16,9 @@ class PlansController < ApplicationController
     plan = Plan.from_js_state(params[:plan], authorized_user)
     plan.save
     render json: plan.to_js_state
+  end
+
+  def index
+    render json: Plan.where(user: authorized_user).select(:id, :name, :description).order(id: :desc)
   end
 end

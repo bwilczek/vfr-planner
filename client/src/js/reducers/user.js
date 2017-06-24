@@ -5,6 +5,7 @@ const initialState = {
   id: null,
   error: null,
   token: null,
+  flightPlans: null
 }
 
 export default function reducer(state = initialState, action) {
@@ -24,6 +25,15 @@ export default function reducer(state = initialState, action) {
         id: data.id,
         token: data.token,
         img: data.img,
+      }
+    }
+    // IGNORE
+    // case 'FETCH_FLIGHT_PLANS_PENDING': {}
+    // case 'FETCH_FLIGHT_PLANS_REJECTED': {}
+    case 'FETCH_FLIGHT_PLANS_FULFILLED': {
+      return {
+        ...state,
+        flightPlans: action.payload.data,
       }
     }
   }

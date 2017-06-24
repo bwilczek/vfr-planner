@@ -47,5 +47,13 @@
   "notImplementedYet": "Not implemented yet",
   "featureComingSoon": "Please be patient, this feature is coming soon.",
   "pleaseWait": "Please wait",
-  "savingInProgress": "Data is being saved..."
+  "savingInProgress": "Data is being saved...",
+  "openFlightPlanHeader": "Your saved flight plans",
+  "noSavedFlightPlans": "You have no saved flight plans",
+  "editFlightPlanHeader": "Flight plan details",
+  "id": "ID",
+  "name": "Name",
+  "description": "Description",
+  "isPublic": "Public?",
+  "close": "Close"
 }

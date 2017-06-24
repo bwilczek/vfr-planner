@@ -1,5 +1,8 @@
 import axios from 'axios'
+import { browserHistory } from 'react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
+
+import * as toastrUtils from '../lib/ToastrUtils'
 
 export function updateFlightPlan(fields) {
   return {
@@ -57,17 +60,40 @@ export function reverseGeocode(waypoint) {
   }
 }
 
-export function save(data) {
+export function saveFlightPlan(data, title, message) {
   return (dispatch) => {
+    dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
     axios.post('/api/plans', {plan: data}).then(
       (response) => {
         console.log(response.data)
         dispatch(toastrActions.remove('backgroundActionSaveFlightPlan'))
         dispatch(updateFlightPlan(response.data))
+        browserHistory.push(`/plan-${response.data.id}`)
       },
       (error) => {
         dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
       }
     )
+  }
+}
+
+export function fetchFlightPlan(planId) {
+  return (dispatch) => {
+    axios.get(`/api/plans/${planId}`).then(
+      (response) => {
+        dispatch(updateFlightPlan(response.data))
+      },
+      (error) => {
+        // TODO: handle 401 Unauthorized
+        dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+      }
+    )
+  }
+}
+
+export function fetchFlightPlans() {
+  return {
+    type: 'FETCH_FLIGHT_PLANS',
+    payload: axios.get('/api/plans')
   }
 }

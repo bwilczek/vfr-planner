@@ -11,6 +11,7 @@ import WaypointList from '../components/WaypointList'
 import FlightPlanSettings from '../components/FlightPlanSettings'
 import { setMapsApiLoaded } from '../actions/googleActions'
 import { settingsModalShow } from '../actions/modalsActions'
+import { fetchFlightPlan } from '../actions/flightPlanActions'
 
 @connect(
   (state) => {
@@ -22,6 +23,9 @@ import { settingsModalShow } from '../actions/modalsActions'
     return {
       setMapsApiLoaded: (value) => {
         dispatch(setMapsApiLoaded(value))
+      },
+      fetchFlightPlan: (planId) => {
+        dispatch(fetchFlightPlan(planId))
       },
       settingsModalShow: () => {
         dispatch(settingsModalShow())
@@ -41,7 +45,10 @@ export default class PlannerPage extends React.Component {
     if (this.props.location.pathname === '/settings') {
       this.props.settingsModalShow()
     }
-    // TODO: detect if this.props.params.planId is set, if so fetch the data
+    if (this.props.params.planId) {
+      this.props.fetchFlightPlan(this.props.params.planId)
+      // TODO dispatch(updateUi({ mapCenter: { lat: response.data.waypoints[0].latLng.lat, lng: response.data.waypoints[0].latLng.lng } }))
+    }
   }
 
   render() {

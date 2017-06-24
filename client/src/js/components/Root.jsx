@@ -20,7 +20,7 @@ export default class Root extends React.Component {
           <Route path="/" component={Application}>
             <IndexRoute component={PlannerPage}/>
             <Route path="/settings" component={PlannerPage} />
-            <Route path="/plan/:planId" component={PlannerPage} />
+            <Route path="/plan-:planId" component={PlannerPage} />
             <Route path="*" component={NotFound} />
           </Route>
 
