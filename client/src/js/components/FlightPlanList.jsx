@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
-import { Modal, Button, FormGroup, Form, Col, ControlLabel } from 'react-bootstrap'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { openFlightPlanModalHide } from '../actions/modalsActions'
 
@@ -26,7 +25,7 @@ export default class FlightPlanList extends React.Component {
   renderLoading () {
     return (
       <div>
-        Loading...
+        <FormattedMessage id='pleaseWait' />
       </div>
     )
   }
@@ -34,7 +33,7 @@ export default class FlightPlanList extends React.Component {
   renderEmpty () {
     return (
       <div>
-        You have no saved flight plans
+        <FormattedMessage id='noSavedFlightPlans' />
       </div>
     )
   }

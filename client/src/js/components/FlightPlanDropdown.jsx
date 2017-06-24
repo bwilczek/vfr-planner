@@ -26,13 +26,12 @@ import * as toastrUtils from '../lib/ToastrUtils'
       },
       clear: () => {
         dispatch(flightPlanActions.updateFlightPlan({
-            waypoints: [],
-            name: '',
-            description: '',
-            id: null,
-            public: false
-          })
-        )
+          waypoints: [],
+          name: '',
+          description: '',
+          id: null,
+          public: false
+        }))
         browserHistory.push('/')
       },
       open: () => {

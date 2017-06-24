@@ -48,5 +48,6 @@
   "featureComingSoon": "Please be patient, this feature is coming soon.",
   "pleaseWait": "Please wait",
   "savingInProgress": "Data is being saved...",
-  "openFlightPlanHeader": "Your saved flight plans"
+  "openFlightPlanHeader": "Your saved flight plans",
+  "noSavedFlightPlans": "You have no saved flight plans"
 }

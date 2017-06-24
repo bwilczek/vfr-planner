@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Modal, Button, FormGroup, Form, Col, ControlLabel } from 'react-bootstrap'
+import { Modal, Button } from 'react-bootstrap'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
 import { openFlightPlanModalHide } from '../../actions/modalsActions'
