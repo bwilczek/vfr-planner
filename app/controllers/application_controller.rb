@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
   end
 
   def index_html
-    render file: File.read(Rails.root.join('public', 'index.html')), content_type: 'text/html'
+    render text: File.read(Rails.root.join('public', 'index.html')), content_type: 'text/html'
   end
 
   def index_js
