@@ -49,7 +49,7 @@ import * as modalsActions from '../actions/modalsActions'
 export default class FlightPlanDropdown extends React.Component {
 
   render() {
-    const notImplementedYet = () => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }
+    const notImplementedYet = () => { toastr.info(this.props.intl.formatMessage({id: 'notImplementedYet'}), this.props.intl.formatMessage({id: 'featureComingSoon'})) }
     const handleSave = () => {
       this.props.save(this.props.flightPlan, this.props.intl.formatMessage)
     }
@@ -59,7 +59,7 @@ export default class FlightPlanDropdown extends React.Component {
         <FontAwesome name="list-ul" size="3x"
           class="auth-button"
           onClick={(e) => { document.getElementById('flightPlansDropdown').click(e) }}
-          title={formatMessage({id: 'flightPlans'})}
+          title={this.props.intl.formatMessage({id: 'flightPlans'})}
         />
 
         <DropdownButton pullRight ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' style={{top: '+22px'}} class="auth-button hidden">

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
 
-import * as toastrUtils from '../lib/ToastrUtils'
+import ToastrUtils from '../lib/ToastrUtils'
 import { updateUi } from './uiActions'
 
 export function updateFlightPlan(fields) {
@@ -62,11 +62,8 @@ export function reverseGeocode(waypoint) {
 }
 
 export function saveFlightPlan(data, formatMessage) {
-  console.log(formatMessage)
-  const title = formatMessage({id: 'pleaseWait'})
-  const message = formatMessage({id: 'savingInProgress'})
   return (dispatch) => {
-    dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
+    dispatch(toastrActions.add(ToastrUtils.configForSaveFlightPlan()))
     axios.post('/api/plans', {plan: data}).then(
       (response) => {
         console.log(response.data)
