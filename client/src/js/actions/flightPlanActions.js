@@ -61,7 +61,10 @@ export function reverseGeocode(waypoint) {
   }
 }
 
-export function saveFlightPlan(data, title, message) {
+export function saveFlightPlan(data, formatMessage) {
+  console.log(formatMessage)
+  const title = formatMessage({id: 'pleaseWait'})
+  const message = formatMessage({id: 'savingInProgress'})
   return (dispatch) => {
     dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
     axios.post('/api/plans', {plan: data}).then(

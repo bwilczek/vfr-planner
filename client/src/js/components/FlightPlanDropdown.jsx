@@ -49,11 +49,9 @@ import * as modalsActions from '../actions/modalsActions'
 export default class FlightPlanDropdown extends React.Component {
 
   render() {
-    const { formatMessage } = this.props.intl
-
     const notImplementedYet = () => { toastr.info(formatMessage({id: 'notImplementedYet'}), formatMessage({id: 'featureComingSoon'})) }
     const handleSave = () => {
-      this.props.save(this.props.flightPlan, formatMessage({id: 'pleaseWait'}), formatMessage({id: 'savingInProgress'}))
+      this.props.save(this.props.flightPlan, this.props.intl.formatMessage)
     }
 
     return (

@@ -23,8 +23,8 @@ import * as flightPlanActions from '../../actions/flightPlanActions'
       updateFlightPlan(fields) {
         dispatch(flightPlanActions.updateFlightPlan(fields))
       },
-      save: (data, title, message) => {
-        dispatch(flightPlanActions.saveFlightPlan(data, title, message))
+      save: (data, formatMessage) => {
+        dispatch(flightPlanActions.saveFlightPlan(data, formatMessage))
       }
     }
   }
@@ -39,7 +39,7 @@ export default class EditFlightPlanDialog extends React.Component {
   }
 
   handleSave() {
-    this.props.save(this.props.flightPlan, this.props.intl.formatMessage({id: 'pleaseWait'}), this.props.intl.formatMessage({id: 'savingInProgress'}))
+    this.props.save(this.props.flightPlan, this.props.intl.formatMessage)
     this.props.closeDialog()
   }
 
