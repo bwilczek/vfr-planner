@@ -60,5 +60,7 @@
   "errorToastrTitle": "Coś poszło nie tak",
   "errorMessageNetwork": "Wystąpił problem w połączeniu z serwerem",
   "errorMessageUnauthorized": "Nie masz uprawnień do tej treści",
-  "errorMessageNotFound": "Nie znaleziono żądanej treści"
+  "errorMessageNotFound": "Nie znaleziono żądanej treści",
+  "noAreasFound": "Nie znaleziono przestrzeni",
+  "noAreasFoundDescription": "Prawdopodobnie informacja o żądanych przestrzeniach nie jest jeszcze dostępna"
 }

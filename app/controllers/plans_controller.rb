@@ -21,4 +21,9 @@ class PlansController < ApplicationController
   def index
     render json: Plan.where(user: authorized_user).select(:id, :name, :description).order(id: :desc)
   end
+
+  def destroy
+    Plan.destroy(params[:id])
+    render nothing: true
+  end
 end

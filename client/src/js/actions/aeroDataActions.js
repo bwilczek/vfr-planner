@@ -1,4 +1,7 @@
 import axios from 'axios'
+import { actions as toastrActions } from 'react-redux-toastr'
+
+import ToastrUtils from '../lib/ToastrUtils'
 
 export function fetchNavPoints(countries, kinds) {
   return {
@@ -21,10 +24,29 @@ export function clearNavPointsByKind(kinds) {
   }
 }
 
-export function fetchAirspaces(countries, mode, levels, hours) {
+export function updateAirspaces(data) {
   return {
-    type: 'FETCH_AIRSPACES',
-    payload: axios.get('/api/airspaces', { params: {countries, mode, levels, hours} })
+    type: 'UPDATE_AIRSPACES',
+    payload: data
+  }
+}
+
+export function fetchAirspaces(countries, mode, levels, hours) {
+  return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
+    axios.get('/api/airspaces', { params: {countries, mode, levels, hours} }).then(
+      (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        if (response.data.length === 0) {
+          dispatch(toastrActions.add('configForNoAreasFound'))
+        }
+        dispatch(updateAirspaces(response.data))
+      },
+      (error) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
+      }
+    )
   }
 }
 
