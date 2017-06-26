@@ -38,7 +38,7 @@ export function fetchAirspaces(countries, mode, levels, hours) {
       (response) => {
         dispatch(toastrActions.remove('pleaseWait'))
         if (response.data.length === 0) {
-          dispatch(toastrActions.add('configForNoAreasFound'))
+          dispatch(toastrActions.add(ToastrUtils.configForNoAreasFound()))
         }
         dispatch(updateAirspaces(response.data))
       },
