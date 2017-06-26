@@ -43,6 +43,7 @@ export function fetchAirspaces(countries, mode, levels, hours) {
         dispatch(updateAirspaces(response.data))
       },
       (error) => {
+        console.log(error)
         dispatch(toastrActions.remove('pleaseWait'))
         dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
       }

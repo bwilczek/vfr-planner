@@ -19,8 +19,8 @@ import * as modalsActions from '../actions/modalsActions'
   },
   (dispatch) => {
     return {
-      save: (data, title, message) => {
-        dispatch(flightPlanActions.saveFlightPlan(data, title, message))
+      save: (data) => {
+        dispatch(flightPlanActions.saveFlightPlan(data))
       },
       clear: () => {
         dispatch(flightPlanActions.updateFlightPlan({
@@ -42,6 +42,13 @@ import * as modalsActions from '../actions/modalsActions'
       },
       update: () => {
         dispatch(modalsActions.editFlightPlanModalShow())
+      },
+      delete: (id, formatMessage) => {
+        toastr.confirm(formatMessage({id: 'areYouSure'}), {
+          onOk: () => dispatch(flightPlanActions.deleteFlightPlan(id)),
+          okText: formatMessage({id: 'yes'}),
+          cancelText: formatMessage({id: 'no'})
+        })
       }
     }
   }
@@ -49,11 +56,6 @@ import * as modalsActions from '../actions/modalsActions'
 export default class FlightPlanDropdown extends React.Component {
 
   render() {
-    const notImplementedYet = () => { toastr.info(this.props.intl.formatMessage({id: 'notImplementedYet'}), this.props.intl.formatMessage({id: 'featureComingSoon'})) }
-    const handleSave = () => {
-      this.props.save(this.props.flightPlan, this.props.intl.formatMessage)
-    }
-
     return (
       <span style={{marginRight: '5px'}}>
         <FontAwesome name="list-ul" size="3x"
@@ -69,7 +71,7 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem disabled={this.props.user.id === null} onClick={this.props.open.bind(this)} eventKey="2">
             <FormattedMessage id='flightPlans_open' />
           </MenuItem>
-          <MenuItem disabled={this.props.flightPlan.id === null} onClick={handleSave} eventKey="3">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.save.bind(this, this.props.flightPlan)} eventKey="3">
             <FormattedMessage id='flightPlans_save' />
           </MenuItem>
           <MenuItem disabled={this.props.user.id === null || this.props.flightPlan.waypoints.length < 2} onClick={this.props.saveAs.bind(this)} eventKey="4">
@@ -78,7 +80,7 @@ export default class FlightPlanDropdown extends React.Component {
           <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.update.bind(this)} eventKey="5">
             <FormattedMessage id='flightPlans_update' />
           </MenuItem>
-          <MenuItem disabled={this.props.flightPlan.id === null} onClick={notImplementedYet} eventKey="6">
+          <MenuItem disabled={this.props.flightPlan.id === null} onClick={this.props.delete.bind(this, this.props.flightPlan.id, this.props.intl.formatMessage)} eventKey="6">
             <FormattedMessage id='flightPlans_delete' />
           </MenuItem>
         </DropdownButton>

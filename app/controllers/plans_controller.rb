@@ -23,7 +23,12 @@ class PlansController < ApplicationController
   end
 
   def destroy
-    Plan.destroy(params[:id])
+    plan = Plan.find(params[:id])
+    if plan.user != authorized_user
+      render nothing: true, status: :unauthorized
+      return
+    end
+    plan.destroy!
     render nothing: true
   end
 end

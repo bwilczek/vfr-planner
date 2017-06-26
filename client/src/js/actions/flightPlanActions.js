@@ -61,7 +61,7 @@ export function reverseGeocode(waypoint) {
   }
 }
 
-export function saveFlightPlan(data, formatMessage) {
+export function saveFlightPlan(data) {
   return (dispatch) => {
     dispatch(toastrActions.add(ToastrUtils.configForSaveFlightPlan()))
     axios.post('/api/plans', {plan: data}).then(
@@ -99,6 +99,30 @@ export function fetchFlightPlan(planId) {
         }
         dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
         browserHistory.push('/')
+      }
+    )
+  }
+}
+
+export function deleteFlightPlan(planId) {
+  return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
+    axios.delete(`/api/plans/${planId}`).then(
+      (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(updateFlightPlan({
+          waypoints: [],
+          name: '',
+          description: '',
+          public: false,
+          id: null
+        }))
+        browserHistory.push('/')
+      },
+      (error) => {
+        console.log(error)
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
       }
     )
   }
