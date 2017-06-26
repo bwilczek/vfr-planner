@@ -60,5 +60,10 @@
   "errorToastrTitle": "Something went wrong",
   "errorMessageNetwork": "Connection to server could not be established",
   "errorMessageUnauthorized": "You are not authorized to see this content",
-  "errorMessageNotFound": "The resource was not found"
+  "errorMessageNotFound": "The resource was not found",
+  "noAreasFound": "No areas found",
+  "noAreasFoundDescription": "Probably data for given day is not yet available",
+  "areYouSure": "Are you sure?",
+  "yes": "Yes",
+  "no": "No"
 }

@@ -44,11 +44,30 @@ export default class ToastrUtils {
     }
   }
 
+  static configForNoAreasFound() {
+    const title = formatMessage({id: 'noAreasFound'})
+    const message = formatMessage({id: 'noAreasFoundDescription'})
+    return {
+      id: 'noAreasFound',
+      type: 'light',
+      title: title,
+      attention: true,
+      message: message,
+      options: {
+        progressBar: false,
+        showCloseButton: true,
+        timeOut: 120000,
+        status: 'info',
+        icon: 'info'
+      }
+    }
+  }
+
   static configForError(errorMessageKey) {
     const title = formatMessage({id: 'errorToastrTitle'})
     const message = formatMessage({id: errorMessageKey})
     return {
-      id: 'pleaseWait',
+      id: 'error',
       type: 'error',
       title: title,
       attention: true,
