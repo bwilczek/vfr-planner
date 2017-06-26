@@ -29,7 +29,7 @@ if (defaultState === undefined) {
 
 const store = createStore(combinedReducer, defaultState, middleware)
 store.subscribe(() => {
-  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['modals', 'toastr', 'navPoints', 'user', 'airspaces', 'google'])))
+  localStorage.setItem(cacheKey, JSON.stringify(omit(store.getState(), ['modals', 'toastr', 'navPoints', 'airspaces', 'google'])))
 })
 
 export default store

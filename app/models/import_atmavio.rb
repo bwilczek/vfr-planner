@@ -240,9 +240,32 @@ class ImportAtmavio < ApplicationRecord
     [o]
   end
 
-  def self.import_atmavio_vfr_points
-    # puts "Started at #{Time.zone.now}"
-    # puts "Downloading #{GPX_URL_NAV_POINTS}"
-    # puts "Finished at #{Time.zone.now}"
+  ##
+  # Example: echo 'ImportAtmavio.import_atmavio_vfr_points("/some/path/vfr-planner/import")' | bundle exec rails console
+  #
+  def self.import_atmavio_vfr_points(import_directory)
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
+    gpx_path = File.join(import_directory, 'Punkty VFR.gpx')
+    logger.info('Processing VFR point list')
+    xml = Nokogiri::XML(File.open(gpx_path))
+    xml.xpath('//xmlns:gpx/xmlns:wpt').each do |wpt|
+      name = wpt.xpath('./xmlns:name').text.strip
+      logger.info('=================')
+      logger.info(name)
+      lat = wpt[:lat].to_f
+      lng = wpt[:lon].to_f
+
+      nav_point = NavPoint.find_for_lat_lng(lat, lng)
+      nav_point.name = name
+      nav_point.kind = :vfr_point
+
+      nav_point.compute_country_code
+      nav_point.declination = MagDeclination.get_declination nav_point
+      nav_point.active!
+
+      nav_point.save
+    end
+    logger.info("Finished at #{Time.zone.now}")
   end
 end
