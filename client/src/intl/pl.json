@@ -65,5 +65,8 @@
   "noAreasFoundDescription": "Prawdopodobnie informacja o żądanych przestrzeniach nie jest jeszcze dostępna",
   "areYouSure": "Czy na pewno?",
   "yes": "Tak",
-  "no": "Nie"
+  "no": "Nie",
+  "rename": "Zmień nazwę",
+  "center": "Centruj mapę",
+  "remove": "Usuń"
 }

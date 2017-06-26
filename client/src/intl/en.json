@@ -65,5 +65,8 @@
   "noAreasFoundDescription": "Probably data for given day is not yet available",
   "areYouSure": "Are you sure?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "rename": "Rename",
+  "center": "Center",
+  "remove": "Remove"
 }
