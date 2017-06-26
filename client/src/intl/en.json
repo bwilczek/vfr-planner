@@ -55,5 +55,10 @@
   "name": "Name",
   "description": "Description",
   "isPublic": "Public?",
-  "close": "Close"
+  "close": "Close",
+  "communicationInProgress": "Communicating the server...",
+  "errorToastrTitle": "Something went wrong",
+  "errorMessageNetwork": "Connection to server could not be established",
+  "errorMessageUnauthorized": "You are not authorized to see this content",
+  "errorMessageNotFound": "The resource was not found"
 }

@@ -55,5 +55,10 @@
   "name": "Nazwa",
   "description": "Opis",
   "isPublic": "Publiczny?",
-  "close": "Zamknij"
+  "close": "Zamknij",
+  "communicationInProgress": "Trwa komunikacja z serwerem...",
+  "errorToastrTitle": "Coś poszło nie tak",
+  "errorMessageNetwork": "Wystąpił problem w połączeniu z serwerem",
+  "errorMessageUnauthorized": "Nie masz uprawnień do tej treści",
+  "errorMessageNotFound": "Nie znaleziono żądanej treści"
 }

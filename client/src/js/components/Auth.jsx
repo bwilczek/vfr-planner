@@ -26,7 +26,7 @@ import * as actions from '../actions/authActions'
         dispatch(actions.authenticate('facebook', response.accessToken))
       },
       handleResponseGoogle: (googleUser) => {
-        dispatch(actions.authenticate('google', googleUser.getAuthResponse().id_token))
+        dispatch(actions.authenticate('google', googleUser.getAuthResponse().access_token))
       }
     }
   }

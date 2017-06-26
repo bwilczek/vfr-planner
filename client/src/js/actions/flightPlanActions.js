@@ -80,14 +80,25 @@ export function saveFlightPlan(data, formatMessage) {
 
 export function fetchFlightPlan(planId) {
   return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
     axios.get(`/api/plans/${planId}`).then(
       (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
         dispatch(updateFlightPlan(response.data))
         dispatch(updateUi({ mapCenter: { lat: response.data.waypoints[0].latLng.lat, lng: response.data.waypoints[0].latLng.lng } }))
       },
       (error) => {
-        // TODO: handle 401 Unauthorized
-        dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+        dispatch(toastrActions.remove('pleaseWait'))
+        let errorMessageKey
+        if (error.response.status === 401) {
+          errorMessageKey = 'errorMessageUnauthorized'
+        } else if (error.response.status === 404) {
+          errorMessageKey = 'errorMessageNotFound'
+        } else {
+          errorMessageKey = 'errorMessageNetwork'
+        }
+        dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
+        browserHistory.push('/')
       }
     )
   }

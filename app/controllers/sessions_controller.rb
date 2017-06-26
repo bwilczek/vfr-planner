@@ -9,7 +9,8 @@ class SessionsController < ApplicationController
       provider_id = "facebook:#{profile['id']}"
       img_url = "https://graph.facebook.com/#{profile['id']}/picture?type=small"
     elsif params[:provider] == 'google'
-      url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{params[:token]}"
+      # url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=#{params[:token]}"
+      url = "https://www.googleapis.com/oauth2/v3/userinfo?alt=json&access_token=#{params[:token]}"
       profile = JSON.parse(Net::HTTP.get(URI.parse(url)))
       name = profile['name']
       provider_id = "google:#{profile['email']}"
@@ -19,7 +20,7 @@ class SessionsController < ApplicationController
     # TODO: check status
     @user = User.find_by_provider_id(provider_id)
     if @user
-      @user.update(last_login: Time.zone.now)
+      @user.update(last_login: Time.zone.now, name: name)
     else
       @user = User.create(provider_id: provider_id, name: name, status: 0, admin: false, last_login: Time.zone.now)
     end
