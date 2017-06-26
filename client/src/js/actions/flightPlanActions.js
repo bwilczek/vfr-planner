@@ -2,7 +2,7 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 import { actions as toastrActions } from 'react-redux-toastr'
 
-import * as toastrUtils from '../lib/ToastrUtils'
+import ToastrUtils from '../lib/ToastrUtils'
 import { updateUi } from './uiActions'
 
 export function updateFlightPlan(fields) {
@@ -61,9 +61,9 @@ export function reverseGeocode(waypoint) {
   }
 }
 
-export function saveFlightPlan(data, title, message) {
+export function saveFlightPlan(data, formatMessage) {
   return (dispatch) => {
-    dispatch(toastrActions.add(toastrUtils.configForSaveFlightPlan(title, message)))
+    dispatch(toastrActions.add(ToastrUtils.configForSaveFlightPlan()))
     axios.post('/api/plans', {plan: data}).then(
       (response) => {
         console.log(response.data)
@@ -80,14 +80,25 @@ export function saveFlightPlan(data, title, message) {
 
 export function fetchFlightPlan(planId) {
   return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
     axios.get(`/api/plans/${planId}`).then(
       (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
         dispatch(updateFlightPlan(response.data))
         dispatch(updateUi({ mapCenter: { lat: response.data.waypoints[0].latLng.lat, lng: response.data.waypoints[0].latLng.lng } }))
       },
       (error) => {
-        // TODO: handle 401 Unauthorized
-        dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+        dispatch(toastrActions.remove('pleaseWait'))
+        let errorMessageKey
+        if (error.response.status === 401) {
+          errorMessageKey = 'errorMessageUnauthorized'
+        } else if (error.response.status === 404) {
+          errorMessageKey = 'errorMessageNotFound'
+        } else {
+          errorMessageKey = 'errorMessageNetwork'
+        }
+        dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
+        browserHistory.push('/')
       }
     )
   }
