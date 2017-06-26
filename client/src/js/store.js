@@ -3,6 +3,7 @@ import logger from 'redux-logger'
 import promise from 'redux-promise-middleware'
 import thunk from 'redux-thunk'
 import { omit } from 'lodash'
+import axios from 'axios'
 
 import combinedReducer from './reducers'
 import defaultIntlMessages from '../intl/pl.json'
@@ -25,6 +26,8 @@ if (defaultState === undefined) {
       messages: defaultIntlMessages
     }
   }
+} else {
+  axios.defaults.headers.common['Authorization'] = defaultState.user.token
 }
 
 const store = createStore(combinedReducer, defaultState, middleware)

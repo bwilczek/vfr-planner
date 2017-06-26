@@ -170,12 +170,13 @@ export default class Map extends React.Component {
 
   generateInfoWindowContent(iw, waypoint) {
     let a = document.createElement('div')
+    const { formatMessage } = this.props.intl
     ReactDOM.render(
       <div>
         <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
-        <Button bsSize="xsmall" title="Center" onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
-        <Button bsSize="xsmall" title="Rename" onClick={() => { this.props.renameModalShow(waypoint); iw.close() } }><FontAwesome name="edit" /></Button>
-        <Button bsSize="xsmall" title="Remove" onClick={() => { this.props.deleteWaypoint(waypoint); iw.close() } }><FontAwesome name="trash" /></Button>
+        <Button bsSize="xsmall" title={formatMessage({id: 'center'})} onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
+        <Button bsSize="xsmall" title={formatMessage({id: 'rename'})} onClick={() => { this.props.renameModalShow(waypoint); iw.close() } }><FontAwesome name="edit" /></Button>
+        <Button bsSize="xsmall" title={formatMessage({id: 'remove'})} onClick={() => { this.props.deleteWaypoint(waypoint); iw.close() } }><FontAwesome name="trash" /></Button>
       </div>
     , a)
     return a
