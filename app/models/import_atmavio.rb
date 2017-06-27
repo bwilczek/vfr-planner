@@ -241,9 +241,9 @@ class ImportAtmavio < ApplicationRecord
   end
 
   ##
-  # Example: echo 'ImportAtmavio.import_atmavio_vfr_points("/some/path/vfr-planner/import")' | bundle exec rails console
+  # Example: echo 'ImportAtmavio.import_vfr_points("/some/path/vfr-planner/import")' | bundle exec rails console
   #
-  def self.import_atmavio_vfr_points(import_directory)
+  def self.import_vfr_points(import_directory)
     logger = Logger.new(STDOUT)
     logger.info("Started at #{Time.zone.now}")
     gpx_path = File.join(import_directory, 'Punkty VFR.gpx')
@@ -260,7 +260,7 @@ class ImportAtmavio < ApplicationRecord
       nav_point.name = name
       nav_point.kind = :vfr_point
 
-      nav_point.compute_country_code
+      nav_point.country = 'pl'
       nav_point.declination = MagDeclination.get_declination nav_point
       nav_point.active!
 
