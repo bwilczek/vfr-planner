@@ -4,6 +4,8 @@ const initialState = {
   checkboxAirports: false,
   checkboxOtherAerodromes: false,
   checkboxVfrPoints: false,
+  checkboxIfrPoints: false,
+  checkboxNavAids: false,
   countries: ['pl'],
   selectedAirspaces: 'today'
 }

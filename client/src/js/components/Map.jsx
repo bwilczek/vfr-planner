@@ -93,11 +93,14 @@ export default class Map extends React.Component {
 
   onMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
-    const content = `
+    let content = `
       <strong>${marker.navPoint.name}</strong><br />
-      ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br /><hr />
-      ${marker.navPoint.description}
-    `
+      ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br />`
+
+    if (marker.navPoint.description) {
+      content += `<hr />${marker.navPoint.description}`
+    }
+
     const infowindow = new google.maps.InfoWindow({ content })
     infowindow.open(this.map, marker)
   }

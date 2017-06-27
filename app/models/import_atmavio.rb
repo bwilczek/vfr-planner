@@ -13,6 +13,16 @@ class ImportAtmavio < ApplicationRecord
     'Lądowisko niepotwierdzone' => :other_airstrip
   }.freeze
 
+  NAV_AID_KIND_MAP = {
+    12 => :ndb,
+    13 => :vor,
+    14 => :vor_dme,
+    15 => :vor_dme,
+    16 => :dme,
+    17 => :vor,
+    18 => :ndb
+  }.freeze
+
   AIRSPACE_KIND_MAP = {
     '#AAA' => :other,
     '#ADIZ' => :adiz,
@@ -241,6 +251,37 @@ class ImportAtmavio < ApplicationRecord
   end
 
   ##
+  # Example: echo 'ImportAtmavio.import_nav_aids("/some/path/vfr-planner/import")' | bundle exec rails console
+  #
+  def self.import_nav_aids(import_directory)
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
+    xml_path = File.join(import_directory, 'nav_aids.xml')
+    logger.info('Processing VFR point list')
+    xml = Nokogiri::XML(File.open(xml_path))
+    xml.xpath('//table_data/row').each do |row|
+      logger.info('=================')
+
+      lat = row.xpath('./field[@name="lat"]').text.strip.to_f
+      lng = row.xpath('./field[@name="lng"]').text.strip.to_f
+      type = row.xpath('./field[@name="type"]').text.strip.to_i
+      nav_point = NavPoint.find_for_lat_lng(lat, lng)
+
+      nav_point.name = row.xpath('./field[@name="icao_code"]').text.strip
+      nav_point.radio = row.xpath('./field[@name="radio"]').text.strip
+      nav_point.description = row.xpath('./field[@name="name"]').text.strip + '<br />' + nav_point.radio
+      nav_point.kind = NAV_AID_KIND_MAP[type]
+      nav_point.country = 'pl'
+      nav_point.declination = MagDeclination.get_declination nav_point
+      nav_point.active!
+      nav_point.save
+
+      logger.info(nav_point.name)
+    end
+    logger.info("Finished at #{Time.zone.now}")
+  end
+
+  ##
   # Example: echo 'ImportAtmavio.import_vfr_points("/some/path/vfr-planner/import")' | bundle exec rails console
   #
   def self.import_vfr_points(import_directory)
@@ -259,6 +300,32 @@ class ImportAtmavio < ApplicationRecord
       nav_point = NavPoint.find_for_lat_lng(lat, lng)
       nav_point.name = name
       nav_point.kind = :vfr_point
+
+      nav_point.country = 'pl'
+      nav_point.declination = MagDeclination.get_declination nav_point
+      nav_point.active!
+
+      nav_point.save
+    end
+    logger.info("Finished at #{Time.zone.now}")
+  end
+
+  ##
+  # Example: echo 'ImportAtmavio.import_ifr_points("/some/path/vfr-planner/import")' | bundle exec rails console
+  #
+  def self.import_ifr_points(import_directory)
+    logger = Logger.new(STDOUT)
+    logger.info("Started at #{Time.zone.now}")
+    txt_path = File.join(import_directory, 'Punkty IFR.txt')
+    require 'lat_lng'
+    File.readlines(txt_path).each do |line|
+      name, lat_s, lng_s, _rest = line.split(' ', 4)
+      p = LatLng.build_from_strings(lat_s, lng_s)
+      logger.info("#{name} #{p.lat} #{p.lng}")
+
+      nav_point = NavPoint.find_for_lat_lng(p.lat, p.lng)
+      nav_point.name = name
+      nav_point.kind = :ifr_point
 
       nav_point.country = 'pl'
       nav_point.declination = MagDeclination.get_declination nav_point
