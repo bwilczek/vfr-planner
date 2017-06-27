@@ -20,6 +20,8 @@ gem 'puma', '~> 3.0'
 gem 'koala', '~> 2.4'
 gem 'mysql2', '~> 0.4'
 gem 'rubyzip', '~> 1.2'
+gem 'wkhtmltopdf-binary', '0.12.3.1'
+gem 'wicked_pdf', '1.1.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri
