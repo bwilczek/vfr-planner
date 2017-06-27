@@ -32,6 +32,12 @@ export default class FlightPlanSettings extends React.Component {
     if (this.props.ui.checkboxVfrPoints) {
       this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vfr_point']))
     }
+    if (this.props.ui.checkboxIfrPoints) {
+      this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['ifr_point']))
+    }
+    if (this.props.ui.checkboxNavAids) {
+      this.props.dispatch(fetchNavPoints(this.props.ui.countries, ['vor', 'ndb', 'vor_dme', 'dme']))
+    }
     if (this.props.ui.selectedAirspaces !== 'none') {
       this.props.dispatch(fetchAirspaces(this.props.ui.countries, this.props.ui.selectedAirspaces))
     }
@@ -44,6 +50,8 @@ export default class FlightPlanSettings extends React.Component {
         <NavPointCheckbox name="airports" value={this.props.ui.checkboxAirports} kinds={['controlled', 'uncontrolled', 'military']} />
         <NavPointCheckbox name="otherAerodromes" value={this.props.ui.checkboxOtherAerodromes} kinds={['airstrip', 'helipad', 'other_airstrip']} />
         <NavPointCheckbox name="vfrPoints" value={this.props.ui.checkboxVfrPoints} kinds={['vfr_point']} />
+        <NavPointCheckbox name="ifrPoints" value={this.props.ui.checkboxIfrPoints} kinds={['ifr_point']} />
+        <NavPointCheckbox name="navAids" value={this.props.ui.checkboxNavAids} kinds={['vor', 'ndb', 'vor_dme', 'dme']} />
         <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
         <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
         <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
