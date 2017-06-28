@@ -5,7 +5,6 @@ import ReduxToastr from 'react-redux-toastr'
 import { injectIntl } from 'react-intl'
 
 import TopMenu from './TopMenu'
-import AllModals from './modals'
 import ToastrUtils from '../lib/ToastrUtils'
 
 import '../../css/font-awesome.min.css'
@@ -38,7 +37,6 @@ export default class Application extends React.Component {
   render() {
     return (
       <div>
-        <AllModals />
         <ReduxToastr
           timeOut={4000}
           newestOnTop={false}

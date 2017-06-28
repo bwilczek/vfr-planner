@@ -10,6 +10,8 @@ import NavPointCheckbox from './NavPointCheckbox'
 import AirspaceSelector from './AirspaceSelector'
 
 import { fetchNavPoints, fetchAirspaces } from '../actions/aeroDataActions'
+import { printFlightPlanModalShow } from '../actions/modalsActions'
+
 
 @injectIntl
 @connect(
@@ -46,7 +48,7 @@ export default class FlightPlanSettings extends React.Component {
   }
 
   render() {
-    const handlePrintClick = () => {console.log(123)}
+    const handlePrintClick = () => {this.props.dispatch(printFlightPlanModalShow())}
     return (
       <div>
         <FormattedMessage id="aeronauticalData" /><br />

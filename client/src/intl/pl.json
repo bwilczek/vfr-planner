@@ -75,5 +75,6 @@
   "rename": "Zmień nazwę",
   "center": "Centruj mapę",
   "remove": "Usuń",
-  "printFlightPlan": "Drukuj plan lotu"
+  "printFlightPlan": "Drukuj plan lotu",
+  "printFlightPlanHeader": "Ustawienia wydruku"
 }
