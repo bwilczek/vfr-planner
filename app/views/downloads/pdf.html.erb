@@ -1,1 +1,54 @@
-Hello <%= @name %>!
+<!doctype html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      .header-top-left {
+        width: 171px;
+        float: left;
+        height: 51px;
+        padding-right: 50px;
+      }
+      .header-top-right {
+        height: 51px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width: 100%">
+      <img class="header-top-left" src="<%= File.join(Rails.root, 'public', 'img', 'lecimy_icon.png') %>" />
+      <h1 class="header-top-right">FLIGHT PLAN</h1>
+    </div>
+    <div>
+      <hr  />
+      Hello <%= @name %>!
+      <table>
+        <tr>
+          <th>Waypoint</th>
+          <th>Course</th>
+          <th>Heading</th>
+          <th>T</th>
+        </tr>
+        <tr>
+          <td>EPWS</td>
+          <td>143°</td>
+          <td>151°</td>
+          <td>15'15"</td>
+        </tr>
+        <tr>
+          <td>EPOM</td>
+          <td>58°</td>
+          <td>55°</td>
+          <td>19'29"</td>
+        </tr>
+        <tr>
+          <td>EPLS</td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        </tr>
+      </table>
+      Zażółć Gęślą Jaźń
+    </div>
+  </body>
+</html>

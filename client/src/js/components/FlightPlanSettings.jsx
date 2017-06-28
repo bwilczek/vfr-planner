@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { injectIntl, FormattedMessage } from 'react-intl'
+import { Button } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 
 import FlightPlanSlider from './FlightPlanSlider'
 import UiRangeSlider from './UiRangeSlider'
@@ -44,6 +46,7 @@ export default class FlightPlanSettings extends React.Component {
   }
 
   render() {
+    const handlePrintClick = () => {console.log(123)}
     return (
       <div>
         <FormattedMessage id="aeronauticalData" /><br />
@@ -58,6 +61,14 @@ export default class FlightPlanSettings extends React.Component {
         <UiRangeSlider name="levels" value={this.props.flightPlan.levels} min={0} max={9500} step={100} />
         <UiRangeSlider name="hours" value={this.props.flightPlan.hours} min={4} max={24} step={1} />
         <AirspaceSelector />
+        <Button style={{width: '189px', marginTop: '10px'}} onClick={handlePrintClick}>
+          <div>
+            <FontAwesome name="print" size="2x" style={{display: 'inline-block', height: '17px', verticalAlign: 'top'}}/>
+            <div style={{display: 'inline-block', verticalAlign: 'bottom', height: '23px', marginLeft: '10px', marginTop: '5px', fontWeight: 'bold'}}>
+              <FormattedMessage id="printFlightPlan"/>
+            </div>
+          </div>
+        </Button>
       </div>
     )
   }

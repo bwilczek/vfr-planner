@@ -74,5 +74,6 @@
   "no": "No",
   "rename": "Rename",
   "center": "Center",
-  "remove": "Remove"
+  "remove": "Remove",
+  "printFlightPlan": "Print flight plan"
 }
