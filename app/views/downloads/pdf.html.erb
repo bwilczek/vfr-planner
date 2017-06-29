@@ -21,22 +21,26 @@
     </div>
     <div>
       <hr />
-      <%= @flight_plan['windSpeed'] %> <%= @flight_plan['windDirection'] %> <%= @flight_plan['tas'] %>
+      <%= @wind_speed %> <%= @wind_direction %> <%= @tas %>
       <hr />
       <table>
         <tr>
           <th>Waypoint</th>
           <th>Course [G]</th>
+          <th>Course [M]</th>
           <th>Heading [M]</th>
           <th>T</th>
+          <th>S</th>
         </tr>
 
 <% @navigation_data['waypoints'].each do |waypoint| %>
         <tr>
           <td><%= waypoint['name'] %></td>
-          <td><%= waypoint['course'] %>°</td>
-          <td><%= waypoint['heading'] %>°</td>
+          <td><%= waypoint['course'] %></td>
+          <td><%= waypoint['courseMag'] %></td>
+          <td><%= waypoint['heading'] %></td>
           <td><%= waypoint['segmentDuration'] %></td>
+          <td><%= waypoint['segmentDistance'] %></td>
         </tr>
 <% end %>
 

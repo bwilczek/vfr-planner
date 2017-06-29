@@ -1,8 +1,8 @@
-export function computeWindTriange(airSpeed, course, distance, windSpeed, windDirection, declination) {
+export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, windDirection) {
   let degreesToRadians = (deg) => deg * (Math.PI / 180)
   let radiansToDegrees = (rad) => rad / (Math.PI / 180)
 
-  const courseRadians = degreesToRadians(course - declination)
+  const courseRadians = degreesToRadians(courseMag)
   let windDirectionRadians = degreesToRadians((windDirection + 180) % 360)
 
   if (windDirectionRadians > Math.PI) {

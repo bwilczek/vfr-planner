@@ -24,6 +24,9 @@ import { getNavigationData } from '../../selectors/navigationData'
       },
       fetchPdf: (data) => {
         dispatch(fetchPdf(data))
+      },
+      updatePrintSettings: (fields) => {
+        dispatch(updatePrintSettings(fields))
       }
     }
   }
@@ -31,11 +34,11 @@ import { getNavigationData } from '../../selectors/navigationData'
 export default class PrintFlightPlanDialog extends React.Component {
 
   render() {
-
     const handlePdfDownload = () => {
-      console.log(this.props.printSettings)
       this.props.fetchPdf({
-        flightPlan: this.props.flightPlan,
+        tas: this.props.flightPlan.tas,
+        windSpeed: this.props.flightPlan.windSpeed,
+        windDirection: this.props.flightPlan.windDirection,
         navigationData: this.props.navigationData,
         printSettings: this.props.printSettings
       })

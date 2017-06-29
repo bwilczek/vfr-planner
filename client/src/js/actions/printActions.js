@@ -16,11 +16,11 @@ export function fetchPdf(params) {
     dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
     axios.get('/api/downloads/pdf', {responseType: 'blob', params}).then(
       (response) => {
-        console.log(response)
         dispatch(toastrActions.remove('pleaseWait'))
         fileDownload(response.data, 'plan.pdf', 'application/pdf')
       },
       (error) => {
+        console.log(error)
         dispatch(toastrActions.remove('pleaseWait'))
         dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
       }

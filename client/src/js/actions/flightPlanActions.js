@@ -66,13 +66,13 @@ export function saveFlightPlan(data) {
     dispatch(toastrActions.add(ToastrUtils.configForSaveFlightPlan()))
     axios.post('/api/plans', {plan: data}).then(
       (response) => {
-        console.log(response.data)
         dispatch(toastrActions.remove('backgroundActionSaveFlightPlan'))
         dispatch(updateFlightPlan(response.data))
         browserHistory.push(`/plan-${response.data.id}`)
       },
       (error) => {
         // dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+        console.log(error)
         dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
       }
     )

@@ -1,6 +1,8 @@
 class DownloadsController < ActionController::Base
   def pdf
-    @flight_plan = JSON.parse(params['flightPlan'])
+    @wind_speed = params['windSpeed']
+    @wind_direction = params['windDirection']
+    @tas = params['tas']
     @navigation_data = JSON.parse(params['navigationData'])
     @print_settings = JSON.parse(params['printSettings'])
     Rails.logger.info('=================')

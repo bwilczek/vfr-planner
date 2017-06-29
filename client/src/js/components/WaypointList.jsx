@@ -10,8 +10,6 @@ import { updateUi } from '../actions/uiActions'
 import { renameModalShow } from '../actions/modalsActions'
 import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
 
-import * as format from '../lib/Formatter'
-
 // TODO: evaluate if moving styles to CSS files is beneficial, do it if so
 const dragHandleStyle = {
   marginLeft: '2px',
@@ -40,11 +38,11 @@ const SortableItem = SortableElement(({value, dispatch}) => {
         <table>
           <tbody>
             <tr>
-              <td rowSpan="2" style={{fontSize: '24px', width: '65px', paddingRight: '10px', textAlign: 'right'}}>{format.heading(value.heading)}</td>
-              <td>{format.distance(value.segmentDistance)}</td>
+              <td rowSpan="2" style={{fontSize: '24px', width: '65px', paddingRight: '10px', textAlign: 'right'}}>{value.heading}</td>
+              <td>{value.segmentDistance}</td>
             </tr>
             <tr>
-              <td dangerouslySetInnerHTML={{__html: format.duration(value.segmentDuration)}} />
+              <td dangerouslySetInnerHTML={{__html: value.segmentDuration}} />
             </tr>
           </tbody>
         </table>
@@ -103,8 +101,8 @@ export default class WaypointList extends React.Component {
       <div>
         <SortableList dispatch={this.props.dispatch} items={this.props.navigationData.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
         <div style={{borderTop: '1px solid', marginTop: '5px'}}>
-          Total distance: {format.distance(this.props.navigationData.totalDistance)}<br />
-          Total duration: <span dangerouslySetInnerHTML={{__html: format.duration(this.props.navigationData.totalDuration)}} />
+          Total distance: {this.props.navigationData.totalDistance}<br />
+          Total duration: <span dangerouslySetInnerHTML={{__html: this.props.navigationData.totalDuration}} />
         </div>
       </div>
     )
