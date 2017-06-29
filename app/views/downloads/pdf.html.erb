@@ -20,35 +20,27 @@
       <h1 class="header-top-right">FLIGHT PLAN</h1>
     </div>
     <div>
-      <hr  />
-      Hello <%= @name %>!
+      <hr />
+      <%= @flight_plan['windSpeed'] %> <%= @flight_plan['windDirection'] %> <%= @flight_plan['tas'] %>
+      <hr />
       <table>
         <tr>
           <th>Waypoint</th>
-          <th>Course</th>
-          <th>Heading</th>
+          <th>Course [G]</th>
+          <th>Heading [M]</th>
           <th>T</th>
         </tr>
+
+<% @navigation_data['waypoints'].each do |waypoint| %>
         <tr>
-          <td>EPWS</td>
-          <td>143°</td>
-          <td>151°</td>
-          <td>15'15"</td>
+          <td><%= waypoint['name'] %></td>
+          <td><%= waypoint['course'] %>°</td>
+          <td><%= waypoint['heading'] %>°</td>
+          <td><%= waypoint['segmentDuration'] %></td>
         </tr>
-        <tr>
-          <td>EPOM</td>
-          <td>58°</td>
-          <td>55°</td>
-          <td>19'29"</td>
-        </tr>
-        <tr>
-          <td>EPLS</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
+<% end %>
+
       </table>
-      Zażółć Gęślą Jaźń
     </div>
   </body>
 </html>

@@ -72,7 +72,8 @@ export function saveFlightPlan(data) {
         browserHistory.push(`/plan-${response.data.id}`)
       },
       (error) => {
-        dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+        // dispatch({type: 'XHR_REQUEST_FAILED', payload: error})
+        dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
       }
     )
   }
