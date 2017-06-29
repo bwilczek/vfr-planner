@@ -32,6 +32,8 @@ export const getNavigationData = createSelector(
         }
         segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
         let nav = navUtils.computeWindTriange(flightPlan.tas, courseMag, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection)
+        totalDistance += segmentDistance
+        totalDuration += nav.segmentDuration
         newWaypoint = {
           ...wp,
           course: format.heading(course),
@@ -39,10 +41,9 @@ export const getNavigationData = createSelector(
           segmentDistance: format.distance(segmentDistance),
           heading: format.heading(nav.heading),
           groundSpeed: format.speed(nav.groundSpeed),
-          segmentDuration: format.duration(nav.segmentDuration)
+          segmentDuration: format.duration(nav.segmentDuration),
+          subTotalDuration: format.duration(totalDuration)
         }
-        totalDistance += segmentDistance
-        totalDuration += nav.segmentDuration
       } else {
         newWaypoint = {
           ...wp,

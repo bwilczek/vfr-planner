@@ -13,6 +13,14 @@ class NavPointsController < ApplicationController
     point = NavPoint.find_for_lat_lng(params[:lat].to_f, params[:lng].to_f)
     name = NavPoint.get_name point
     point.declination = MagDeclination.get_declination point unless point.declination
-    render json: { declination: point.declination, radio: point.radio, elevation: point.elevation, name: name, key: params[:key], lat: params[:lat], lng: params[:lng] }
+    render json: {
+      declination: point.declination,
+      radio: point.radio,
+      elevation: point.elevation,
+      name: name,
+      key: params[:key],
+      lat: params[:lat],
+      lng: params[:lng]
+    }
   end
 end

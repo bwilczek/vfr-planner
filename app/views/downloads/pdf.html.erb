@@ -31,6 +31,7 @@
           <th>Heading [M]</th>
           <th>T</th>
           <th>S</th>
+          <th>sum T</th>
         </tr>
 
 <% @navigation_data['waypoints'].each do |waypoint| %>
@@ -39,8 +40,9 @@
           <td><%= waypoint['course'] %></td>
           <td><%= waypoint['courseMag'] %></td>
           <td><%= waypoint['heading'] %></td>
-          <td><%= waypoint['segmentDuration'] %></td>
+          <td><%= raw waypoint['segmentDuration'] %></td>
           <td><%= waypoint['segmentDistance'] %></td>
+          <td><%= raw waypoint['subTotalDuration'] %></td>
         </tr>
 <% end %>
 
