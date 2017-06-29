@@ -88,7 +88,7 @@ export default class Map extends React.Component {
 
   onMarkerClick(marker) {
     let name = marker.navPoint.icao_code ? marker.navPoint.icao_code : marker.navPoint.name
-    this.props.addWaypoint({name: name, declination: marker.navPoint.declination, latLng: marker.position, key: `${random(10000, 99999)}-${Date.now()}`})
+    this.props.addWaypoint({name: name, radio: marker.navPoint.radio, elevation: marker.navPoint.elevation, declination: marker.navPoint.declination, latLng: marker.position, key: `${random(10000, 99999)}-${Date.now()}`})
   }
 
   onMarkerRightClick(marker) {

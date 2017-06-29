@@ -45,6 +45,13 @@
 <% end %>
 
       </table>
+
+<ul>
+<% @navigation_data['waypoints'].select{ |wp| wp['radio'] }.each do |waypoint| %>
+  <li><%= waypoint['radio'] %></li>
+<% end %>
+</ul>
+
     </div>
   </body>
 </html>
