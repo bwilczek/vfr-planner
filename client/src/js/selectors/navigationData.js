@@ -2,6 +2,7 @@ import { createSelector } from 'reselect'
 import { forEach } from 'lodash'
 
 import * as navUtils from '../lib/NavigationUtils'
+import * as format from '../lib/Formatter'
 
 const flightPlanSelector = state => state.flightPlan
 
@@ -25,22 +26,31 @@ export const getNavigationData = createSelector(
         if (course < 0) {
           course += 360
         }
-        segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
-        let nav = navUtils.computeWindTriange(flightPlan.tas, course, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection, wp.declination)
-        newWaypoint = {
-          ...wp,
-          course,
-          segmentDistance,
-          ...nav,
+        let courseMag = course - wp.declination
+        if (courseMag < 0) {
+          courseMag += 360
         }
+        segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
+        let nav = navUtils.computeWindTriange(flightPlan.tas, courseMag, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection)
         totalDistance += segmentDistance
         totalDuration += nav.segmentDuration
+        newWaypoint = {
+          ...wp,
+          course: format.heading(course),
+          courseMag: format.heading(courseMag),
+          segmentDistance: format.distance(segmentDistance),
+          heading: format.heading(nav.heading),
+          groundSpeed: format.speed(nav.groundSpeed),
+          segmentDuration: format.duration(nav.segmentDuration),
+          subTotalDuration: format.duration(totalDuration)
+        }
       } else {
         newWaypoint = {
           ...wp,
           heading: null,
           segmentDistance: null,
           course: null,
+          courseMag: null,
           groundSpeed: null,
           segmentDuration: null,
         }
@@ -48,6 +58,6 @@ export const getNavigationData = createSelector(
 
       waypoints.push(newWaypoint)
     })
-    return { waypoints, totalDuration, totalDistance }
+    return { waypoints, totalDuration: format.duration(totalDuration), totalDistance: format.distance(totalDistance) }
   }
 )

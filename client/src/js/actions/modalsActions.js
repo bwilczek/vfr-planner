@@ -53,3 +53,17 @@ export function editFlightPlanModalHide() {
     payload: null
   }
 }
+
+export function printFlightPlanModalShow() {
+  return {
+    type: 'FLIGHT_PLAN_PRINT_MODAL_SHOW',
+    payload: null
+  }
+}
+
+export function printFlightPlanModalHide() {
+  return {
+    type: 'FLIGHT_PLAN_PRINT_MODAL_HIDE',
+    payload: null
+  }
+}

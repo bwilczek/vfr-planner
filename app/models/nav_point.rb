@@ -27,11 +27,10 @@ class NavPoint < ApplicationRecord
     ICAO_CODE_MAPPING[icao_code[0...2]]
   end
 
-  def self.get_name(location)
-    point = find_for_lat_lng(location.lat, location.lng)
+  def self.get_name(point)
     return point.icao_code if point.icao_code
     return point.name if point.name
-    data = fetch_geocode(location)
+    data = fetch_geocode(point)
     data['results'].first['address_components'].select { |item| item['types'].include?('political') }.first['short_name']
   end
 

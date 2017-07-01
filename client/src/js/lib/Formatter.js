@@ -1,8 +1,14 @@
 import { round } from 'lodash'
+import { sprintf } from 'sprintf-js'
 import moment from 'moment'
+import { standardizeLatLng } from './NavigationUtils'
 
 export function distance(meters) {
   return round(meters / 1852, 1) + 'NM'
+}
+
+export function speed(speed, precision = 1) {
+  return round(speed, 1) + 'kt'
 }
 
 export function duration(secs) {
@@ -15,4 +21,36 @@ export function duration(secs) {
 
 export function heading(degrees) {
   return Math.round(degrees) + '°'
+}
+
+export function coords(location) {
+  const stdLocation = standardizeLatLng(location)
+
+  let o = {}
+  let secs
+
+  let lat = stdLocation.lat()
+  o.latDeg = parseInt(lat)
+  secs = parseInt((lat - o.latDeg) * 3600)
+  o.latMin = Math.abs(parseInt(secs / 60))
+  o.latSec = Math.abs(parseInt(secs % 60))
+  o.latDir = (o.latDeg > 0) ? 'N' : 'S'
+  o.latDeg = Math.abs(o.latDeg)
+
+  let lng = stdLocation.lng()
+  o.lngDeg = parseInt(lng)
+  secs = parseInt((lng - o.lngDeg) * 3600)
+  o.lngMin = Math.abs(parseInt(secs / 60))
+  o.lngSec = Math.abs(parseInt(secs % 60))
+  o.lngDir = (o.lngDeg > 0) ? 'E' : 'W'
+  o.lngDeg = Math.abs(o.lngDeg)
+
+  return sprintf('%02d', parseInt(o.latDeg)) + '°' +
+    sprintf('%02d', parseInt(o.latMin)) + "'" +
+    sprintf('%02d', parseInt(o.latSec)) + '"' +
+    o.latDir + ' ' +
+    sprintf('%03d', parseInt(o.lngDeg)) + '°' +
+    sprintf('%02d', parseInt(o.lngMin)) + "'" +
+    sprintf('%02d', parseInt(o.lngSec)) + '"' +
+    o.lngDir
 }

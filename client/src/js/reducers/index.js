@@ -9,6 +9,7 @@ import google from './google'
 import flightPlan from './flightPlan'
 import modals from './modals'
 import airspaces from './airspaces'
+import printSettings from './printSettings'
 
 export default combineReducers({
   intl,
@@ -19,5 +20,6 @@ export default combineReducers({
   flightPlan,
   google,
   modals,
-  airspaces
+  airspaces,
+  printSettings
 })

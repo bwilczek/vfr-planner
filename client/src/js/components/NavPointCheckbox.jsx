@@ -29,6 +29,7 @@ import { updateUi } from '../actions/uiActions'
 export default class NavPointCheckbox extends React.Component {
 
   checkboxClicked(kinds) {
+    // ucfirst
     const checkboxName = 'checkbox' + this.props.name.charAt(0).toUpperCase() + this.props.name.slice(1)
     const fields = {}
     fields[checkboxName] = !this.props.value
@@ -41,7 +42,6 @@ export default class NavPointCheckbox extends React.Component {
   }
 
   render() {
-    // ucfirst
     return (
       <div style={{fontSize: '12px'}}>
         <input
