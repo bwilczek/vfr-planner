@@ -76,5 +76,12 @@
   "center": "Centruj mapę",
   "remove": "Usuń",
   "printFlightPlan": "Drukuj plan lotu",
-  "printFlightPlanHeader": "Ustawienia wydruku"
+  "printFlightPlanHeader": "Ustawienia wydruku",
+  "columnGroundSpeed": "Prędkość podróżna",
+  "columnCourseMag": "Nakazany magnetyczny kąt drogi",
+  "columnHeading": "Kurs magnetyczny",
+  "columnSegmentDuration": "Czas odcinka",
+  "columnSegmentDistance": "Długość odcinka",
+  "columnCoords": "Współrzędne punktu",
+  "columnSubTotalDuration": "Sumaryczny czas lotu"
 }

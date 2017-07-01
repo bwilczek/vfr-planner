@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import { Modal, Button } from 'react-bootstrap'
 import { FormattedMessage } from 'react-intl'
 
 import { printFlightPlanModalHide } from '../../actions/modalsActions'
 import { fetchPdf, updatePrintSettings } from '../../actions/printActions'
 import { getNavigationData } from '../../selectors/navigationData'
+import PrintSettingsCheckbox from '../PrintSettingsCheckbox'
 
 @connect(
   (state) => {
@@ -33,16 +33,20 @@ import { getNavigationData } from '../../selectors/navigationData'
 )
 export default class PrintFlightPlanDialog extends React.Component {
 
+  downloadPdf() {
+    this.props.fetchPdf({
+      tas: this.props.flightPlan.tas,
+      windSpeed: this.props.flightPlan.windSpeed,
+      windDirection: this.props.flightPlan.windDirection,
+      navigationData: this.props.navigationData,
+      printSettings: this.props.printSettings
+    })
+  }
+
   render() {
-    const handlePdfDownload = () => {
-      this.props.fetchPdf({
-        tas: this.props.flightPlan.tas,
-        windSpeed: this.props.flightPlan.windSpeed,
-        windDirection: this.props.flightPlan.windDirection,
-        navigationData: this.props.navigationData,
-        printSettings: this.props.printSettings
-      })
-    }
+    const checkboxList = Object.keys(this.props.printSettings).map((key) => {
+      return <PrintSettingsCheckbox key={key} settingKey={key} />
+    })
 
     return (
       <Modal show={this.props.dialogOpen} onHide={this.props.closeDialog}>
@@ -51,11 +55,13 @@ export default class PrintFlightPlanDialog extends React.Component {
         </Modal.Header>
         <Modal.Body>
 
-          <Button onClick={handlePdfDownload}>PDF</Button>
+          {checkboxList}
 
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.closeDialog}><FormattedMessage id="cancel" /></Button>
+          <Button disabled>GPX</Button>
+          <Button disabled>KML</Button>
+          <Button onClick={this.downloadPdf.bind(this)}>PDF</Button>
         </Modal.Footer>
       </Modal>
     )

@@ -76,5 +76,12 @@
   "center": "Center",
   "remove": "Remove",
   "printFlightPlan": "Print flight plan",
-  "printFlightPlanHeader": "Printout settings"
+  "printFlightPlanHeader": "Printout settings",
+  "columnGroundSpeed": "Groud speed",
+  "columnCourseMag": "Course (MAG)",
+  "columnHeading": "Heading",
+  "columnSegmentDuration": "Segment duration",
+  "columnSegmentDistance": "Segment distance",
+  "columnCoords": "Waypoints coordinates",
+  "columnSubTotalDuration": "Partial flight duration"
 }

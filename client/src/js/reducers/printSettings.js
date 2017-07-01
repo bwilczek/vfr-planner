@@ -1,9 +1,11 @@
 const initialState = {
   columnGroundSpeed: true,
-  columnCourse: true,
+  columnCourseMag: true,
   columnHeading: true,
   columnSegmentDuration: true,
-  columnSegmentDistance: true
+  columnSegmentDistance: true,
+  columnCoords: false,
+  columnSubTotalDuration: false
 }
 
 export default function reducer(state = initialState, action) {
