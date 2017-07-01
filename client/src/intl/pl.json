@@ -83,5 +83,17 @@
   "columnSegmentDuration": "Czas odcinka",
   "columnSegmentDistance": "Długość odcinka",
   "columnCoords": "Współrzędne punktu",
-  "columnSubTotalDuration": "Sumaryczny czas lotu"
+  "columnSubTotalDuration": "Sumaryczny czas lotu",
+  "flightPlan": "PLAN LOTU",
+  "wind": "Wiatr",
+  "tas": "TAS",
+  "headerWpt": "Trasa",
+  "headerCoords": "Współrzędne",
+  "headerCourse": "NKDG",
+  "headerCourseMag": "NKDM",
+  "headerHeading": "KM",
+  "headerSegmentDistance": "S[NM]",
+  "headerGroundSpeed": "W",
+  "headerSegmentDuration": "t",
+  "headerSubTotalDuration": "∑t"
 }

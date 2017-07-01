@@ -3,6 +3,9 @@
   <head>
     <meta charset='utf-8' />
     <style>
+      body {
+        font-size: 20px;
+      }
       .header-top-left {
         width: 171px;
         float: left;
@@ -12,32 +15,57 @@
       .header-top-right {
         height: 51px;
       }
+      table {
+          border-collapse: collapse;
+      }
+      table, th, td {
+         border: 1px solid black;
+      }
+      td {
+        font-size: 20px;
+        padding: 5px;
+      }
+      .text-right {
+        text-align: right;
+      }
     </style>
   </head>
   <body>
     <div style="width: 100%">
       <img class="header-top-left" src="<%= File.join(Rails.root, 'public', 'img', 'lecimy_icon.png') %>" />
-      <h1 class="header-top-right">PLAN LOTU</h1>
+      <h1 class="header-top-right"><%= @intl['flightPlan'] %></h1>
     </div>
     <div>
       <hr />
-      Wiatr: <%= @wind_speed %> <%= @wind_direction %>, TAS: <%= @tas %>
+      <%= @intl['wind'] %>: <%= @wind_speed %> <%= @wind_direction %>, <%= @intl['tas'] %>: <%= @tas %>
       <hr />
-      <table>
 
-      <%= render 'pdf_header', columns: @print_settings %>
+      <table>
+      <%= render 'pdf_header', columns: @print_settings, intl: @intl %>
 
       <% @navigation_data['waypoints'].each do |waypoint| %>
         <%= render 'pdf_row', waypoint: waypoint, columns: @print_settings %>
       <% end %>
 
+      <%= render 'pdf_footer',
+            columns: @print_settings,
+            total_duration: @navigation_data['totalDuration'],
+            total_distance: @navigation_data['totalDistance']
+      %>
       </table>
 
-<ul>
-<% @navigation_data['waypoints'].select{ |wp| wp['radio'] }.each do |waypoint| %>
-  <li><%= waypoint['name'] %> <%= waypoint['radio'] %> <%= waypoint['elevation'] %></li>
-<% end %>
-</ul>
+      <br />
+      <br />
+
+      <table>
+      <% @navigation_data['waypoints'].select{ |wp| wp['radio'] }.each do |waypoint| %>
+        <tr>
+          <td><%= waypoint['name'] %></td>
+          <td><%= waypoint['radio'] %></td>
+          <td><%= waypoint['elevation'] %></td>
+        </tr>
+      <% end %>
+      <table>
 
     </div>
   </body>

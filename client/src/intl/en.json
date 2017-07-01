@@ -83,5 +83,17 @@
   "columnSegmentDuration": "Segment duration",
   "columnSegmentDistance": "Segment distance",
   "columnCoords": "Waypoints coordinates",
-  "columnSubTotalDuration": "Partial flight duration"
+  "columnSubTotalDuration": "Partial flight duration",
+  "flightPlan": "FLIGHT PLAN",
+  "wind": "Wind",
+  "tas": "TAS",
+  "headerWpt": "Check Point",
+  "headerCoords": "Coordinates",
+  "headerCourse": "TC",
+  "headerCourseMag": "MC",
+  "headerHeading": "MH",
+  "headerSegmentDistance": "Dist",
+  "headerGroundSpeed": "GS",
+  "headerSegmentDuration": "Time",
+  "headerSubTotalDuration": "∑ Time"
 }

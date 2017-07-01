@@ -1,10 +1,10 @@
 <tr>
   <td><%= waypoint['name'] %></td>
   <td <%= raw columns['columnCoords'] ? '' : 'style="display: none"'%>><%= waypoint['coords'] %></td>
-  <td <%= raw columns['columnCourseMag'] ? '' : 'style="display: none"'%>><%= waypoint['courseMag'] %></td>
-  <td <%= raw columns['columnHeading'] ? '' : 'style="display: none"'%>><%= waypoint['heading'] %></td>
-  <td <%= raw columns['columnSegmentDistance'] ? '' : 'style="display: none"'%>><%= waypoint['segmentDistance'] %></td>
+  <td class="text-right" <%= raw columns['columnCourseMag'] ? '' : 'style="display: none"'%>><%= waypoint['courseMag'] %></td>
+  <td class="text-right" <%= raw columns['columnHeading'] ? '' : 'style="display: none"'%>><%= waypoint['heading'] %></td>
+  <td class="text-right" <%= raw columns['columnSegmentDistance'] ? '' : 'style="display: none"'%>><%= waypoint['segmentDistance'] %></td>
   <td <%= raw columns['columnGroundSpeed'] ? '' : 'style="display: none"'%>><%= waypoint['groundSpeed'] %></td>
-  <td <%= raw columns['columnSegmentDuration'] ? '' : 'style="display: none"'%>><%= raw waypoint['segmentDuration'] %></td>
-  <td <%= raw columns['columnSubTotalDuration'] ? '' : 'style="display: none"'%>><%= raw waypoint['subTotalDuration'] %></td>
+  <td class="text-right" <%= raw columns['columnSegmentDuration'] ? '' : 'style="display: none"'%>><%= raw waypoint['segmentDuration'] %></td>
+  <td class="text-right" <%= raw columns['columnSubTotalDuration'] ? '' : 'style="display: none"'%>><%= raw waypoint['subTotalDuration'] %></td>
 </tr>

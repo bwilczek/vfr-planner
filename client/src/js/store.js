@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
   middleware = applyMiddleware(promise(), thunk)
 }
 
-const cacheKey = 'reduxState_v6'
+const cacheKey = 'state_v0.5.2'
 // let defaultState
 let defaultState = localStorage.getItem(cacheKey) ? JSON.parse(localStorage.getItem(cacheKey)) : undefined
 if (defaultState === undefined) {
