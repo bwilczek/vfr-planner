@@ -7,6 +7,7 @@ import { printFlightPlanModalHide } from '../../actions/modalsActions'
 import { fetchPdf, updatePrintSettings } from '../../actions/printActions'
 import { getNavigationData } from '../../selectors/navigationData'
 import PrintSettingsCheckbox from '../PrintSettingsCheckbox'
+import * as format from '../../lib/Formatter'
 
 @connect(
   (state) => {
@@ -35,9 +36,9 @@ export default class PrintFlightPlanDialog extends React.Component {
 
   downloadPdf() {
     this.props.fetchPdf({
-      tas: this.props.flightPlan.tas,
-      windSpeed: this.props.flightPlan.windSpeed,
-      windDirection: this.props.flightPlan.windDirection,
+      tas: format.speed(this.props.flightPlan.tas, 0),
+      windSpeed: format.speed(this.props.flightPlan.windSpeed, 0),
+      windDirection: format.heading(this.props.flightPlan.windDirection),
       navigationData: this.props.navigationData,
       printSettings: this.props.printSettings
     })

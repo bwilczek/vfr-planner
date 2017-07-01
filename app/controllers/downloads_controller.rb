@@ -5,9 +5,6 @@ class DownloadsController < ActionController::Base
     @tas = params['tas']
     @navigation_data = JSON.parse(params['navigationData'])
     @print_settings = JSON.parse(params['printSettings'])
-    Rails.logger.info('=================')
-    Rails.logger.info(@navigation_data['waypoints'][0].keys)
-    Rails.logger.info('=================')
-    render pdf: 'demo', disposition: 'inline', page_size: 'A4'
+    render pdf: 'demo', disposition: 'inline', page_size: 'A4', show_as_html: false
   end
 end

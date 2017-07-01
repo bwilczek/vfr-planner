@@ -12,6 +12,7 @@ import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoin
 import { renameModalShow } from '../actions/modalsActions'
 import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
+import * as format from '../lib/Formatter'
 
 @injectIntl
 @connect(
@@ -88,7 +89,15 @@ export default class Map extends React.Component {
 
   onMarkerClick(marker) {
     let name = marker.navPoint.icao_code ? marker.navPoint.icao_code : marker.navPoint.name
-    this.props.addWaypoint({name: name, radio: marker.navPoint.radio, elevation: marker.navPoint.elevation, declination: marker.navPoint.declination, latLng: marker.position, key: `${random(10000, 99999)}-${Date.now()}`})
+    this.props.addWaypoint({
+      name: name,
+      radio: marker.navPoint.radio,
+      elevation: marker.navPoint.elevation,
+      declination: marker.navPoint.declination,
+      latLng: marker.position,
+      coords: format.coords(marker.position),
+      key: `${random(10000, 99999)}-${Date.now()}`
+    })
   }
 
   onMarkerRightClick(marker) {
@@ -124,7 +133,11 @@ export default class Map extends React.Component {
   }
 
   onMapClick(e) {
-    this.props.addWaypointWithName({name: `WPT ${this.props.waypoints.length + 1}`, latLng: e.latLng, key: `${random(10000, 99999)}-${Date.now()}`})
+    this.props.addWaypointWithName({
+      name: `WPT ${this.props.waypoints.length + 1}`,
+      latLng: e.latLng,
+      key: `${random(10000, 99999)}-${Date.now()}`
+    })
   }
 
   onMapIdle(e) {

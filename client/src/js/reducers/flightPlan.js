@@ -1,4 +1,5 @@
 import { findIndex, cloneDeep, remove } from 'lodash'
+import * as format from '../lib/Formatter'
 
 const initialState = {
   windSpeed: 0,
@@ -60,6 +61,7 @@ export default function reducer(state = initialState, action) {
       waypoints[i].declination = action.payload.data.declination
       waypoints[i].radio = action.payload.data.radio
       waypoints[i].elevation = action.payload.data.elevation
+      waypoints[i].coords = format.coords(action.payload.data)
       return {...state, waypoints}
     }
   }

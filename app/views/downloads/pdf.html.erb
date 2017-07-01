@@ -17,40 +17,25 @@
   <body>
     <div style="width: 100%">
       <img class="header-top-left" src="<%= File.join(Rails.root, 'public', 'img', 'lecimy_icon.png') %>" />
-      <h1 class="header-top-right">FLIGHT PLAN</h1>
+      <h1 class="header-top-right">PLAN LOTU</h1>
     </div>
     <div>
       <hr />
-      <%= @wind_speed %> <%= @wind_direction %> <%= @tas %>
+      Wiatr: <%= @wind_speed %> <%= @wind_direction %>, TAS: <%= @tas %>
       <hr />
       <table>
-        <tr>
-          <th>Waypoint</th>
-          <th>Course [G]</th>
-          <th>Course [M]</th>
-          <th>Heading [M]</th>
-          <th>T</th>
-          <th>S</th>
-          <th>sum T</th>
-        </tr>
 
-<% @navigation_data['waypoints'].each do |waypoint| %>
-        <tr>
-          <td><%= waypoint['name'] %></td>
-          <td><%= waypoint['course'] %></td>
-          <td><%= waypoint['courseMag'] %></td>
-          <td><%= waypoint['heading'] %></td>
-          <td><%= raw waypoint['segmentDuration'] %></td>
-          <td><%= waypoint['segmentDistance'] %></td>
-          <td><%= raw waypoint['subTotalDuration'] %></td>
-        </tr>
-<% end %>
+      <%= render 'pdf_header', columns: @print_settings %>
+
+      <% @navigation_data['waypoints'].each do |waypoint| %>
+        <%= render 'pdf_row', waypoint: waypoint, columns: @print_settings %>
+      <% end %>
 
       </table>
 
 <ul>
 <% @navigation_data['waypoints'].select{ |wp| wp['radio'] }.each do |waypoint| %>
-  <li><%= waypoint['radio'] %></li>
+  <li><%= waypoint['name'] %> <%= waypoint['radio'] %> <%= waypoint['elevation'] %></li>
 <% end %>
 </ul>
 
