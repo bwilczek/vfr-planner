@@ -30,7 +30,7 @@ export default class FlightPlanSlider extends React.Component {
   render() {
     return (
       <div class='planner-left-section'>
-        <FormattedMessage id={this.props.name} />: {this.props.value}<br />
+        <FormattedMessage id={this.props.name} />: {this.props.value}{this.props.unit}<br />
         <ReactBootstrapSlider
           name={this.props.name}
           value={this.props.value}

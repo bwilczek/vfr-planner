@@ -56,13 +56,13 @@ export default class FlightPlanSettings extends React.Component {
         <NavPointCheckbox name="vfrPoints" value={this.props.ui.checkboxVfrPoints} kinds={['vfr_point']} />
         <NavPointCheckbox name="ifrPoints" value={this.props.ui.checkboxIfrPoints} kinds={['ifr_point']} />
         <NavPointCheckbox name="navAids" value={this.props.ui.checkboxNavAids} kinds={['vor', 'ndb', 'vor_dme', 'dme']} />
-        <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} />
-        <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} />
-        <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} />
-        <UiRangeSlider name="levels" value={this.props.flightPlan.levels} min={0} max={9500} step={100} />
+        <FlightPlanSlider name="tas" value={this.props.flightPlan.tas} min={20} max={200} step={5} unit='kt' />
+        <FlightPlanSlider name="windSpeed" value={this.props.flightPlan.windSpeed} min={0} max={50} step={5} unit='kt' />
+        <FlightPlanSlider name="windDirection" value={this.props.flightPlan.windDirection} min={0} max={355} step={5} unit='°' />
+        <UiRangeSlider name="levels" value={this.props.flightPlan.levels} min={0} max={9500} step={100} unit='ft'/>
         <UiRangeSlider name="hours" value={this.props.flightPlan.hours} min={4} max={24} step={1} />
         <AirspaceSelector />
-        <Button style={{width: '189px', marginTop: '10px'}} onClick={handlePrintClick}>
+        <Button style={{width: '189px', marginTop: '10px'}} disabled={this.props.flightPlan.waypoints.length < 2} onClick={handlePrintClick}>
           <div>
             <FontAwesome name="print" size="2x" style={{display: 'inline-block', height: '17px', verticalAlign: 'top'}}/>
             <div style={{display: 'inline-block', verticalAlign: 'bottom', height: '23px', marginLeft: '10px', marginTop: '5px', fontWeight: 'bold'}}>

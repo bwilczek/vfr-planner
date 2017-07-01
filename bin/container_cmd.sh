@@ -5,6 +5,7 @@
 echo "export const FACEBOOK_APP_ID = '$FACEBOOK_APP_ID'" > /app/client/src/js/secrets.js
 echo "export const GOOGLE_APP_ID = '$GOOGLE_APP_ID'" >> /app/client/src/js/secrets.js
 echo "export const GOOGLE_MAPS_KEY = '$GOOGLE_MAPS_KEY'" >> /app/client/src/js/secrets.js
+echo "export const GOOGLE_ANALYTICS_KEY = '$GOOGLE_ANALYTICS_KEY'" >> /app/client/src/js/secrets.js
 
 cd /app/client && NODE_ENV=production ./node_modules/.bin/webpack -p
 
