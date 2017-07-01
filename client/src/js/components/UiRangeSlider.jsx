@@ -31,7 +31,7 @@ export default class UiRangeSlider extends React.Component {
   render() {
     return (
       <div class='planner-left-section'>
-        <FormattedMessage id={this.props.name} />: {this.props.value[0]}-{this.props.value[1]}<br />
+        <FormattedMessage id={this.props.name} />: {this.props.value[0]}-{this.props.value[1]}{this.props.unit}<br />
         <ReactBootstrapSlider
           name={this.props.name}
           value={this.props.value}
