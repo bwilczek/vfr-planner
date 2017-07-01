@@ -36,7 +36,6 @@ import * as format from '../../lib/Formatter'
 export default class PrintFlightPlanDialog extends React.Component {
 
   downloadPdf() {
-
     const fm = this.props.intl.formatMessage
 
     this.props.fetchPdf({
