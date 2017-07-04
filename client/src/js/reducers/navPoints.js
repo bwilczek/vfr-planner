@@ -1,4 +1,4 @@
-import { filter, includes } from 'lodash'
+import { filter, includes, uniqBy } from 'lodash'
 
 const initialState = []
 
@@ -12,8 +12,7 @@ export default function reducer(state = initialState, action) {
       return [...state]
     }
     case 'FETCH_NAV_POINTS_FULFILLED': {
-      // FIXME: overwrite navPoints already present in state - no NOT append them again
-      return [...state, ...action.payload.data]
+      return uniqBy([...state, ...action.payload.data], 'id')
     }
     case 'CLEAR_NAV_POINTS_BY_KIND': {
       return filter(state, (navPoint) => { return !includes(action.payload, navPoint.kind) })

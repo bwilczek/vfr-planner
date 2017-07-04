@@ -99,5 +99,8 @@
   "back": "Back",
   "contact": "Contact",
   "info": "Info",
-  "noDescription": "No description provided"
+  "noDescription": "No description provided",
+  "help": "Help",
+  "status": "Status",
+  "privacy": "Privacy policy"
 }

@@ -6,11 +6,28 @@ import { FormattedMessage } from 'react-intl'
 
 import ContactPl from '../components/static/ContactPl'
 import ContactEn from '../components/static/ContactEn'
+import HelpPl from '../components/static/HelpPl'
+import HelpEn from '../components/static/HelpEn'
+import Status from '../components/static/Status'
+import PrivacyPl from '../components/static/PrivacyPl'
+import PrivacyEn from '../components/static/PrivacyEn'
 
 const STATIC_COMPONENTS = {
   'contact': {
     'pl': ContactPl,
     'en': ContactEn
+  },
+  'help': {
+    'pl': HelpPl,
+    'en': HelpEn
+  },
+  'status': {
+    'pl': Status,
+    'en': Status
+  },
+  'privacy': {
+    'pl': PrivacyPl,
+    'en': PrivacyEn
   }
 }
 
@@ -32,7 +49,7 @@ export default class StaticPage extends React.Component {
 
     return (
       <Panel header={C.getHeader()} footer={footer} style={{width: '600px', marginTop: '20px', marginRight: 'auto', marginLeft: 'auto'}}>
-        {C.getContent()}
+        <C />
       </Panel>
     )
   }

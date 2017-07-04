@@ -99,5 +99,8 @@
   "back": "Powrót",
   "contact": "Kontakt",
   "info": "Info",
-  "noDescription": "Brak opisu"
+  "noDescription": "Brak opisu",
+  "help": "Pomoc",
+  "status": "Status",
+  "privacy": "Polityka prywatności"
 }
