@@ -43,9 +43,6 @@ export default class PlannerPage extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.location.pathname === '/settings') {
-      this.props.settingsModalShow()
-    }
     if (this.props.params.planId) {
       this.props.fetchFlightPlan(this.props.params.planId)
     }

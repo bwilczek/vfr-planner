@@ -70,6 +70,8 @@ export default class Map extends React.Component {
 
   componentDidMount() {
     this.initMap()
+    this.plotAirspaces()
+    this.plotNavPoints()
   }
 
   componentDidUpdate(prevProps, prevState) {

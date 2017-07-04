@@ -5,8 +5,6 @@ import FacebookLogin from 'react-facebook-login'
 import GoogleLogin from 'react-google-login'
 import { injectIntl } from 'react-intl'
 
-import FlightPlanDropdown from './FlightPlanDropdown'
-
 import * as secrets from '../secrets'
 import * as actions from '../actions/authActions'
 
@@ -38,7 +36,6 @@ export default class Auth extends React.Component {
       <span style={{marginRight: '5px'}}>
         <span>{this.props.user.name}</span>
         <img style={{width: '42px', marginLeft: '5px', marginRight: '5px', borderRadius: '21px'}} src={this.props.user.img} />
-        <FlightPlanDropdown />
       </span>
     )
   }

@@ -95,5 +95,9 @@
   "headerSegmentDistance": "Dist",
   "headerGroundSpeed": "GS",
   "headerSegmentDuration": "Time",
-  "headerSubTotalDuration": "∑ Time"
+  "headerSubTotalDuration": "∑ Time",
+  "back": "Back",
+  "contact": "Contact",
+  "info": "Info",
+  "noDescription": "No description provided"
 }

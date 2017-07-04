@@ -78,5 +78,9 @@ div.planner-wrapper {
 }
 
 ul[aria-labelledby="flightPlansDropdown"] {
+  top: -20px;
+}
+
+ul[aria-labelledby="infoDropdown"] {
   top: +20px;
 }

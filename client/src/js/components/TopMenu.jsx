@@ -1,29 +1,34 @@
 import React from 'react'
-import FontAwesome from 'react-fontawesome'
+import { connect } from 'react-redux'
 import logo from '../../img/lecimy_logo.png'
-import { injectIntl } from 'react-intl'
 import { browserHistory } from 'react-router'
 
 import Auth from './Auth'
+import InfoDropdown from './InfoDropdown'
 
-@injectIntl
+@connect(
+  (state) => {
+    return {
+      planId: state.flightPlan.id
+    }
+  }
+)
 export default class TopMenu extends React.Component {
 
-  render() {
-    const { formatMessage } = this.props.intl
+  navigateToPlannerPage() {
+    let path = this.props.planId ? `/plan-${this.props.planId}` : '/'
+    browserHistory.push(path)
+  }
 
+  render() {
     return (
       <div class="top-menu">
         <div class="top-menu-left">
-          <img src={logo} />
+          <img onClick={this.navigateToPlannerPage.bind(this)} src={logo} />
         </div>
         <div class="top-menu-right">
           <Auth />
-          <FontAwesome name="cogs" size="3x"
-            onClick={() => { browserHistory.push('/settings') }}
-            class="auth-button"
-            title={formatMessage({id: 'settings'})}
-          />
+          <InfoDropdown />
         </div>
       </div>
     )
