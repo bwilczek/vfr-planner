@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
 import { toastr } from 'react-redux-toastr'
 import { browserHistory } from 'react-router'
 
@@ -14,7 +14,8 @@ import * as modalsActions from '../actions/modalsActions'
   (state) => {
     return {
       flightPlan: state.flightPlan,
-      user: state.user
+      user: state.user,
+      userPresent: !!state.user.id
     }
   },
   (dispatch) => {
@@ -57,14 +58,20 @@ export default class FlightPlanDropdown extends React.Component {
 
   render() {
     return (
-      <span style={{marginRight: '5px'}}>
-        <FontAwesome name="list-ul" size="3x"
-          class="auth-button"
+      <span>
+        <Button style={{width: '189px'}}
+          disabled={!this.props.userPresent}
           onClick={(e) => { document.getElementById('flightPlansDropdown').click(e) }}
-          title={this.props.intl.formatMessage({id: 'flightPlans'})}
-        />
+        >
+          <div>
+            <FontAwesome name="map" size="2x" style={{display: 'inline-block', height: '17px', verticalAlign: 'top'}}/>
+            <div style={{display: 'inline-block', verticalAlign: 'bottom', height: '23px', marginLeft: '10px', marginTop: '5px', fontWeight: 'bold'}}>
+              <FormattedMessage id='flightPlans' />
+            </div>
+          </div>
+        </Button>
 
-        <DropdownButton pullRight ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' style={{top: '+22px'}} class="auth-button hidden">
+        <DropdownButton ref='flightPlansDropdown' title='flightPlansDropdown' id='flightPlansDropdown' class="hidden">
           <MenuItem onClick={this.props.clear.bind(this)} eventKey="1">
             <FormattedMessage id='flightPlans_new' />
           </MenuItem>

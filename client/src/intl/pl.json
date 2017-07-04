@@ -95,5 +95,9 @@
   "headerSegmentDistance": "S[NM]",
   "headerGroundSpeed": "W",
   "headerSegmentDuration": "t",
-  "headerSubTotalDuration": "∑t"
+  "headerSubTotalDuration": "∑t",
+  "back": "Powrót",
+  "contact": "Kontakt",
+  "info": "Info",
+  "noDescription": "Brak opisu"
 }

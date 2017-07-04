@@ -6,6 +6,8 @@ import ReactGA from 'react-ga'
 import Application from './Application'
 import NotFound from './NotFound'
 import PlannerPage from '../pages/PlannerPage'
+import StaticPage from '../pages/StaticPage'
+import SettingsPage from '../pages/SettingsPage'
 import * as secrets from '../secrets'
 
 ReactGA.initialize(secrets.GOOGLE_ANALYTICS_KEY)
@@ -28,7 +30,8 @@ export default class Root extends React.Component {
 
           <Route path="/" component={Application}>
             <IndexRoute component={PlannerPage}/>
-            <Route path="/settings" component={PlannerPage} />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="/static-:textId" component={StaticPage} />
             <Route path="/plan-:planId" component={PlannerPage} />
             <Route path="*" component={NotFound} />
           </Route>

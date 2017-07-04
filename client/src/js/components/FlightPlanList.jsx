@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import { Accordion, Panel, Button } from 'react-bootstrap'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 
 import { openFlightPlanModalHide } from '../actions/modalsActions'
 
+@injectIntl
 @connect(
   (state) => {
     return {
@@ -46,8 +47,9 @@ export default class FlightPlanList extends React.Component {
     }
     const list = this.props.flightPlans.map((plan) =>
       <Panel header={plan.name} key={plan.id} eventKey={plan.id}>
-        {plan.description}
-        <br />
+        ID: {plan.id}<br />
+        {plan.description || this.props.intl.formatMessage({id: 'noDescription'})}
+        <br /><br />
         <Button onClick={handleClick.bind(this, plan.id)}>
           <FormattedMessage id='flightPlans_open' />
         </Button>

@@ -12,6 +12,7 @@ export default function reducer(state = initialState, action) {
       return [...state]
     }
     case 'FETCH_NAV_POINTS_FULFILLED': {
+      // FIXME: overwrite navPoints already present in state - no NOT append them again
       return [...state, ...action.payload.data]
     }
     case 'CLEAR_NAV_POINTS_BY_KIND': {
