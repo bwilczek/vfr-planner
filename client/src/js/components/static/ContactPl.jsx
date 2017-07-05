@@ -6,7 +6,7 @@ export default class ContactPl extends React.Component {
     return 'Kontakt'
   }
 
-  static getContent() {
+  render() {
     return (
       <div>
         Bartek Wilczek <br />

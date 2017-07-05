@@ -99,5 +99,11 @@
   "back": "Powrót",
   "contact": "Kontakt",
   "info": "Info",
-  "noDescription": "Brak opisu"
+  "noDescription": "Brak opisu",
+  "help": "Pomoc",
+  "status": "Status",
+  "privacy": "Polityka prywatności",
+  "statusComingSoon": "Status danych oraz statystki pojawią się na tej stronie wkrótce.",
+  "totalDuration": "Całkowity czas",
+  "totalDistance": "Całkowita odległość"
 }

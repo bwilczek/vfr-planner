@@ -23,6 +23,15 @@ export default class InfoDropdown extends React.Component {
           <MenuItem onClick={ () => browserHistory.push('/static-contact') } eventKey="2">
             <FormattedMessage id='contact' />
           </MenuItem>
+          <MenuItem onClick={ () => browserHistory.push('/static-help') } eventKey="2">
+            <FormattedMessage id='help' />
+          </MenuItem>
+          <MenuItem onClick={ () => browserHistory.push('/static-status') } eventKey="2">
+            <FormattedMessage id='status' />
+          </MenuItem>
+          <MenuItem onClick={ () => browserHistory.push('/static-privacy') } eventKey="2">
+            <FormattedMessage id='privacy' />
+          </MenuItem>
         </DropdownButton>
 
       </span>

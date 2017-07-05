@@ -99,5 +99,11 @@
   "back": "Back",
   "contact": "Contact",
   "info": "Info",
-  "noDescription": "No description provided"
+  "noDescription": "No description provided",
+  "help": "Help",
+  "status": "Status",
+  "privacy": "Privacy policy",
+  "statusComingSoon": "Website data status and statistics will appear on this page soon.",
+  "totalDuration": "Total duration",
+  "totalDistance": "Total distance"
 }
