@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>plan</name>
+
+    <Style id="yellowLineGreenPoly">
+      <LineStyle>
+        <color>7f00ffff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+
+    <Style id="minute_segment">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/red-stars.png</href>
+          <scale>1.0</scale>
+        </Icon>
+      </IconStyle>
+    </Style>
+
+    <% @waypoints.each do |wp|%>
+    <Placemark>
+      <name><%= wp['name'] %></name>
+      <Point>
+        <coordinates><%= "#{wp['latLng']['lng']},#{wp['latLng']['lat']}" %></coordinates>
+      </Point>
+    </Placemark>
+    <% end%>
+
+    <Placemark>
+      <styleUrl>#yellowLineGreenPoly</styleUrl>
+      <name>plan</name>
+      <LineString>
+        <tessellate>1</tessellate>
+        <coordinates>
+<%= @coords %>
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+  </Document>
+</kml>

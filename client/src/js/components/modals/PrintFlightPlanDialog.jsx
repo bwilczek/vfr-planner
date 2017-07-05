@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { injectIntl, FormattedMessage } from 'react-intl'
 
 import { printFlightPlanModalHide } from '../../actions/modalsActions'
-import { fetchPdf, updatePrintSettings } from '../../actions/printActions'
+import { fetchPdf, fetchKml, updatePrintSettings } from '../../actions/printActions'
 import { getNavigationData } from '../../selectors/navigationData'
 import PrintSettingsCheckbox from '../PrintSettingsCheckbox'
 import * as format from '../../lib/Formatter'
@@ -26,6 +26,9 @@ import * as format from '../../lib/Formatter'
       },
       fetchPdf: (data) => {
         dispatch(fetchPdf(data))
+      },
+      fetchKml: (data) => {
+        dispatch(fetchKml(data))
       },
       updatePrintSettings: (fields) => {
         dispatch(updatePrintSettings(fields))
@@ -61,6 +64,10 @@ export default class PrintFlightPlanDialog extends React.Component {
     })
   }
 
+  downloadKml() {
+    this.props.fetchKml({waypoints: this.props.navigationData.waypoints})
+  }
+
   render() {
     const checkboxList = Object.keys(this.props.printSettings).map((key) => {
       return <PrintSettingsCheckbox key={key} settingKey={key} />
@@ -78,7 +85,7 @@ export default class PrintFlightPlanDialog extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <Button disabled>GPX</Button>
-          <Button disabled>KML</Button>
+          <Button onClick={this.downloadKml.bind(this)}>KML</Button>
           <Button onClick={this.downloadPdf.bind(this)}>PDF</Button>
         </Modal.Footer>
       </Modal>

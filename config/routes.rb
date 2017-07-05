@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   scope '/api' do
     get '/nav_points/find', to: 'nav_points#find'
-    get '/downloads/pdf', to: 'downloads#pdf'
+    post '/downloads/pdf', to: 'downloads#pdf'
+    post '/downloads/kml', to: 'downloads#kml'
     post '/intl', to: 'intl#list'
 
     resources :sessions

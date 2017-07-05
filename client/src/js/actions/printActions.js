@@ -14,10 +14,32 @@ export function updatePrintSettings(fields) {
 export function fetchPdf(params) {
   return (dispatch) => {
     dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
-    axios.get('/api/downloads/pdf', {responseType: 'blob', params}).then(
+    axios({
+      method: 'post',
+      url: '/api/downloads/pdf',
+      data: params,
+      responseType: 'blob'
+    }).then(
       (response) => {
         dispatch(toastrActions.remove('pleaseWait'))
         fileDownload(response.data, 'plan.pdf', 'application/pdf')
+      },
+      (error) => {
+        console.log(error)
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
+      }
+    )
+  }
+}
+
+export function fetchKml(params) {
+  return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
+    axios.post('/api/downloads/kml', params).then(
+      (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        fileDownload(response.data, 'plan.kml', 'application/vnd.google-earth.kml+xml')
       },
       (error) => {
         console.log(error)
