@@ -9,7 +9,8 @@ export default class PrivacyPl extends React.Component {
   render() {
     return (
       <div>
-        Polityka prywatności
+        Serwis lecimy.org/lecimy.bwilczek.eu wykorzystuje konta użytkowników na Facebooku i Google jedynie w celu autoryzacji dostępu do serwisu.
+        Dane użytkowników nie są przekazywane żadnym innym podmiotom.
       </div>
     )
   }

@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 export default class Status extends React.Component {
 
@@ -9,7 +10,7 @@ export default class Status extends React.Component {
   render() {
     return (
       <div>
-        Status!
+        <FormattedMessage id="statusComingSoon" />
       </div>
     )
   }

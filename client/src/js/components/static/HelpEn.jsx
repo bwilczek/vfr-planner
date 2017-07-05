@@ -9,7 +9,7 @@ export default class HelpEn extends React.Component {
   render() {
     return (
       <div>
-        Help!
+        English translation is not ready yet.
       </div>
     )
   }

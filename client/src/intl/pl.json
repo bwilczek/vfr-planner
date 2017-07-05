@@ -102,5 +102,8 @@
   "noDescription": "Brak opisu",
   "help": "Pomoc",
   "status": "Status",
-  "privacy": "Polityka prywatności"
+  "privacy": "Polityka prywatności",
+  "statusComingSoon": "Status danych oraz statystki pojawią się na tej stronie wkrótce.",
+  "totalDuration": "Całkowity czas",
+  "totalDistance": "Całkowita odległość"
 }

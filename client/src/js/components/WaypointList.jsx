@@ -101,8 +101,8 @@ export default class WaypointList extends React.Component {
       <div>
         <SortableList dispatch={this.props.dispatch} items={this.props.navigationData.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
         <div style={{borderTop: '1px solid', marginTop: '5px'}}>
-          Total distance: {this.props.navigationData.totalDistance}<br />
-          Total duration: <span dangerouslySetInnerHTML={{__html: this.props.navigationData.totalDuration}} />
+          <FormattedMessage id="totalDistance" />: {this.props.navigationData.totalDistance}<br />
+          <FormattedMessage id="totalDuration" />: <span dangerouslySetInnerHTML={{__html: this.props.navigationData.totalDuration}} />
         </div>
       </div>
     )

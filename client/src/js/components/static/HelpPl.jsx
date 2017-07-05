@@ -10,7 +10,7 @@ export default class HelpPl extends React.Component {
   render() {
     return (
       <Accordion>
-        <Panel header='Skąd się bierze treść lotnicza?' key={1} eventKey={1}>
+        <Panel header='Skąd pochodzi treść lotnicza?' key={1} eventKey={1}>
           Informacje na temat przestrzeni oraz lotnisk pochodzą z zasobów atmavio.
           Aktualizowane są automatycznie kilka razy na dobę
         </Panel>
@@ -21,16 +21,18 @@ export default class HelpPl extends React.Component {
         <Panel header='Czym się różni aktualna wersja serwisu od starego lecimy.org?' key={2} eventKey={2}>
           W porównaniu z poprzednią wersją serwisu wprowadzono następujące zmiany:
           <ul>
-            <li>Automatyczna aktuzalizacja treści lotniczej</li>
+            <li>Automatyczna aktualizacja treści lotniczej</li>
+            <li>Automatyczne uwzględnienie deklinacji magnetycznej</li>
             <li>Angielska wersja językowa</li>
             <li>Ulepszona edycja trasy</li>
             <li>Dokładniejsze obliczenia nawigacyjne (trygonometria sferyczna)</li>
-            <li>Uwspółcześnione technologie internetowe pozwalające na łatwiejszy rozwój i utrzymanie</li>
+            <li>Nowoczesne technologie pozwalające na łatwiejszy rozwój i utrzymanie</li>
           </ul>
           Kilka z funkcjonalności dawnego serwisu nie zostało przeniesionych
           <ul>
             <li>Pobieranie pogody ze stron IMGW</li>
             <li>Wyświetlanie odcinków minutowych</li>
+            <li>Jednostki miar inne niż kt/NM</li>
             <li>Uwzględnianie w obliczeniach czasu spędzonego nad punktami zwrotnymi</li>
           </ul>
           Jeśli użytkownicy wyrażą zapotrzebowanie zostaną one dodane w kolejnych wersjach.
