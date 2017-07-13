@@ -14,4 +14,15 @@ class DownloadsController < ActionController::Base
     @coords = @waypoints.map { |e| "#{e['latLng']['lng']},#{e['latLng']['lat']}" }.join "\n"
     render content_type: 'application/vnd.google-earth.kml+xml', filename: 'plan.kml'
   end
+
+  def gpx
+    @waypoints = params['waypoints']
+    lats = @waypoints.map { |e| e['latLng']['lat'].to_f }
+    lngs = @waypoints.map { |e| e['latLng']['lng'].to_f }
+    @minlat = lats.min
+    @minlon = lngs.min
+    @maxlat = lats.max
+    @maxlon = lngs.max
+    render content_type: 'application/gpx+xml', filename: 'plan.gpx'
+  end
 end

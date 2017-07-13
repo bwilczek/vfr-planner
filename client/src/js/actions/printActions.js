@@ -49,3 +49,20 @@ export function fetchKml(params) {
     )
   }
 }
+
+export function fetchGpx(params) {
+  return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
+    axios.post('/api/downloads/gpx', params).then(
+      (response) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        fileDownload(response.data, 'plan.gpx', 'application/gpx+xml')
+      },
+      (error) => {
+        console.log(error)
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(toastrActions.add(ToastrUtils.configForError('errorMessageNetwork')))
+      }
+    )
+  }
+}

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     get '/nav_points/find', to: 'nav_points#find'
     post '/downloads/pdf', to: 'downloads#pdf'
     post '/downloads/kml', to: 'downloads#kml'
+    post '/downloads/gpx', to: 'downloads#gpx'
     post '/intl', to: 'intl#list'
 
     resources :sessions
