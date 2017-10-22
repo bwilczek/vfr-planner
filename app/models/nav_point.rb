@@ -31,7 +31,12 @@ class NavPoint < ApplicationRecord
     return point.icao_code if point.icao_code
     return point.name if point.name
     data = fetch_geocode(point)
-    data['results'].first['address_components'].select { |item| item['types'].include?('political') }.first['short_name']
+    begin
+      return data['results'].first['address_components'].select { |item| item['types'].include?('political') }.first['short_name']
+    rescue
+      logger.debug(data['results'])
+      return 'WPT [?]'
+    end
   end
 
   def self.fetch_geocode(location)
