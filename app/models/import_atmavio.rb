@@ -259,6 +259,7 @@ class ImportAtmavio < ApplicationRecord
     xml_path = File.join(import_directory, 'nav_aids.xml')
     logger.info('Processing VFR point list')
     xml = Nokogiri::XML(File.open(xml_path))
+    NavPoint.where(kind: [:vor, :ndb, :vor_dme, :dme]).where(country: 'pl').delete_all
     xml.xpath('//table_data/row').each do |row|
       logger.info('=================')
 
@@ -290,6 +291,7 @@ class ImportAtmavio < ApplicationRecord
     gpx_path = File.join(import_directory, 'Punkty VFR.gpx')
     logger.info('Processing VFR point list')
     xml = Nokogiri::XML(File.open(gpx_path))
+    NavPoint.where(kind: :vfr_point).where(country: 'pl').delete_all
     xml.xpath('//xmlns:gpx/xmlns:wpt').each do |wpt|
       name = wpt.xpath('./xmlns:name').text.strip
       logger.info('=================')
@@ -317,6 +319,7 @@ class ImportAtmavio < ApplicationRecord
     logger = Logger.new(STDOUT)
     logger.info("Started at #{Time.zone.now}")
     txt_path = File.join(import_directory, 'Punkty IFR.txt')
+    NavPoint.where(kind: :ifr_point).where(country: 'pl').delete_all
     require 'lat_lng'
     File.readlines(txt_path).each do |line|
       name, lat_s, lng_s, _rest = line.split(' ', 4)
