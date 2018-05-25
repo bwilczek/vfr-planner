@@ -105,5 +105,7 @@
   "privacy": "Privacy policy",
   "statusComingSoon": "Website data status and statistics will appear on this page soon.",
   "totalDuration": "Total duration",
-  "totalDistance": "Total distance"
+  "totalDistance": "Total distance",
+  "warning": "Warning",
+  "warningContent": "Airspace data is outdated (last update 01 May 2018), and AUP data is temporarily unavailable. There's an ongoing work to obtain a new source of data."
 }

@@ -1,4 +1,8 @@
-export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, windDirection) {
+export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, windDirection, speedUnit) {
+  // convert speed to kt if necessary
+  if (speedUnit === 'km/h') {
+    airSpeed = airSpeed * 0.5399568
+  }
   let degreesToRadians = (deg) => deg * (Math.PI / 180)
   let radiansToDegrees = (rad) => rad / (Math.PI / 180)
 
@@ -22,7 +26,7 @@ export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, win
 
   let headingRadians = courseRadians + fwca
   while (headingRadians > 2 * Math.PI) {
-    headingRadians = heading - 2 * Math.PI
+    headingRadians = headingRadians - 2 * Math.PI
   }
   while (headingRadians < 0) {
     headingRadians = headingRadians + 2 * Math.PI
@@ -30,8 +34,11 @@ export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, win
   let groundSpeed = airSpeed * Math.cos(fwca) + windSpeed * Math.cos(fwtAngle)
 
   let heading = radiansToDegrees(headingRadians)
-  // windSpeed in kt, distance in meters
   let segmentDuration = distance / (groundSpeed * 30.866666667 / 60)
+  // convert groundSpeed to km/h for display if necessary
+  if (speedUnit === 'km/h') {
+    groundSpeed = groundSpeed * 1.8520
+  }
   return { heading, groundSpeed, segmentDuration }
 }
 

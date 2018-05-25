@@ -3,12 +3,16 @@ import { sprintf } from 'sprintf-js'
 import moment from 'moment'
 import { standardizeLatLng } from './NavigationUtils'
 
-export function distance(meters) {
-  return round(meters / 1852, 1) + 'NM'
+export function distance(meters, speedUnit) {
+  if (speedUnit === 'kt') {
+    return round(meters / 1852, 1) + 'NM'
+  } else {
+    return round(meters / 1000, 1) + 'km'
+  }
 }
 
-export function speed(speed, precision = 1) {
-  return round(speed, 1) + 'kt'
+export function speed(speed, speedUnit = 'kt', precision = 1) {
+  return round(speed, precision) + speedUnit
 }
 
 export function duration(secs) {

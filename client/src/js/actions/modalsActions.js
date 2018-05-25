@@ -67,3 +67,17 @@ export function printFlightPlanModalHide() {
     payload: null
   }
 }
+
+export function announcementModalShow() {
+  return {
+    type: 'ANNOUNCEMENT_MODAL_SHOW',
+    payload: null
+  }
+}
+
+export function announcementModalHide() {
+  return {
+    type: 'ANNOUNCEMENT_MODAL_HIDE',
+    payload: null
+  }
+}

@@ -45,11 +45,12 @@ export default class PrintFlightPlanDialog extends React.Component {
     const fm = this.props.intl.formatMessage
 
     this.props.fetchPdf({
-      tas: format.speed(this.props.flightPlan.tas, 0),
-      windSpeed: format.speed(this.props.flightPlan.windSpeed, 0),
+      tas: format.speed(this.props.flightPlan.tas, this.props.flightPlan.speedUnit, 0),
+      windSpeed: format.speed(this.props.flightPlan.windSpeed, 'kt', 0),
       windDirection: format.heading(this.props.flightPlan.windDirection),
       navigationData: this.props.navigationData,
       printSettings: this.props.printSettings,
+      speedUnit: this.props.flightPlan.speedUnit,
       intl: {
         flightPlan: fm({id: 'flightPlan'}),
         wind: fm({id: 'wind'}),

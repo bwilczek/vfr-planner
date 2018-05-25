@@ -105,5 +105,7 @@
   "privacy": "Polityka prywatności",
   "statusComingSoon": "Status danych oraz statystki pojawią się na tej stronie wkrótce.",
   "totalDuration": "Całkowity czas",
-  "totalDistance": "Całkowita odległość"
+  "totalDistance": "Całkowita odległość",
+  "warning": "Uwaga",
+  "warningContent": "Dane o strefach były ostatni raz aktualizowane 01.05, a dane z AUP są tymczasowo niedostępne. Trwają prace w zakresie pozyskania nowego źródła dla tych informacji."
 }

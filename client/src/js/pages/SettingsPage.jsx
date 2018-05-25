@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 import { Table, Panel, Button } from 'react-bootstrap'
@@ -7,7 +8,22 @@ import { FormattedMessage } from 'react-intl'
 
 import CountriesSelector from '../components/CountriesSelector'
 import LocaleSelector from '../components/LocaleSelector'
+import { toggleSpeedUnit } from '../actions/flightPlanActions'
 
+@connect(
+  (state) => {
+    return {
+      speedUnit: state.flightPlan.speedUnit
+    }
+  },
+  (dispatch) => {
+    return {
+      toggleSpeedUnit: () => {
+        dispatch(toggleSpeedUnit())
+      }
+    }
+  }
+)
 export default class SettingsPage extends React.Component {
 
   render() {
@@ -35,7 +51,7 @@ export default class SettingsPage extends React.Component {
             </tr>
             <tr>
               <td><FormattedMessage id="speedUnit" /></td>
-              <td><Toggle on='kt' off='km/h' size="sm" disabled={true} /></td>
+              <td><Toggle on='kt' off='km/h' size="sm" onClick={this.props.toggleSpeedUnit} active={this.props.speedUnit === 'kt'} /></td>
             </tr>
             <tr>
               <td><FormattedMessage id="bearings" /></td>
