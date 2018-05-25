@@ -5,6 +5,13 @@ import { actions as toastrActions } from 'react-redux-toastr'
 import ToastrUtils from '../lib/ToastrUtils'
 import { updateUi } from './uiActions'
 
+export function toggleSpeedUnit() {
+  return {
+    type: 'TOGGLE_SPEED_UNIT',
+    payload: null
+  }
+}
+
 export function updateFlightPlan(fields) {
   return {
     type: 'UPDATE_FLIGHT_PLAN',

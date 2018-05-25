@@ -4,6 +4,7 @@ import RenameDialog from './RenameDialog'
 import OpenFlightPlanDialog from './OpenFlightPlanDialog'
 import EditFlightPlanDialog from './EditFlightPlanDialog'
 import PrintFlightPlanDialog from './PrintFlightPlanDialog'
+import AnnouncementDialog from './AnnouncementDialog'
 
 export default class AllModals extends React.Component {
 
@@ -14,6 +15,7 @@ export default class AllModals extends React.Component {
         <OpenFlightPlanDialog />
         <EditFlightPlanDialog />
         <PrintFlightPlanDialog />
+        <AnnouncementDialog />
       </div>
     )
   }

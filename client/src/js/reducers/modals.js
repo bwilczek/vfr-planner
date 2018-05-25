@@ -4,6 +4,7 @@ const initialState = {
   openFlightPlanOpen: false,
   editFlightPlanOpen: false,
   printFlightPlanOpen: false,
+  announcementOpen: true,
 }
 
 export default function reducer(state = initialState, action) {
@@ -37,6 +38,12 @@ export default function reducer(state = initialState, action) {
     }
     case 'FLIGHT_PLAN_PRINT_MODAL_HIDE': {
       return {...state, printFlightPlanOpen: false}
+    }
+    case 'ANNOUNCEMENT_MODAL_SHOW': {
+      return {...state, announcementOpen: true}
+    }
+    case 'ANNOUNCEMENT_MODAL_HIDE': {
+      return {...state, announcementOpen: false}
     }
   }
   return state

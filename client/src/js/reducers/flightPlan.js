@@ -11,11 +11,16 @@ const initialState = {
   name: '',
   description: '',
   public: false,
-  id: null
+  id: null,
+  speedUnit: 'kt'
 }
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case 'TOGGLE_SPEED_UNIT': {
+      let newSpeedUnit = (state.speedUnit === 'kt') ? 'km/h' : 'kt'
+      return {...state, speedUnit: newSpeedUnit}
+    }
     case 'UPDATE_FLIGHT_PLAN': {
       return {...state, ...action.payload}
     }
