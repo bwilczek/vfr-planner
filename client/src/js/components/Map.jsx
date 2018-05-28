@@ -58,6 +58,7 @@ export default class Map extends React.Component {
     this.navPointMarkers = []
     this.airspacePolygons = []
     this.keyOfWaypointBeingDragged = null
+    this.latLngOfMouseDown = null
   }
 
   defaultMapSettings() {
@@ -147,6 +148,7 @@ export default class Map extends React.Component {
   }
 
   onPolyMouseDown(e) {
+    this.latLngOfMouseDown = e.latLng
     if (e.vertex !== undefined) {
       this.keyOfWaypointBeingDragged = this.props.waypoints[e.vertex].key
     }
@@ -157,28 +159,32 @@ export default class Map extends React.Component {
       // WAYPOINT MOVED/CLICKED
       if (e.vertex !== undefined) {
         let newLatLng = this.poly.getPath().getAt(e.vertex)
-        if (e.latLng === this.poly.getPath().getAt(e.vertex)) {
+        if (e.latLng === this.latLngOfMouseDown) {
           // WAYPOINT CLICKED
           this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, this.props.waypoints[e.vertex]))
           this.infoWindow.setPosition(newLatLng)
           this.infoWindow.open(this.map)
           e.stop()
-          return
+        } else {
+          // WAYPOINT DRAGGED
+          let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === this.keyOfWaypointBeingDragged)[0])
+          waypoint.latLng = newLatLng
+          this.props.updateWaypointWithName(waypoint)
+          this.keyOfWaypointBeingDragged = null
         }
-        let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === this.keyOfWaypointBeingDragged)[0])
-        waypoint.latLng = newLatLng
-        this.props.updateWaypointWithName(waypoint)
-        this.keyOfWaypointBeingDragged = null
       } else if (e.edge !== undefined) {
         // WAYPOINT INSERTED
-        let newLatLng = this.poly.getPath().getAt(e.edge + 1)
-        let waypoint = {
-          latLng: newLatLng,
-          name: `WPT ${this.props.waypoints.length + 1}`,
-          key: `${random(10000, 99999)}-${Date.now()}`,
+        if (this.latLngOfMouseDown !== e.latLng) {
+          let newLatLng = this.poly.getPath().getAt(e.edge + 1)
+          let waypoint = {
+            latLng: newLatLng,
+            name: `WPT ${this.props.waypoints.length + 1}`,
+            key: `${random(10000, 99999)}-${Date.now()}`,
+          }
+          this.props.addWaypointWithName(waypoint, e.edge + 1)
         }
-        this.props.addWaypointWithName(waypoint, e.edge + 1)
       }
+      this.latLngOfMouseDown = null
     }, 0)
   }
 
