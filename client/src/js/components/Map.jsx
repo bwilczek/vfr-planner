@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { cloneDeep, isEqual, forEach, random } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import FontAwesome from 'react-fontawesome'
@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap'
 
 import { updateUi } from '../actions/uiActions'
 import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { getNavigationData } from '../selectors/navigationData'
 import { renameModalShow } from '../actions/modalsActions'
 import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
@@ -21,7 +22,8 @@ import * as format from '../lib/Formatter'
       navPoints: state.navPoints,
       airspaces: getAirspacesForFilters(state),
       ui: state.ui,
-      waypoints: state.flightPlan.waypoints
+      waypoints: state.flightPlan.waypoints,
+      navigationData: getNavigationData(state)
     }
   },
   (dispatch) => {
@@ -57,6 +59,7 @@ export default class Map extends React.Component {
     this.infoWindow = null
     this.navPointMarkers = []
     this.airspacePolygons = []
+    this.minuteMarkers = []
     this.keyOfWaypointBeingDragged = null
     this.latLngOfMouseDown = null
   }
@@ -73,6 +76,7 @@ export default class Map extends React.Component {
     this.initMap()
     this.plotAirspaces()
     this.plotNavPoints()
+    this.plotMinutes()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -87,6 +91,13 @@ export default class Map extends React.Component {
     }
     if (!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
       this.map.setCenter(this.props.ui.mapCenter)
+    }
+    if (
+        max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
+        ( this.props.navigationData.waypoints.length != prevProps.navigationData.waypoints.length ||
+          !isEqual(this.props.navigationData.waypoints[0].rawSegmentDuration, prevProps.navigationData.waypoints[0].rawSegmentDuration) )
+      ) {
+      this.plotMinutes()
     }
   }
 
@@ -233,6 +244,40 @@ export default class Map extends React.Component {
 
   plotRoute() {
     this.poly.setPath(this.props.waypoints.map((wp) => wp.latLng))
+  }
+
+  plotMinutes() {
+    console.log('minutes')
+    console.log(this.props.navigationData)
+    // TODO: remove minute markers first
+    let counterCarryOver = 0
+    let counter = 0
+    let prevMarkerLocation = null
+    let newMarkerLocation = null
+    forEach(this.props.navigationData.waypoints, (segment) => {
+      if (!segment.rawHeading) {
+        return
+      }
+      counter = counterCarryOver // or zero: this should be customizable
+      console.log('heading', segment.rawHeading)
+      console.log('declination', segment.declination)
+      // TODO: make geo heading between 0 and 360
+      console.log('geo heading', segment.rawHeading + segment.declination)
+      console.log('duration', segment.rawSegmentDuration)
+      console.log('speed', segment.rawGroundSpeed)
+      console.log('counterCarryOver', counterCarryOver)
+      prevMarkerLocation = segment.latLng
+      while(true) {
+        counter += 60
+        if (counter > segment.rawSegmentDuration) {
+          break
+        }
+        // newMarkerLocation = google.maps.geometry.spherical.computeOffset(prevMarkerLocation, oneMinuteDistanceInMeters, headingWithDeclination)
+        console.log('adding minute marker')
+        prevMarkerLocation = newMarkerLocation
+      }
+      counterCarryOver = segment.rawSegmentDuration % 60
+    })
   }
 
   plotNavPoints() {

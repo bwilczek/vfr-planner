@@ -40,19 +40,25 @@ export const getNavigationData = createSelector(
           courseMag: format.heading(courseMag),
           segmentDistance: format.distance(segmentDistance, flightPlan.speedUnit),
           heading: format.heading(nav.heading),
+          rawHeading: nav.heading,
           groundSpeed: format.speed(nav.groundSpeed, flightPlan.speedUnit),
+          rawGroundSpeed: nav.rawGroundSpeed,
           segmentDuration: format.duration(nav.segmentDuration),
+          rawSegmentDuration: nav.segmentDuration,
           subTotalDuration: format.duration(totalDuration)
         }
       } else {
         newWaypoint = {
           ...wp,
           heading: null,
+          rawHeading: null,
           segmentDistance: null,
           course: null,
           courseMag: null,
           groundSpeed: null,
+          rawGroundSpeed: null,
           segmentDuration: null,
+          rawSegmentDuration: null
         }
       }
 

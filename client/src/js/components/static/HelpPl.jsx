@@ -32,7 +32,6 @@ export default class HelpPl extends React.Component {
           <ul>
             <li>Pobieranie pogody ze stron IMGW</li>
             <li>Wyświetlanie odcinków minutowych</li>
-            <li>Jednostki miar inne niż kt/NM</li>
             <li>Uwzględnianie w obliczeniach czasu spędzonego nad punktami zwrotnymi</li>
           </ul>
           Jeśli użytkownicy wyrażą zapotrzebowanie zostaną one dodane w kolejnych wersjach.
