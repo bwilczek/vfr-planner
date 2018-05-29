@@ -14,6 +14,7 @@ import { renameModalShow } from '../actions/modalsActions'
 import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import * as format from '../lib/Formatter'
+import { sanitizeDegrees, standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
 @connect(
@@ -95,7 +96,7 @@ export default class Map extends React.Component {
     if (
         max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
         ( this.props.navigationData.waypoints.length != prevProps.navigationData.waypoints.length ||
-          !isEqual(this.props.navigationData.waypoints[0].rawSegmentDuration, prevProps.navigationData.waypoints[0].rawSegmentDuration) )
+          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance) )
       ) {
       this.plotMinutes()
     }
@@ -247,6 +248,10 @@ export default class Map extends React.Component {
   }
 
   plotMinutes() {
+    forEach(this.minuteMarkers, (marker) => {
+      marker.setMap(null)
+    })
+    this.minuteMarkers = []
     console.log('minutes')
     console.log(this.props.navigationData)
     // TODO: remove minute markers first
@@ -254,26 +259,34 @@ export default class Map extends React.Component {
     let counter = 0
     let prevMarkerLocation = null
     let newMarkerLocation = null
+    let magCourseWithDeclination = null
+    let oneMinuteDistanceInMeters = null
     forEach(this.props.navigationData.waypoints, (segment) => {
       if (!segment.rawHeading) {
         return
       }
       counter = counterCarryOver // or zero: this should be customizable
-      console.log('heading', segment.rawHeading)
-      console.log('declination', segment.declination)
-      // TODO: make geo heading between 0 and 360
-      console.log('geo heading', segment.rawHeading + segment.declination)
-      console.log('duration', segment.rawSegmentDuration)
-      console.log('speed', segment.rawGroundSpeed)
-      console.log('counterCarryOver', counterCarryOver)
-      prevMarkerLocation = segment.latLng
+      magCourseWithDeclination = sanitizeDegrees(segment.rawCourseMag + segment.declination)
+      prevMarkerLocation = standardizeLatLng(segment.latLng)
       while(true) {
         counter += 60
         if (counter > segment.rawSegmentDuration) {
           break
         }
-        // newMarkerLocation = google.maps.geometry.spherical.computeOffset(prevMarkerLocation, oneMinuteDistanceInMeters, headingWithDeclination)
+        oneMinuteDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 60.0
+        newMarkerLocation = google.maps.geometry.spherical.computeOffset(prevMarkerLocation, oneMinuteDistanceInMeters, magCourseWithDeclination)
         console.log('adding minute marker')
+
+        let newMarker = new google.maps.Marker({
+          position: newMarkerLocation,
+          map: this.map,
+          title: 'Minute marker'
+          // icon: {
+          //   url: getIconForNavPointKind(navPoint.kind),
+          //   anchor: new google.maps.Point(12, 12)
+          // }
+        })
+        this.minuteMarkers.push(newMarker)
         prevMarkerLocation = newMarkerLocation
       }
       counterCarryOver = segment.rawSegmentDuration % 60

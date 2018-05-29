@@ -50,3 +50,13 @@ export function standardizeLatLng(o) {
     return new google.maps.LatLng(o.lat, o.lng)
   }
 }
+
+export function sanitizeDegrees(degrees) {
+  if (degrees < 0) {
+    return degrees + 360
+  }
+  if (degrees > 360) {
+    return degrees - 360
+  }
+  return degrees
+}
