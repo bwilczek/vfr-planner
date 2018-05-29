@@ -253,29 +253,30 @@ export default class Map extends React.Component {
     })
     this.minuteMarkers = []
     console.log('minutes')
-    console.log(this.props.navigationData)
-    // TODO: remove minute markers first
     let counterCarryOver = 0
     let counter = 0
     let prevMarkerLocation = null
     let newMarkerLocation = null
     let magCourseWithDeclination = null
     let oneMinuteDistanceInMeters = null
+    let minuteCounter = 0
     forEach(this.props.navigationData.waypoints, (segment) => {
+      console.log(segment)
+      minuteCounter = 0
       if (!segment.rawHeading) {
         return
       }
       counter = counterCarryOver // or zero: this should be customizable
-      magCourseWithDeclination = sanitizeDegrees(segment.rawCourseMag + segment.declination)
+      console.log(segment.rawCourse)
       prevMarkerLocation = standardizeLatLng(segment.latLng)
+      oneMinuteDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 60.0
       while(true) {
         counter += 60
+        minuteCounter += 1
         if (counter > segment.rawSegmentDuration) {
           break
         }
-        oneMinuteDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 60.0
-        newMarkerLocation = google.maps.geometry.spherical.computeOffset(prevMarkerLocation, oneMinuteDistanceInMeters, magCourseWithDeclination)
-        console.log('adding minute marker')
+        newMarkerLocation = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), minuteCounter * oneMinuteDistanceInMeters, segment.rawCourse)
 
         let newMarker = new google.maps.Marker({
           position: newMarkerLocation,
