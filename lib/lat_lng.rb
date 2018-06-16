@@ -12,6 +12,11 @@ class LatLng
     sign * (deg + (min * 1.to_f / 60.to_f) + (sec * 1.to_f / 3600.to_f))
   end
 
+  def self.build_from_string(text)
+    lat_s, lng_s = text.split('N ')
+    build_from_strings(lat_s+'N', lng_s)
+  end
+
   def self.build_from_strings(lat_s, lng_s)
     # 51°55'12''N 016°28'22''E
     p = LatLng.new

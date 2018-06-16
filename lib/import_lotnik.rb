@@ -1,4 +1,5 @@
 require 'faraday'
+require_relative 'lotnik_parser'
 
 class ImportLotnik
   CONFIG = {
@@ -34,34 +35,10 @@ class ImportLotnik
       end
     end
 
-    def parse(path)
-      lines = File.readlines(path)
-      airspaces = []
-      name = nil
-      type = nil
-      points = []
-      level_min = nil
-      level_max = nil
-
-      reset = lambda do
-        name = nil
-        type = nil
-        points = []
-        level_min = nil
-        level_max = nil
-      end
-
-      lines.each do |line|
-        line.chomp!
-        next if line =~ /^\*/
-        
-      end
-      airspaces
-    end
-
     def import_all(path)
       puts "Import all airspaces from #{path}"
-      airspaces = parse(path)
+      airspaces = LotnikParser.new(path).parse
+      puts airspaces.inspect
     end
 
     def import_day(day, path)
