@@ -1,0 +1,73 @@
+require 'faraday'
+
+class ImportLotnik
+  CONFIG = {
+    all: {
+      url: 'http://lotnik.org/strefy/Poland_Airspaces.txt',
+      path: "#{Rails.root}/import/Poland_Airspaces.txt"
+    },
+    today: {
+      url: 'http://lotnik.org/strefy/Poland_Airspaces_TODAY.txt',
+      path: "#{Rails.root}/import/Poland_Airspaces_TODAY.txt"
+    },
+    tomorrow: {
+      url: 'http://lotnik.org/strefy/Poland_Airspaces_TOMORROW.txt',
+      path: "#{Rails.root}/import/Poland_Airspaces_TOMORROW.txt"
+    },
+  }
+
+  class << self
+    def perform
+      # download
+      # puts File.read CONFIG[:all][:path]
+      # #{ImportAtmavio::NAV_POINT_KIND_MAP}"
+      import_all CONFIG[:all][:path]
+      # [ :today, :tomorrow ].each { |day| import_day(day, CONFIG[day][:path]) }
+    end
+
+    private
+
+    def download
+      CONFIG.each do |_k, data|
+        File.delete data[:path]
+        File.open(data[:path], 'w') { |f| f.write(Faraday.get(data[:url]).body) }
+      end
+    end
+
+    def parse(path)
+      lines = File.readlines(path)
+      airspaces = []
+      name = nil
+      type = nil
+      points = []
+      level_min = nil
+      level_max = nil
+
+      reset = lambda do
+        name = nil
+        type = nil
+        points = []
+        level_min = nil
+        level_max = nil
+      end
+
+      lines.each do |line|
+        line.chomp!
+        next if line =~ /^\*/
+        
+      end
+      airspaces
+    end
+
+    def import_all(path)
+      puts "Import all airspaces from #{path}"
+      airspaces = parse(path)
+    end
+
+    def import_day(day, path)
+      # TODO: parse 'File created at: 2018-06-16 07:17:02'
+      # validate if it REALLY is tomorrow, or today
+      puts "Import #{day} airspaces from #{path}"
+    end
+  end
+end
