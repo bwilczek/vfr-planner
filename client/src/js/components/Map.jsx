@@ -14,7 +14,7 @@ import { renameModalShow } from '../actions/modalsActions'
 import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import * as format from '../lib/Formatter'
-import { sanitizeDegrees, standardizeLatLng } from '../lib/NavigationUtils'
+import { standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
 @connect(
@@ -95,12 +95,12 @@ export default class Map extends React.Component {
     }
     if (
         max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
-        ( this.props.navigationData.waypoints.length != prevProps.navigationData.waypoints.length ||
-          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance) ) ||
+        (this.props.navigationData.waypoints.length !== prevProps.navigationData.waypoints.length ||
+          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance)) ||
           !isEqual(this.props.navigationData.totalDuration, prevProps.navigationData.totalDuration)
       ) {
       // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
-      setTimeout(() => {this.plotMinutes()}, 300)
+      setTimeout(() => { this.plotMinutes() }, 300)
       // this.plotMinutes()
     }
   }
@@ -268,7 +268,7 @@ export default class Map extends React.Component {
       if (!segment.rawHeading) {
         return
       }
-      if(resetOnEachSegment) {
+      if (resetOnEachSegment) {
         counter = 0
         minuteCounter = 0
       } else {
@@ -276,13 +276,9 @@ export default class Map extends React.Component {
       }
       firstInSegment = true
       oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3660.0
-      console.log('segment')
-      console.log(segment.rawSegmentDuration)
-      console.log(counterCarryOver)
-      console.log('while')
-      while(true) {
+      while (true) {
         console.log(counter)
-        if(firstInSegment && counter == 0) {
+        if (firstInSegment && counter === 0) {
           counter += 60
           continue
         }
@@ -292,7 +288,7 @@ export default class Map extends React.Component {
         minuteCounter += 1
         newMarkerLocation = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
 
-        let bold = minuteCounter % 5 == 0
+        let bold = minuteCounter % 5 === 0
 
         let minuteSvg = {
           path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
