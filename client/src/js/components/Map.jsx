@@ -98,8 +98,9 @@ export default class Map extends React.Component {
         ( this.props.navigationData.waypoints.length != prevProps.navigationData.waypoints.length ||
           !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance) )
       ) {
-      // setTimeout(() => {this.plotMinutes()}, 300)
-      this.plotMinutes()
+      // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
+      setTimeout(() => {this.plotMinutes()}, 300)
+      // this.plotMinutes()
     }
   }
 
@@ -282,21 +283,31 @@ export default class Map extends React.Component {
         }
         newMarkerLocation = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
 
+        let bold = (this.minuteMarkers.length+1) % 5 == 0
+
+        let minuteSvg = {
+          path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
+          strokeColor: '#F00',
+          strokeWeight: bold ? 2 : 1,
+          fillColor: '#F00',
+          fillOpacity: 1,
+          rotation: segment.rawCourse + 90
+        }
+
         let newMarker = new google.maps.Marker({
           position: newMarkerLocation,
           map: this.map,
-          title: 'Minute marker'
-          // icon: {
-          //   url: getIconForNavPointKind(navPoint.kind),
-          //   anchor: new google.maps.Point(12, 12)
-          // }
+          title: `Minute: ${this.minuteMarkers.length + 1}`,
+          icon: minuteSvg
         })
         console.log('Add minute marker')
         this.minuteMarkers.push(newMarker)
         firstInSegment = false
         counter += 60
       }
-      counterCarryOver = 60 - (segment.rawSegmentDuration % 60)
+      // FIXME: include the initial carryOver for the segment (counter has it)
+      // counterCarryOver = 60 - (segment.rawSegmentDuration % 60)
+      counterCarryOver = counter - segment.rawSegmentDuration
     })
   }
 
