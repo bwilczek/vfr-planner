@@ -96,7 +96,8 @@ export default class Map extends React.Component {
     if (
         max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
         ( this.props.navigationData.waypoints.length != prevProps.navigationData.waypoints.length ||
-          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance) )
+          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance) ) ||
+          !isEqual(this.props.navigationData.totalDuration, prevProps.navigationData.totalDuration)
       ) {
       // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
       setTimeout(() => {this.plotMinutes()}, 300)
