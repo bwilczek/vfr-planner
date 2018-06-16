@@ -258,14 +258,21 @@ export default class Map extends React.Component {
     console.log('minutes')
     let counterCarryOver = 0
     let counter = 0
+    let minuteCounter = 0
     let newMarkerLocation = null
     let oneSecondDistanceInMeters = null
     let firstInSegment = true
+    let resetOnEachSegment = true
     forEach(this.props.navigationData.waypoints, (segment) => {
       if (!segment.rawHeading) {
         return
       }
-      counter = counterCarryOver // or zero: this should be customizable
+      if(resetOnEachSegment) {
+        counter = 0
+        minuteCounter = 0
+      } else {
+        counter = counterCarryOver // or zero: this should be customizable
+      }
       firstInSegment = true
       oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3660.0
       console.log('segment')
@@ -281,9 +288,10 @@ export default class Map extends React.Component {
         if (counter > segment.rawSegmentDuration) {
           break
         }
+        minuteCounter += 1
         newMarkerLocation = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
 
-        let bold = (this.minuteMarkers.length+1) % 5 == 0
+        let bold = minuteCounter % 5 == 0
 
         let minuteSvg = {
           path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
@@ -297,7 +305,7 @@ export default class Map extends React.Component {
         let newMarker = new google.maps.Marker({
           position: newMarkerLocation,
           map: this.map,
-          title: `Minute: ${this.minuteMarkers.length + 1}`,
+          title: `Minute: ${minuteCounter}`,
           icon: minuteSvg
         })
         console.log('Add minute marker')
