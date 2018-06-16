@@ -35,11 +35,12 @@ export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, win
 
   let heading = radiansToDegrees(headingRadians)
   let segmentDuration = distance / (groundSpeed * 30.866666667 / 60)
+  let rawGroundSpeed = groundSpeed
   // convert groundSpeed to km/h for display if necessary
   if (speedUnit === 'km/h') {
     groundSpeed = groundSpeed * 1.8520
   }
-  return { heading, groundSpeed, segmentDuration }
+  return { heading, groundSpeed, segmentDuration, rawGroundSpeed }
 }
 
 export function standardizeLatLng(o) {
@@ -48,4 +49,14 @@ export function standardizeLatLng(o) {
   } else {
     return new google.maps.LatLng(o.lat, o.lng)
   }
+}
+
+export function sanitizeDegrees(degrees) {
+  if (degrees < 0) {
+    return degrees + 360
+  }
+  if (degrees > 360) {
+    return degrees - 360
+  }
+  return degrees
 }

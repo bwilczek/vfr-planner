@@ -23,13 +23,15 @@ export const getNavigationData = createSelector(
         let wpLatLng = navUtils.standardizeLatLng(wp.latLng)
         let nextLatLng = navUtils.standardizeLatLng(next.latLng)
         let course = google.maps.geometry.spherical.computeHeading(wpLatLng, nextLatLng)
-        if (course < 0) {
-          course += 360
-        }
+        // if (course < 0) {
+        //   course += 360
+        // }
+        course = navUtils.sanitizeDegrees(course)
         let courseMag = course - wp.declination
-        if (courseMag < 0) {
-          courseMag += 360
-        }
+        // if (courseMag < 0) {
+        //   courseMag += 360
+        // }
+        courseMag = navUtils.sanitizeDegrees(courseMag)
         segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
         let nav = navUtils.computeWindTriange(flightPlan.tas, courseMag, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection, flightPlan.speedUnit)
         totalDistance += segmentDistance
@@ -37,22 +39,31 @@ export const getNavigationData = createSelector(
         newWaypoint = {
           ...wp,
           course: format.heading(course),
+          rawCourse: course,
           courseMag: format.heading(courseMag),
+          rawCourseMag: courseMag,
           segmentDistance: format.distance(segmentDistance, flightPlan.speedUnit),
           heading: format.heading(nav.heading),
+          rawHeading: nav.heading,
           groundSpeed: format.speed(nav.groundSpeed, flightPlan.speedUnit),
+          rawGroundSpeed: nav.rawGroundSpeed,
           segmentDuration: format.duration(nav.segmentDuration),
+          rawSegmentDuration: nav.segmentDuration,
           subTotalDuration: format.duration(totalDuration)
         }
       } else {
         newWaypoint = {
           ...wp,
           heading: null,
+          rawHeading: null,
           segmentDistance: null,
           course: null,
+          rawCourse: null,
           courseMag: null,
           groundSpeed: null,
+          rawGroundSpeed: null,
           segmentDuration: null,
+          rawSegmentDuration: null
         }
       }
 

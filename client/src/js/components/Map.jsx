@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
-import { cloneDeep, isEqual, forEach, random } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random } from 'lodash'
 import { injectIntl } from 'react-intl'
 
 import FontAwesome from 'react-fontawesome'
@@ -9,10 +9,12 @@ import { Button } from 'react-bootstrap'
 
 import { updateUi } from '../actions/uiActions'
 import { addWaypoint, addWaypointWithName, updateWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { getNavigationData } from '../selectors/navigationData'
 import { renameModalShow } from '../actions/modalsActions'
 import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import * as format from '../lib/Formatter'
+import { standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
 @connect(
@@ -21,7 +23,8 @@ import * as format from '../lib/Formatter'
       navPoints: state.navPoints,
       airspaces: getAirspacesForFilters(state),
       ui: state.ui,
-      waypoints: state.flightPlan.waypoints
+      waypoints: state.flightPlan.waypoints,
+      navigationData: getNavigationData(state)
     }
   },
   (dispatch) => {
@@ -57,6 +60,7 @@ export default class Map extends React.Component {
     this.infoWindow = null
     this.navPointMarkers = []
     this.airspacePolygons = []
+    this.minuteMarkers = []
     this.keyOfWaypointBeingDragged = null
     this.latLngOfMouseDown = null
   }
@@ -73,6 +77,7 @@ export default class Map extends React.Component {
     this.initMap()
     this.plotAirspaces()
     this.plotNavPoints()
+    this.plotMinutes()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -87,6 +92,16 @@ export default class Map extends React.Component {
     }
     if (!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
       this.map.setCenter(this.props.ui.mapCenter)
+    }
+    if (
+        max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
+        (this.props.navigationData.waypoints.length !== prevProps.navigationData.waypoints.length ||
+          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance)) ||
+          !isEqual(this.props.navigationData.totalDuration, prevProps.navigationData.totalDuration)
+      ) {
+      // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
+      setTimeout(() => { this.plotMinutes() }, 300)
+      // this.plotMinutes()
     }
   }
 
@@ -233,6 +248,72 @@ export default class Map extends React.Component {
 
   plotRoute() {
     this.poly.setPath(this.props.waypoints.map((wp) => wp.latLng))
+  }
+
+  plotMinutes() {
+    forEach(this.minuteMarkers, (marker) => {
+      marker.setMap(null)
+    })
+    this.minuteMarkers = []
+
+    console.log('minutes')
+    let counterCarryOver = 0
+    let counter = 0
+    let minuteCounter = 0
+    let newMarkerLocation = null
+    let oneSecondDistanceInMeters = null
+    let firstInSegment = true
+    let resetOnEachSegment = true
+    forEach(this.props.navigationData.waypoints, (segment) => {
+      if (!segment.rawHeading) {
+        return
+      }
+      if (resetOnEachSegment) {
+        counter = 0
+        minuteCounter = 0
+      } else {
+        counter = counterCarryOver // or zero: this should be customizable
+      }
+      firstInSegment = true
+      oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3660.0
+      while (true) {
+        console.log(counter)
+        if (firstInSegment && counter === 0) {
+          counter += 60
+          continue
+        }
+        if (counter > segment.rawSegmentDuration) {
+          break
+        }
+        minuteCounter += 1
+        newMarkerLocation = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
+
+        let bold = minuteCounter % 5 === 0
+
+        let minuteSvg = {
+          path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
+          strokeColor: '#F00',
+          strokeWeight: bold ? 2 : 1,
+          fillColor: '#F00',
+          fillOpacity: 1,
+          rotation: segment.rawCourse + 90
+        }
+
+        let newMarker = new google.maps.Marker({
+          position: newMarkerLocation,
+          map: this.map,
+          title: `Minute: ${minuteCounter}`,
+          icon: minuteSvg
+        })
+        console.log('Add minute marker')
+        this.minuteMarkers.push(newMarker)
+        firstInSegment = false
+        counter += 60
+      }
+      // FIXME: include the initial carryOver for the segment (counter has it)
+      // counterCarryOver = 60 - (segment.rawSegmentDuration % 60)
+      counterCarryOver = counter - segment.rawSegmentDuration
+    })
   }
 
   plotNavPoints() {
