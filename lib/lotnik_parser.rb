@@ -45,7 +45,7 @@ class LotnikParser
       type: @type,
       level_min: @level_min,
       level_max: @level_max,
-      points: @points
+      points: @points # lng1,lat1 lng2,lat2 lng3,lat3
     }
     reset
   end
