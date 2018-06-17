@@ -256,7 +256,6 @@ export default class Map extends React.Component {
     })
     this.minuteMarkers = []
 
-    console.log('minutes')
     let counterCarryOver = 0
     let counter = 0
     let minuteCounter = 0
@@ -272,12 +271,11 @@ export default class Map extends React.Component {
         counter = 0
         minuteCounter = 0
       } else {
-        counter = counterCarryOver // or zero: this should be customizable
+        counter = counterCarryOver
       }
       firstInSegment = true
-      oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3660.0
+      oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3600.0
       while (true) {
-        console.log(counter)
         if (firstInSegment && counter === 0) {
           counter += 60
           continue
@@ -305,13 +303,10 @@ export default class Map extends React.Component {
           title: `Minute: ${minuteCounter}`,
           icon: minuteSvg
         })
-        console.log('Add minute marker')
         this.minuteMarkers.push(newMarker)
         firstInSegment = false
         counter += 60
       }
-      // FIXME: include the initial carryOver for the segment (counter has it)
-      // counterCarryOver = 60 - (segment.rawSegmentDuration % 60)
       counterCarryOver = counter - segment.rawSegmentDuration
     })
   }
@@ -337,6 +332,7 @@ export default class Map extends React.Component {
     // PLOT airspacePolygons
     forEach(this.props.airspaces, (airspace) => {
       switch (airspace.kind) {
+        case 'ignore':
         case 'fis':
         case 'adiz':
           // TODO: make it a polyline

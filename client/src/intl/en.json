@@ -107,5 +107,5 @@
   "totalDuration": "Total duration",
   "totalDistance": "Total distance",
   "warning": "Warning",
-  "warningContent": "Airspace data is outdated (last update 01 May 2018), and AUP data is temporarily unavailable. There's an ongoing work to obtain a new source of data."
+  "warningContent": "Airspace data is back, AUP data is still temporarily unavailable. There's an ongoing work on data integration with lotnik.org."
 }

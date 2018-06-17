@@ -11,8 +11,8 @@ export default class HelpPl extends React.Component {
     return (
       <Accordion>
         <Panel header='Skąd pochodzi treść lotnicza?' key={1} eventKey={1}>
-          Informacje na temat przestrzeni oraz lotnisk pochodzą z zasobów atmavio.
-          Aktualizowane są automatycznie kilka razy na dobę
+          Informacje na temat przestrzeni oraz lotnisk mamy dzięki uprzejmości zespołu <a target="_blank" href="http://lotnik.org/pliki.php">lotnik.org</a>.
+          Aktualizowane są automatycznie kilka razy na dobę.
         </Panel>
         <Panel header='Czy konto w google/facebook jest niezbędne do korzystania z serwisu' key={5} eventKey={5}>
           Nie. Przygotowanie trasy oraz wydruk planu lotu nie wymagają logowania.
@@ -31,7 +31,6 @@ export default class HelpPl extends React.Component {
           Kilka z funkcjonalności dawnego serwisu nie zostało przeniesionych
           <ul>
             <li>Pobieranie pogody ze stron IMGW</li>
-            <li>Wyświetlanie odcinków minutowych</li>
             <li>Uwzględnianie w obliczeniach czasu spędzonego nad punktami zwrotnymi</li>
           </ul>
           Jeśli użytkownicy wyrażą zapotrzebowanie zostaną one dodane w kolejnych wersjach.

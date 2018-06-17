@@ -37,8 +37,9 @@ class ImportLotnik
 
     def import_all(path)
       puts "Import all airspaces from #{path}"
+      Airspace.delete_all
       airspaces = LotnikParser.new(path).parse
-      puts airspaces.inspect
+      airspaces.each(&:save)
     end
 
     def import_day(day, path)
