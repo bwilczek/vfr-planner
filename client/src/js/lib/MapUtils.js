@@ -45,19 +45,19 @@ export function createAirspaceRawPolygon(airspace) {
     case 'danger':
     case 'tra':
     case 'tsa':
-      color = '#DD0000'
+      color = '#BB0066'
       break
     default:
-      color = '#BBBBBB'
+      color = '#CCCCCC'
   }
 
   let polygon = new google.maps.Polygon({
     paths: extractPointsFromAirspace(airspace),
     strokeColor: color,
-    strokeOpacity: 0.8,
+    strokeOpacity: 0.75,
     strokeWeight: 2,
     fillColor: color,
-    fillOpacity: 0.35,
+    fillOpacity: 0.28,
   })
   polygon.airspace = airspace
   return polygon
