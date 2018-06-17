@@ -14,12 +14,12 @@ class ImportLotnik
     tomorrow: {
       url: 'http://lotnik.org/strefy/Poland_Airspaces_TOMORROW.txt',
       path: "#{Rails.root}/import/Poland_Airspaces_TOMORROW.txt"
-    },
-  }
+    }
+  }.freeze
 
   class << self
     def perform
-      # download
+      download
       # puts File.read CONFIG[:all][:path]
       # #{ImportAtmavio::NAV_POINT_KIND_MAP}"
       import_all CONFIG[:all][:path]
@@ -36,7 +36,7 @@ class ImportLotnik
     end
 
     def import_all(path)
-      puts "Import all airspaces from #{path}"
+      # puts "Import all airspaces from #{path}"
       Airspace.delete_all
       airspaces = LotnikParser.new(path).parse
       airspaces.each(&:save)
@@ -45,7 +45,7 @@ class ImportLotnik
     def import_day(day, path)
       # TODO: parse 'File created at: 2018-06-16 07:17:02'
       # validate if it REALLY is tomorrow, or today
-      puts "Import #{day} airspaces from #{path}"
+      # puts "Import #{day} airspaces from #{path}"
     end
   end
 end
