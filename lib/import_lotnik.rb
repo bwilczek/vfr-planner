@@ -30,7 +30,7 @@ class ImportLotnik
 
     def download
       CONFIG.each do |_k, data|
-        File.delete data[:path]
+        File.delete(data[:path]) if File.exists?(data[:path])
         File.open(data[:path], 'w') { |f| f.write(Faraday.get(data[:url]).body) }
       end
     end
