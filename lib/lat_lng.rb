@@ -1,5 +1,5 @@
 class LatLng
-  EARTH_RADIUS =  3_440 # nm = 6_371km
+  EARTH_RADIUS = 3_440 # nm = 6_371km
 
   attr_accessor :lat, :lng
 
