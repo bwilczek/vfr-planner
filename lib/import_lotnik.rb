@@ -33,8 +33,8 @@ class ImportLotnik
       # download_airspaces
       # download_aup
       # puts File.read CONFIG[:all][:path]
-      import_all CONFIG[:all][:path]
-      # import_day(:today, CONFIG[:aup_today][:path])
+      # import_all CONFIG[:all][:path]
+      import_day(:today, CONFIG[:aup_today][:path])
       # import_day(:tomorrow, CONFIG[:aup_tomorrow][:path])
     end
 
@@ -44,7 +44,7 @@ class ImportLotnik
       CONFIG.each do |k, data|
         next if k.to_s.include?('aup')
         File.delete(data[:path]) if File.exists?(data[:path])
-        File.open(data[:path], 'w') { |f| f.write(Faraday.get(data[:url]).body) }
+        File.open(data[:path], 'w', encoding: 'ascii-8bit') { |f| f.write(Faraday.get(data[:url]).body) }
       end
     end
 

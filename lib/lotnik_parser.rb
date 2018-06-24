@@ -78,13 +78,14 @@ class LotnikParser
                     else
                       :other
                     end
-    airspace.permanent = [:ctr, :restricted, :prohibited, :fis, :tma, :adiz].include?(airspace.kind)
+    airspace.permanent = [:ctr, :restricted, :prohibited, :fis, :tma, :adiz, :rmz].include?(airspace.kind.to_sym)
     airspace.designator = case airspace.kind
-                          when 'matz'
-                          when 'atz'
+                          when /m?atz/
                             airspace.name
+                          when 'fis', 'adiz', 'tma', 'restricted', 'prohibited', 'ctr', 'rmz', 'other', 'ignore'
+                            nil
                           else
-                            airspace.name.gsub(/\s+/, '')
+                            airspace.name.gsub(/([A-Z]+)\s+(\d+)([A-Z]?)(.*)/, '\1\2\3')
                           end
   end
 
