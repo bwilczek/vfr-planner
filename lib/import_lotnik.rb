@@ -2,6 +2,7 @@ require 'faraday'
 require 'faraday-cookie_jar'
 
 require_relative 'lotnik_parser'
+require_relative 'aup_parser'
 
 class ImportLotnik
   CONFIG = {
@@ -30,11 +31,11 @@ class ImportLotnik
   class << self
     def perform
       # download_airspaces
-      download_aup
+      # download_aup
       # puts File.read CONFIG[:all][:path]
-      # #{ImportAtmavio::NAV_POINT_KIND_MAP}"
-      # import_all CONFIG[:all][:path]
-      [ :today ].each { |day| import_day(day, CONFIG[day][:path]) }
+      import_all CONFIG[:all][:path]
+      # import_day(:today, CONFIG[:aup_today][:path])
+      # import_day(:tomorrow, CONFIG[:aup_tomorrow][:path])
     end
 
     private
@@ -72,6 +73,7 @@ class ImportLotnik
       # TODO: parse 'File created at: 2018-06-16 07:17:02'
       # validate if it REALLY is tomorrow, or today
       # puts "Import #{day} airspaces from #{path}"
+      active_airspaces = AupParser.new(path).parse
     end
   end
 end
