@@ -31,6 +31,7 @@ class ImportLotnik
   class << self
     def update_all_airspaces
       download_airspaces
+      ActiveAirspace.delete_all
       Airspace.delete_all
       import_all CONFIG[:all][:path]
     end
