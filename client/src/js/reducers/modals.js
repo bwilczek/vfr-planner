@@ -4,7 +4,7 @@ const initialState = {
   openFlightPlanOpen: false,
   editFlightPlanOpen: false,
   printFlightPlanOpen: false,
-  announcementOpen: true,
+  announcementOpen: false,
 }
 
 export default function reducer(state = initialState, action) {

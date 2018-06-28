@@ -27,6 +27,10 @@ class AupParser
       level_max = parse_level(tr.xpath('./td')[3].content.chomp)
       time_from = parse_time(tr.xpath('./td')[4].content.chomp)
       time_to = parse_time(tr.xpath('./td')[5].content.chomp)
+      if time_from == time_to
+        time_from = 0
+        time_to = 2359
+      end
       description = tr.xpath('./td')[6].content.chomp + "\n" + tr.xpath('./td')[7].content.chomp
       multiple_airspaces = designators.first.match(/(?<prefix>(?:.*)[0-9])(?<letters>[A-Z]{1,})/)
       if multiple_airspaces
