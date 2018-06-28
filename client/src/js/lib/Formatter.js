@@ -23,6 +23,13 @@ export function duration(secs) {
   }
 }
 
+export function hour(raw) {
+  raw = parseInt(raw)
+  let h = parseInt(raw / 100)
+  let m = parseInt(raw % 100)
+  return sprintf('%02d:%02d', h, m)
+}
+
 export function heading(degrees) {
   return Math.round(degrees) + '°'
 }

@@ -141,6 +141,7 @@ export default class Map extends React.Component {
       content += `
       <strong>${poly.airspace.name}</strong><br />
       ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
+      ${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />
       ${poly.airspace.description}
       <hr />
       `

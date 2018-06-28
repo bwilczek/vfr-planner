@@ -39,7 +39,7 @@ class LotnikParser
 
   private
 
-  def set_airspace_kind(airspace)
+  def set_airspace_kind_and_designator(airspace)
     airspace.kind = case airspace.name
                     when /^ATZ/
                       :atz
@@ -78,7 +78,15 @@ class LotnikParser
                     else
                       :other
                     end
-    airspace.permanent = [:ctr, :restricted, :prohibited, :fis, :tma, :adiz].include?(airspace.kind)
+    airspace.permanent = [:ctr, :restricted, :prohibited, :fis, :tma, :adiz, :rmz].include?(airspace.kind.to_sym)
+    airspace.designator = case airspace.kind
+                          when /m?atz/
+                            airspace.name
+                          when 'fis', 'adiz', 'tma', 'restricted', 'prohibited', 'ctr', 'rmz', 'other', 'ignore'
+                            nil
+                          else
+                            airspace.name.gsub(/([A-Z]+)\s+(\d+)([A-Z]?)(.*)/, '\1\2\3')
+                          end
   end
 
   def build_airspace_record(name:, type:, level_min:, level_max:, points:)
@@ -89,7 +97,7 @@ class LotnikParser
       a.level_max = level_max
       a.country = 'pl'
       a.points = points.map{ |p| "#{p.lng},#{p.lat}"}.join(' ')
-      set_airspace_kind(a)
+      set_airspace_kind_and_designator(a)
     end
   end
 
