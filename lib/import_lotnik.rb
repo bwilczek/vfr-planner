@@ -29,13 +29,17 @@ class ImportLotnik
   }.freeze
 
   class << self
-    def perform
-      # download_airspaces
-      # download_aup
-      # puts File.read CONFIG[:all][:path]
-      # import_all CONFIG[:all][:path]
+    def update_all_airspaces
+      download_airspaces
+      Airspace.delete_all
+      import_all CONFIG[:all][:path]
+    end
+
+    def update_aup
+      download_aup
+      ActiveAirspace.delete_all
       import_day(:today, CONFIG[:aup_today][:path])
-      # import_day(:tomorrow, CONFIG[:aup_tomorrow][:path])
+      import_day(:tomorrow, CONFIG[:aup_tomorrow][:path])
     end
 
     private
@@ -64,16 +68,16 @@ class ImportLotnik
 
     def import_all(path)
       # puts "Import all airspaces from #{path}"
-      Airspace.delete_all
       airspaces = LotnikParser.new(path).parse
       airspaces.each(&:save)
     end
 
     def import_day(day, path)
-      # TODO: parse 'File created at: 2018-06-16 07:17:02'
-      # validate if it REALLY is tomorrow, or today
-      # puts "Import #{day} airspaces from #{path}"
       active_airspaces = AupParser.new(path).parse
+      active_airspaces.each do |aa|
+        aa.day = day
+        aa.save
+      end
     end
   end
 end
