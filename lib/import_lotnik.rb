@@ -75,6 +75,7 @@ class ImportLotnik
 
     def import_day(day, path)
       active_airspaces = AupParser.new(path).parse
+      return if active_airspaces.empty?
       active_airspaces.each do |aa|
         aa.day = day
         aa.save
