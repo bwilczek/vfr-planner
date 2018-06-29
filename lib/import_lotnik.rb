@@ -79,6 +79,19 @@ class ImportLotnik
         aa.day = day
         aa.save
       end
+      Airspace.permanent.each do |a|
+        ActiveAirspace.new.tap do |aa|
+          aa.airspace = a
+          aa.country = 'pl'
+          aa.extra_description = a.description
+          aa.time_from = 0
+          aa.time_to = 2359
+          aa.level_min = a.level_min
+          aa.level_max = a.level_max
+          aa.day = day
+          aa.save
+        end
+      end
     end
   end
 end
