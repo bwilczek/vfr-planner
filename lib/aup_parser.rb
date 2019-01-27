@@ -19,7 +19,7 @@ class AupParser
   def process_file
     doc = File.open(@path) { |f| Nokogiri::HTML(f) }
     doc.remove_namespaces!
-    rows = doc.xpath('//td[contains(text(), "FOXTROT") or contains(text(), "CHARLIE")]/../../tr[@class]')
+    rows = doc.xpath('//table[@data-table="charlie"]//tbody//tr')
     rows.each do |tr|
       original_designator = tr.xpath('./td')[1].content.chomp
       designators = [original_designator]
@@ -31,7 +31,7 @@ class AupParser
         time_from = 0
         time_to = 2359
       end
-      description = tr.xpath('./td')[6].content.chomp + "\n" + tr.xpath('./td')[7].content.chomp
+      description = tr.xpath('./td')[6].content.chomp + "\n" + tr.xpath('./td')[8].content.chomp
       multiple_airspaces = designators.first.match(/(?<prefix>(?:.*)[0-9])(?<letters>[A-Z]{1,})/)
       if multiple_airspaces
         designators = multiple_airspaces['letters'].split('').map { |l| "#{multiple_airspaces['prefix']}#{l}" }

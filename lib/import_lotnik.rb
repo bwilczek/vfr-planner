@@ -4,6 +4,8 @@ require 'faraday-cookie_jar'
 require_relative 'lotnik_parser'
 require_relative 'aup_parser'
 
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 class ImportLotnik
   CONFIG = {
     all: {
@@ -19,11 +21,11 @@ class ImportLotnik
       path: "#{Rails.root}/import/Poland_Airspaces_TOMORROW.txt"
     },
     aup_today: {
-      url: 'http://www.amc.pansa.pl/generator_AUP.php',
+      url: 'https://airspace.pansa.pl/uup/current',
       path: "#{Rails.root}/import/AUP_today.html"
     },
     aup_tomorrow: {
-      url: 'http://www.amc.pansa.pl/generator_AUP.php?rodz=jutro',
+      url: 'https://airspace.pansa.pl/aup/next',
       path: "#{Rails.root}/import/AUP_tomorrow.html"
     }
   }.freeze
@@ -54,7 +56,7 @@ class ImportLotnik
     end
 
     def download_aup
-      start_url = 'http://www.amc.pansa.pl/?menu_lewe=aup&lang=_pl&opis=amc_aup'
+      start_url = 'https://airspace.pansa.pl/aup/current'
       conn = Faraday.new(url: start_url) do |c|
         c.use :cookie_jar
         c.adapter Faraday.default_adapter
