@@ -40,7 +40,7 @@ class NavPoint < ApplicationRecord
   end
 
   def self.fetch_geocode(location)
-    response = Faraday.get "https://maps.googleapis.com/maps/api/geocode/json?latlng=#{location.lat},#{location.lng}"
+    response = Faraday.get "https://maps.googleapis.com/maps/api/geocode/json?key=#{ENV['GEOCODE_API_KEY']}&latlng=#{location.lat},#{location.lng}"
     JSON.parse(response.body)
   end
 

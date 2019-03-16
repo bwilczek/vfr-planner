@@ -34,6 +34,8 @@ docker build -t vfr-planner .
 
 # provide database that will be visible for container under name mysql (docker --link or --add-host)
 # db_user: vfr, db_pass: vfr, db_name: vfr
+# for example using docker:
+docker run --rm --name vfr-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=vfr -e MYSQL_USER=vfr -e MYSQL_PASSWORD=vfr -p 3306:3306 mysql/mysql-server:5.6
 
 # then run the vfr-planner container providing your configuration
 docker run -d \
@@ -45,6 +47,7 @@ docker run -d \
   -e 'FACEBOOK_APP_ID=XXXX' \
   -e 'GOOGLE_APP_ID=XXXX.apps.googleusercontent.com' \
   -e 'GOOGLE_MAPS_KEY=XXXX' \
+  -e 'GEOCODE_API_KEY=XXXX' \
   -e 'RAILS_SERVE_STATIC_FILES=true' \
   vfr-planner
 ```
