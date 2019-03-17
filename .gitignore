@@ -11,6 +11,7 @@
 !/log/.keep
 !/tmp/.keep
 !/import/.keep
+!/import/nav_aids_2019.txt
 
 .byebug_history
 /client/node_modules

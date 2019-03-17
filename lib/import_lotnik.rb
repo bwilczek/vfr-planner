@@ -30,6 +30,8 @@ class ImportLotnik
     }
   }.freeze
 
+  AERODROMES_URL = 'http://lotnik.org/pliki/Nasze_Trawniki_PunktyVFR_PL.cup'
+
   class << self
     def update_all_airspaces
       download_airspaces

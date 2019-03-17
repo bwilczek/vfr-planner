@@ -128,6 +128,10 @@ export default class Map extends React.Component {
       content += `<hr />${marker.navPoint.description}`
     }
 
+    if (marker.navPoint.radio) {
+      content += marker.navPoint.radio
+    }
+
     const infowindow = new google.maps.InfoWindow({ content })
     infowindow.open(this.map, marker)
   }
