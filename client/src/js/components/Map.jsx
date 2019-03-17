@@ -121,7 +121,7 @@ export default class Map extends React.Component {
   onMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
     let content = `
-      <strong>${marker.navPoint.name}</strong><br />
+      <strong>${marker.navPoint.icao_code || ''} ${marker.navPoint.name}</strong><br />
       ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br />`
 
     if (marker.navPoint.description) {
