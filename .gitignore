@@ -16,6 +16,8 @@
 .byebug_history
 /client/node_modules
 /client/npm-debug.log
+/client.gmaps/node_modules
+/client.gmaps/npm-debug.log
 /client.old/node_modules
 /client.old/npm-debug.log
 /public/client.min.js
@@ -30,3 +32,5 @@
 /client/src/js/secrets.js.ignore
 /client.old/src/js/secrets.js
 /client.old/src/js/secrets.js.ignore
+/client.gmaps/src/js/secrets.js
+/client.gmaps/src/js/secrets.js.ignore
