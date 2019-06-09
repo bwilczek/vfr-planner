@@ -1,6 +1,12 @@
 import React from 'reactn'
 import axios from 'axios'
 import { FormattedMessage } from 'react-intl'
+import { IntlProvider } from 'react-intl'
+
+import { addLocaleData } from 'react-intl'
+import plLocaleData from 'react-intl/locale-data/pl'
+
+addLocaleData(plLocaleData)
 
 export default class App extends React.PureComponent {
   componentWillMount() {
@@ -11,18 +17,20 @@ export default class App extends React.PureComponent {
     )
     this.setGlobal(
       axios.post('/api/intl', {locale: this.global.locale})
-        .then(response => ({translations: {pl: response.data.messages}}))
+        .then(response => ({translations: response.data.messages}))
         .catch(err => ({ error: err }))
     )
   }
 
   render() {
     return (
-      <>
-        <div id="point">{this.global.point.name}</div>
-        <div>{this.global.error}</div>
-        <FormattedMessage id="navAids" />
-      </>
+      <IntlProvider locale={this.global.locale} defaultLocale="pl" messages={this.global.translations}>
+        <div>
+          <div id="point">{this.global.point.name}</div>
+          <div>Error: {this.global.error}</div>
+          <FormattedMessage id="navPointKind_uncontrolled" />
+        </div>
+      </IntlProvider>
     )
   }
 }
