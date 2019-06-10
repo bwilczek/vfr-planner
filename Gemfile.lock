@@ -54,6 +54,7 @@ GEM
       faraday (>= 0.7.4)
       http-cookie (~> 1.0.0)
     ffi (1.9.14)
+    geocoder (1.5.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     http-cookie (1.0.3)
@@ -166,6 +167,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   faraday-cookie_jar
+  geocoder
   koala (~> 2.4)
   listen (~> 3.0.5)
   mysql2 (~> 0.4)

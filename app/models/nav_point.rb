@@ -21,8 +21,7 @@ class NavPoint < ApplicationRecord
 
   def self.get_country_code(location)
     data = fetch_geocode(location)
-    return nil unless data['status'] == 'OK'
-    data['results'].first['address_components'].select { |item| item['types'].include?('country') }.first['short_name'].downcase
+    data.country_code
   end
 
   def self.get_country_code_for_icao_code(icao_code)
@@ -34,16 +33,14 @@ class NavPoint < ApplicationRecord
     return point.name if point.name
     data = fetch_geocode(point)
     begin
-      return data['results'].first['address_components'].select { |item| item['types'].include?('political') }.first['short_name']
+      return data.city
     rescue
-      logger.debug(data['results'])
       return 'WPT [?]'
     end
   end
 
   def self.fetch_geocode(location)
-    response = Faraday.get "https://maps.googleapis.com/maps/api/geocode/json?key=#{ENV['GEOCODE_API_KEY']}&latlng=#{location.lat},#{location.lng}"
-    JSON.parse(response.body)
+    Geocoder.search([location.lat, location.lng])&.first
   end
 
   def compute_country_code
