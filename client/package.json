@@ -30,7 +30,7 @@
     "node-sass": "^4.1.1",
     "prop-types": "^15.5.7",
     "react": "16",
-    "react-bootstrap": "1.0.0-beta.9",
+    "react-bootstrap": "^0.32.4",
     "react-bootstrap-slider": "2.1",
     "react-bootstrap-toggle": "^2.0.7",
     "react-dom": "16",
