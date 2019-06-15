@@ -2,8 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { random } from 'lodash'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { isEqual, forEach, random } from 'lodash'
+import { Map, TileLayer } from 'react-leaflet'
+import * as L from 'leaflet'
 
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
@@ -42,6 +43,25 @@ export default class MapLeaflet extends React.Component {
     this.latLngOfMouseDown = null
   }
 
+  componentDidMount() {
+    this.initMap()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(this.props.waypoints, prevProps.waypoints)) {
+      this.plotRoute()
+    }
+  }
+
+  plotRoute() {
+    this.poly.setLatLngs(this.props.waypoints.map((wp) => wp.latLng));
+  }
+
+  initMap() {
+    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng));//.addTo(this.refs.leafletMap.leafletElement);
+    this.poly.addTo(this.refs.leafletMap.leafletElement);
+  }
+
   onMapClick(e) {
     this.props.addWaypointWithName({
       name: `WPT ${this.props.waypoints.length + 1}`,
@@ -53,16 +73,11 @@ export default class MapLeaflet extends React.Component {
   render() {
      const position = [51, 17];
      return (
-       <Map center={position} zoom={8} onClick={this.onMapClick.bind(this)}>
+       <Map ref="leafletMap" center={position} zoom={8} onClick={this.onMapClick.bind(this)}>
          <TileLayer
            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
            url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
          />
-         <Marker position={position}>
-           <Popup>
-             A pretty CSS3 popup. <br/> Easily customizable.
-           </Popup>
-         </Marker>
        </Map>
      );
    }
