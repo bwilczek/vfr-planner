@@ -57,7 +57,7 @@ const SortableItem = SortableElement(({value, dispatch}) => {
         <DragHandle />
       </div>
       <div style={{width: '100%'}}>
-        <DropdownButton bsStyle="default" pullRight={true} bsSize="xsmall" title="&#9660;" noCaret={true} id={`dropdown-${value.key}`}>
+        <DropdownButton bsStyle="default" pullright={true} bsSize="xsmall" title="&#9660;" nocaret={true} id={`dropdown-${value.key}`}>
           <MenuItem onClick={() => { dispatch(updateUi({mapCenter: value.latLng})) }}><FontAwesome name="crosshairs" style={{width: '17px'}}/> <FormattedMessage id="center"/></MenuItem>
           <MenuItem onClick={() => { dispatch(renameModalShow(value.key)) }}><FontAwesome name="edit" style={{width: '17px'}} /> <FormattedMessage id="rename"/></MenuItem>
           <MenuItem onClick={() => { dispatch(deleteWaypoint(value)) }}><FontAwesome name="trash" style={{width: '17px'}} /> <FormattedMessage id="remove"/></MenuItem>

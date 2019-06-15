@@ -9,6 +9,9 @@ export default class InfoDropdown extends React.Component {
 
   render() {
     return (
+      <span>temporary error</span>
+    )
+    return (
       <span style={{marginRight: '5px'}}>
         <FontAwesome name="bars" size="3x"
           class="auth-button"
