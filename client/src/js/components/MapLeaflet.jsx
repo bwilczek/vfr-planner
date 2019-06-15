@@ -9,7 +9,7 @@ import * as L from 'leaflet'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
 import { addWaypointWithName } from '../actions/flightPlanActions'
-import { createAirspaceRawPolygon } from '../lib/MapUtils'
+import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
 
 @injectIntl
 @connect(
@@ -76,19 +76,10 @@ export default class MapLeaflet extends React.Component {
 
   createNavPointMarker(navPoint) {
     const latLng = L.latLng(navPoint.lat, navPoint.lng)
-    const newMarker = L.marker(latLng);
+    const icon = L.icon({iconUrl: getIconForNavPointKind(navPoint.kind)})
+    const newMarker = L.marker(latLng, {icon: icon, title: navPoint.name});
     newMarker.addTo(this.refs.leafletMap.leafletElement);
-    //TODO@mondem define Icon
-    // const newMarker = new google.maps.Marker({
-    //   position: latLng,
-    //   map: this.map,
-    //   title: navPoint.name,
-    //   navPoint: navPoint,
-    //   icon: {
-    //     url: getIconForNavPointKind(navPoint.kind),
-    //     anchor: new google.maps.Point(12, 12)
-    //   }
-    // })
+    //TODO@mondem
     // newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
     // newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
     return newMarker
