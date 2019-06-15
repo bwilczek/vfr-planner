@@ -6,7 +6,8 @@ import * as secrets from '../secrets'
 GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
 GoogleMapsLoader.LIBRARIES = ['geometry']
 
-import Map from '../components/Map'
+//import Map from '../components/Map'
+import MapLeaflet from '../components/MapLeaflet'
 import AllModals from '../components/modals'
 import WaypointList from '../components/WaypointList'
 import FlightPlanSettings from '../components/FlightPlanSettings'
@@ -56,7 +57,7 @@ export default class PlannerPage extends React.Component {
             <FlightPlanSettings />
             <AllModals />
           </div>
-          <div class="planner-main"><Map /></div>
+          <div class="planner-main"><MapLeaflet /></div>
           <div class="planner-right"><WaypointList /></div>
           <div class="clear"/>
         </div>
