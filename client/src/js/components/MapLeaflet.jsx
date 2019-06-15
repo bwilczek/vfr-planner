@@ -47,7 +47,7 @@ export default class MapLeaflet extends React.Component {
   componentDidMount() {
     this.initMap()
     this.plotAirspaces()
-  //  this.plotNavPoints()
+    this.plotNavPoints()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -57,6 +57,41 @@ export default class MapLeaflet extends React.Component {
     if (!isEqual(this.props.airspaces, prevProps.airspaces)) {
       this.plotAirspaces()
     }
+    if (!isEqual(this.props.navPoints, prevProps.navPoints)) {
+      this.plotNavPoints()
+    }
+  }
+
+  plotNavPoints() {
+    // CLEAR navPointMarkers
+    forEach(this.navPointMarkers, (marker) => {
+      marker.removeFrom(this.refs.leafletMap.leafletElement);
+    })
+    this.navPointMarkers = []
+    // PLOT navPointMarkers
+    forEach(this.props.navPoints, (navPoint) => {
+      this.navPointMarkers = [...this.navPointMarkers, this.createNavPointMarker(navPoint)]
+    })
+  }
+
+  createNavPointMarker(navPoint) {
+    const latLng = L.latLng(navPoint.lat, navPoint.lng)
+    const newMarker = L.marker(latLng);
+    newMarker.addTo(this.refs.leafletMap.leafletElement);
+    //TODO@mondem define Icon
+    // const newMarker = new google.maps.Marker({
+    //   position: latLng,
+    //   map: this.map,
+    //   title: navPoint.name,
+    //   navPoint: navPoint,
+    //   icon: {
+    //     url: getIconForNavPointKind(navPoint.kind),
+    //     anchor: new google.maps.Point(12, 12)
+    //   }
+    // })
+    // newMarker.addListener('rightclick', this.onMarkerRightClick.bind(this, newMarker))
+    // newMarker.addListener('click', this.onMarkerClick.bind(this, newMarker))
+    return newMarker
   }
 
   plotAirspaces() {
