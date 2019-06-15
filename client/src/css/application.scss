@@ -84,3 +84,8 @@ ul[aria-labelledby="flightPlansDropdown"] {
 ul[aria-labelledby="infoDropdown"] {
   top: +20px;
 }
+
+.leaflet-container {
+  height: 100%;
+  width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
+}
