@@ -88,4 +88,5 @@ ul[aria-labelledby="infoDropdown"] {
 .leaflet-container {
   height: 100%;
   width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
+  cursor: crosshair;
 }
