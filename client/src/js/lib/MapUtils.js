@@ -51,14 +51,16 @@ export function createAirspaceRawPolygon(airspace) {
       color = '#CCCCCC'
   }
 
-  let polygon = new google.maps.Polygon({
-    paths: extractPointsFromAirspace(airspace),
-    strokeColor: color,
-    strokeOpacity: 0.75,
-    strokeWeight: 2,
-    fillColor: color,
-    fillOpacity: 0.28,
-  })
+  let polygon = L.polygon(extractPointsFromAirspace(airspace), {color: color})
+  //TODO@mondem
+  // let polygon = new google.maps.Polygon({
+  //   paths: extractPointsFromAirspace(airspace),
+  //   strokeColor: color,
+  //   strokeOpacity: 0.75,
+  //   strokeWeight: 2,
+  //   fillColor: color,
+  //   fillOpacity: 0.28,
+  // })
   polygon.airspace = airspace
   return polygon
 }
