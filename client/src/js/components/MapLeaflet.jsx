@@ -9,6 +9,7 @@ import * as L from 'leaflet'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
 import { addWaypointWithName } from '../actions/flightPlanActions'
+import { createAirspaceRawPolygon } from '../lib/MapUtils'
 
 @injectIntl
 @connect(
@@ -45,21 +46,53 @@ export default class MapLeaflet extends React.Component {
 
   componentDidMount() {
     this.initMap()
+    this.plotAirspaces()
+  //  this.plotNavPoints()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(this.props.waypoints, prevProps.waypoints)) {
       this.plotRoute()
     }
+    if (!isEqual(this.props.airspaces, prevProps.airspaces)) {
+      this.plotAirspaces()
+    }
   }
+
+  plotAirspaces() {
+     // CLEAR airspacePolygons
+     forEach(this.airspacePolygons, (polygon) => {
+       polygon.removeFrom(this.refs.leafletMap.leafletElement);
+     })
+     this.airspacePolygons = []
+     // PLOT airspacePolygons
+     forEach(this.props.airspaces, (airspace) => {
+       switch (airspace.kind) {
+         case 'ignore':
+         case 'fis':
+         case 'adiz':
+           // TODO: make it a polyline
+           break
+         default:
+           this.airspacePolygons.push(this.createAirspacePolygon(airspace))
+       }
+     })
+   }
+
+   createAirspacePolygon(airspace) {
+     let polygon = createAirspaceRawPolygon(airspace)
+     polygon.addTo(this.refs.leafletMap.leafletElement);
+     return polygon
+   }
 
   plotRoute() {
     this.poly.setLatLngs(this.props.waypoints.map((wp) => wp.latLng));
   }
 
   initMap() {
-    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng));//.addTo(this.refs.leafletMap.leafletElement);
+    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng));
     this.poly.addTo(this.refs.leafletMap.leafletElement);
+
   }
 
   onMapClick(e) {
