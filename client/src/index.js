@@ -4,9 +4,8 @@ import addReactNDevTools from 'reactn-devtools'
 import ReactDOM from 'react-dom'
 import App from './components/App'
 
-
 setGlobal({
-  locale: 'pl',
+  locale: '-',
   translations: {},
   nav_points: [],
   error: 'none',
