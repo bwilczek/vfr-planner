@@ -64,6 +64,9 @@ export default class MapLeaflet extends React.Component {
     if (!isEqual(this.props.navPoints, prevProps.navPoints)) {
       this.plotNavPoints()
     }
+    if (!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
+      this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom)
+    }
   }
 
   onMarkerClick(marker) {
@@ -183,8 +186,11 @@ export default class MapLeaflet extends React.Component {
   }
 
   initMap() {
+    const position = [51, 17];
+    const zoom = 8
     this.map = this.refs.leafletMap.leafletElement
     this.map.on('click', this.onMapClick.bind(this))
+    this.map.setView(position, zoom);
     // this.map.addListener('idle', this.onMapIdle.bind(this))
     // this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
 
@@ -207,6 +213,14 @@ export default class MapLeaflet extends React.Component {
     // this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
   }
 
+  defaultMapSettings() {
+    return {
+      center: this.props.ui.mapCenter,
+      zoom: this.props.ui.mapZoom,
+      draggableCursor: 'crosshair'
+    }
+  }
+
   onMapClick(e) {
     this.props.addWaypointWithName({
       name: `WPT ${this.props.waypoints.length + 1}`,
@@ -216,9 +230,8 @@ export default class MapLeaflet extends React.Component {
   }
 
   render() {
-     const position = [51, 17];
      return (
-       <Map ref="leafletMap" center={position} zoom={8}>
+       <Map ref="leafletMap">
          <TileLayer
            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
            url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
