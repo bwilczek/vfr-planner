@@ -100,7 +100,7 @@ export default class MapLeaflet extends React.Component {
     const popup = L.popup()
     .setLatLng(marker.getLatLng())
     .setContent(content)
-    .openOn(this.refs.leafletMap.leafletElement);
+    .openOn(this.map);
   }
 
   onAirspaceRightClick(e) {
@@ -125,13 +125,13 @@ export default class MapLeaflet extends React.Component {
     const popup = L.popup()
     .setLatLng(e.latlng)
     .setContent(content)
-    .openOn(this.refs.leafletMap.leafletElement);
+    .openOn(this.map);
   }
 
   plotNavPoints() {
     // CLEAR navPointMarkers
     forEach(this.navPointMarkers, (marker) => {
-      marker.removeFrom(this.refs.leafletMap.leafletElement);
+      marker.removeFrom(this.map);
     })
     this.navPointMarkers = []
     // PLOT navPointMarkers
@@ -145,7 +145,7 @@ export default class MapLeaflet extends React.Component {
     const icon = L.icon({iconUrl: getIconForNavPointKind(navPoint.kind), iconAnchor: [12, 12]})
     const newMarker = L.marker(latLng, {icon: icon, title: navPoint.name})
     newMarker.navPoint = navPoint
-    newMarker.addTo(this.refs.leafletMap.leafletElement)
+    newMarker.addTo(this.map)
     newMarker.on('click', this.onMarkerClick.bind(this, newMarker))
     newMarker.on('contextmenu', this.onMarkerRightClick.bind(this, newMarker))
     return newMarker
@@ -154,7 +154,7 @@ export default class MapLeaflet extends React.Component {
   plotAirspaces() {
      // CLEAR airspacePolygons
      forEach(this.airspacePolygons, (polygon) => {
-       polygon.removeFrom(this.refs.leafletMap.leafletElement);
+       polygon.removeFrom(this.map);
      })
      this.airspacePolygons = []
      // PLOT airspacePolygons
@@ -173,7 +173,7 @@ export default class MapLeaflet extends React.Component {
 
    createAirspacePolygon(airspace) {
      let polygon = createAirspaceRawPolygon(airspace)
-     polygon.addTo(this.refs.leafletMap.leafletElement);
+     polygon.addTo(this.map);
      polygon.on('contextmenu',this.onAirspaceRightClick.bind(this))
      return polygon
    }
@@ -183,8 +183,28 @@ export default class MapLeaflet extends React.Component {
   }
 
   initMap() {
-    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng));
-    this.poly.addTo(this.refs.leafletMap.leafletElement);
+    this.map = this.refs.leafletMap.leafletElement
+    this.map.on('click', this.onMapClick.bind(this))
+    // this.map.addListener('idle', this.onMapIdle.bind(this))
+    // this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
+
+    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng))
+    this.poly.addTo(this.map)
+
+    // this.infoWindow = new google.maps.InfoWindow()
+    // this.poly = new google.maps.Polyline({
+    //   map: this.map,
+    //   path: this.props.waypoints.map((wp) => wp.latLng),
+    //   strokeColor: '#FF0000',
+    //   strokeOpacity: 1.0,
+    //   strokeWeight: 3,
+    //   geodesic: true,
+    //   editable: true,
+    //   suppressUndo: true,
+    //   clickable: false,
+    // })
+    // this.poly.addListener('mousedown', this.onPolyMouseDown.bind(this))
+    // this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
   }
 
   onMapClick(e) {
@@ -198,7 +218,7 @@ export default class MapLeaflet extends React.Component {
   render() {
      const position = [51, 17];
      return (
-       <Map ref="leafletMap" center={position} zoom={8} onClick={this.onMapClick.bind(this)}>
+       <Map ref="leafletMap" center={position} zoom={8}>
          <TileLayer
            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
            url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
