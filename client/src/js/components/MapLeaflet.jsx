@@ -6,6 +6,7 @@ import { isEqual, forEach, random } from 'lodash'
 import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
 import * as L from 'leaflet'
 
+import { updateUi } from '../actions/uiActions'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
 import { addWaypoint, addWaypointWithName } from '../actions/flightPlanActions'
@@ -30,6 +31,9 @@ import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtil
       },
       addWaypoint: (waypoint, position = null) => {
         dispatch(addWaypoint(waypoint, position))
+      },
+      updateUi: (fields) => {
+        dispatch(updateUi(fields))
       }
     }
   }
@@ -186,13 +190,11 @@ export default class MapLeaflet extends React.Component {
   }
 
   initMap() {
-    const position = [51, 17];
-    const zoom = 8
     this.map = this.refs.leafletMap.leafletElement
     this.map.on('click', this.onMapClick.bind(this))
-    this.map.setView(position, zoom);
-    // this.map.addListener('idle', this.onMapIdle.bind(this))
-    // this.map.addListener('zoom_changed', this.onZoomChanged.bind(this))
+    this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom);
+    this.map.on('moveend', this.onMapIdle.bind(this))
+    this.map.on('zoomend', this.onZoomChanged.bind(this))
 
     this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng))
     this.poly.addTo(this.map)
@@ -213,20 +215,20 @@ export default class MapLeaflet extends React.Component {
     // this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
   }
 
-  defaultMapSettings() {
-    return {
-      center: this.props.ui.mapCenter,
-      zoom: this.props.ui.mapZoom,
-      draggableCursor: 'crosshair'
-    }
-  }
-
   onMapClick(e) {
     this.props.addWaypointWithName({
       name: `WPT ${this.props.waypoints.length + 1}`,
       latLng: e.latlng,
       key: `${random(10000, 99999)}-${Date.now()}`
     })
+  }
+
+  onMapIdle(e) {
+    this.props.updateUi({mapCenter: {lat: this.map.getCenter().lat, lng: this.map.getCenter().lng}})
+  }
+
+  onZoomChanged(e) {
+    this.props.updateUi({mapZoom: this.map.getZoom()})
   }
 
   render() {
