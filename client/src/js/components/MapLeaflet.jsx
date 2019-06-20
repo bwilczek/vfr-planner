@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { isEqual, forEach, random } from 'lodash'
-import { Map, TileLayer, Popup} from 'react-leaflet'
+import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
 import * as L from 'leaflet'
 
 import { getAirspacesForFilters } from '../selectors/airspaces'
@@ -103,6 +103,31 @@ export default class MapLeaflet extends React.Component {
     .openOn(this.refs.leafletMap.leafletElement);
   }
 
+  onAirspaceRightClick(e) {
+    console.log('Eeeeeee',e)
+    let content = ''
+    forEach(this.airspacePolygons, (poly) => {
+      console.log('Poooly',poly)
+      console.log('Pooolybounds',poly.getBounds())
+      let bounds = poly.getBounds()
+      if (!bounds.contains(e.latlng)) {
+        return
+      }
+      content += `
+      <strong>${poly.airspace.name}</strong><br />
+      ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
+      ${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />
+      ${poly.airspace.description}
+      <hr />
+      `
+    })
+
+    const popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent(content)
+    .openOn(this.refs.leafletMap.leafletElement);
+  }
+
   plotNavPoints() {
     // CLEAR navPointMarkers
     forEach(this.navPointMarkers, (marker) => {
@@ -149,6 +174,7 @@ export default class MapLeaflet extends React.Component {
    createAirspacePolygon(airspace) {
      let polygon = createAirspaceRawPolygon(airspace)
      polygon.addTo(this.refs.leafletMap.leafletElement);
+     polygon.on('contextmenu',this.onAirspaceRightClick.bind(this))
      return polygon
    }
 
