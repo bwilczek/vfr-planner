@@ -99,7 +99,7 @@ export default class MapLeaflet extends React.Component {
     }
   }
 
-  onMarkerClick(marker) {
+  onNavPointMarkerClick(marker) {
     console.log ("click on marker ", marker)
     console.log ("click on marker.title ", marker.options.title)
     console.log ("click on marker.navPoint ", marker.navPoint)
@@ -115,7 +115,7 @@ export default class MapLeaflet extends React.Component {
     })
   }
 
-  onMarkerRightClick(marker) {
+  onNavPointMarkerRightClick(marker) {
     console.log ("RIGHT click on marker/map ", marker,this.map)
     const { formatMessage } = this.props.intl
     let content = `
@@ -176,8 +176,8 @@ export default class MapLeaflet extends React.Component {
     const newMarker = L.marker(latLng, {icon: icon, title: navPoint.name})
     newMarker.navPoint = navPoint
     newMarker.addTo(this.map)
-    newMarker.on('click', this.onMarkerClick.bind(this, newMarker))
-    newMarker.on('contextmenu', this.onMarkerRightClick.bind(this, newMarker))
+    newMarker.on('click', this.onNavPointMarkerClick.bind(this, newMarker))
+    newMarker.on('contextmenu', this.onNavPointMarkerRightClick.bind(this, newMarker))
     return newMarker
   }
 
@@ -216,7 +216,6 @@ export default class MapLeaflet extends React.Component {
      newMarker.wayPoint = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
-     newMarker.on('drag', this.onWayPointDrag.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
      return newMarker
    }
@@ -239,19 +238,10 @@ export default class MapLeaflet extends React.Component {
   }
 
   onWayPointMoveEnd(marker) {
-    console.log('end of moving marker', marker)
-    console.log('end of moving marker.wayPoint', marker.wayPoint)
-    console.log('end of moving marker.wayPoint.latLng przed ', marker.wayPoint.latLng)
-
-
     let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === marker.wayPoint.key)[0])
     waypoint.latLng = marker.getLatLng()
     this.props.updateWaypointWithName(waypoint)
         console.log('end of moving marker.waypoint.latLng po', marker.wayPoint.latLng)
-  }
-
-  onWayPointDrag(marker) {
-    console.log('drag')
   }
 
   onWayPointRightClick(marker) {
