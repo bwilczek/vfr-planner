@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import GoogleMapsLoader from 'google-maps'
-import * as secrets from '../secrets'
-GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
-GoogleMapsLoader.LIBRARIES = ['geometry']
+// import GoogleMapsLoader from 'google-maps'
+// import * as secrets from '../secrets'
+// GoogleMapsLoader.KEY = secrets.GOOGLE_MAPS_KEY
+// GoogleMapsLoader.LIBRARIES = ['geometry']
 
 //import Map from '../components/Map'
 import MapLeaflet from '../components/MapLeaflet'
@@ -18,14 +18,14 @@ import { fetchFlightPlan } from '../actions/flightPlanActions'
 @connect(
   (state) => {
     return {
-      googleMapsApiLoaded: state.google.mapsApiLoaded,
+      googleMapsApiLoaded: true // state.google.mapsApiLoaded,
     }
   },
   (dispatch) => {
     return {
-      setMapsApiLoaded: (value) => {
-        dispatch(setMapsApiLoaded(value))
-      },
+      // setMapsApiLoaded: (value) => {
+      //   dispatch(setMapsApiLoaded(value))
+      // },
       fetchFlightPlan: (planId) => {
         dispatch(fetchFlightPlan(planId))
       },
@@ -38,9 +38,9 @@ import { fetchFlightPlan } from '../actions/flightPlanActions'
 export default class PlannerPage extends React.Component {
 
   componentDidMount() {
-    GoogleMapsLoader.load((g) => {
-      this.props.setMapsApiLoaded(true)
-    })
+    // GoogleMapsLoader.load((g) => {
+    //   this.props.setMapsApiLoaded(true)
+    // })
   }
 
   componentDidUpdate() {
