@@ -100,9 +100,6 @@ export default class MapLeaflet extends React.Component {
   }
 
   onNavPointMarkerClick(marker) {
-    console.log ("click on marker ", marker)
-    console.log ("click on marker.title ", marker.options.title)
-    console.log ("click on marker.navPoint ", marker.navPoint)
     let name = marker.navPoint.icao_code ? marker.navPoint.icao_code : marker.navPoint.name
     this.props.addWaypoint({
       name: name,
@@ -116,7 +113,6 @@ export default class MapLeaflet extends React.Component {
   }
 
   onNavPointMarkerRightClick(marker) {
-    console.log ("RIGHT click on marker/map ", marker,this.map)
     const { formatMessage } = this.props.intl
     let content = `
       <strong>${marker.navPoint.icao_code || ''} ${marker.navPoint.name}</strong><br />
@@ -351,23 +347,8 @@ export default class MapLeaflet extends React.Component {
 
     this.infoWindow = L.popup()
 
-    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng))
+    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng), {color: '#FF0000'})
     this.poly.addTo(this.map)
-
-    // this.infoWindow = new google.maps.InfoWindow()
-    // this.poly = new google.maps.Polyline({
-    //   map: this.map,
-    //   path: this.props.waypoints.map((wp) => wp.latLng),
-    //   strokeColor: '#FF0000',
-    //   strokeOpacity: 1.0,
-    //   strokeWeight: 3,
-    //   geodesic: true,
-    //   editable: true,
-    //   suppressUndo: true,
-    //   clickable: false,
-    // })
-    // this.poly.addListener('mousedown', this.onPolyMouseDown.bind(this))
-    // this.poly.addListener('mouseup', this.onPolyMouseUp.bind(this))
   }
 
   onMapClick(e) {
