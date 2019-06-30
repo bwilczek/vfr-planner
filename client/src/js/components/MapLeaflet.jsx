@@ -46,6 +46,7 @@ export default class MapLeaflet extends React.Component {
     this.poly = null
     this.infoWindow = null
     this.navPointMarkers = []
+    this.wayPointMarkers = []
     this.airspacePolygons = []
     this.minuteMarkers = []
     this.keyOfWaypointBeingDragged = null
@@ -56,6 +57,7 @@ export default class MapLeaflet extends React.Component {
     this.initMap()
     this.plotAirspaces()
     this.plotNavPoints()
+    this.plotRoute()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -111,11 +113,8 @@ export default class MapLeaflet extends React.Component {
   }
 
   onAirspaceRightClick(e) {
-    console.log('Eeeeeee',e)
     let content = ''
     forEach(this.airspacePolygons, (poly) => {
-      console.log('Poooly',poly)
-      console.log('Pooolybounds',poly.getBounds())
       let bounds = poly.getBounds()
       if (!bounds.contains(e.latlng)) {
         return
@@ -185,8 +184,34 @@ export default class MapLeaflet extends React.Component {
      return polygon
    }
 
+   createWayPointMarker(wayPoint) {
+     console.log('creating WAYPOINT marker')
+     const latLng = wayPoint.latLng
+     //todo mondem new icon
+     const icon = L.icon({iconUrl: getIconForNavPointKind('helipad'), iconAnchor: [12, 12]})
+     const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name})
+     newMarker.wayPoint = wayPoint
+     newMarker.addTo(this.map)
+   //  newMarker.on('click', this.onMarkerClick.bind(this, newMarker))
+   //  newMarker.on('contextmenu', this.onMarkerRightClick.bind(this, newMarker))
+     return newMarker
+   }
+
+   plotWayPoints() {
+     // CLEAR wayPointMarkers
+     forEach(this.wayPointMarkers, (marker) => {
+       marker.removeFrom(this.map);
+     })
+     this.wayPointMarkers = []
+     // PLOT wayPointMarkers
+     forEach(this.props.waypoints, (wayPoint) => {
+       this.wayPointMarkers = [...this.wayPointMarkers, this.createWayPointMarker(wayPoint)]
+     })
+   }
+
   plotRoute() {
     this.poly.setLatLngs(this.props.waypoints.map((wp) => wp.latLng));
+    this.plotWayPoints();
   }
 
   initMap() {
