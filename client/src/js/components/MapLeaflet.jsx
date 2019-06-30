@@ -4,14 +4,14 @@ import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { max, isEqual, forEach, random } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random } from 'lodash'
 import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
 import * as L from 'leaflet'
 
 import { updateUi } from '../actions/uiActions'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
-import { addWaypoint, addWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { addWaypoint, addWaypointWithName, deleteWaypoint, updateWaypointWithName } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
 import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon } from '../lib/MapUtils'
@@ -44,6 +44,9 @@ import { standardizeLatLng } from '../lib/NavigationUtils'
       },
       renameModalShow: (waypoint) => {
         dispatch(renameModalShow(waypoint.key))
+      },
+      updateWaypointWithName: (waypoint) => {
+        dispatch(updateWaypointWithName(waypoint))
       }
     }
   }
@@ -206,15 +209,15 @@ export default class MapLeaflet extends React.Component {
    }
 
    createWayPointMarker(wayPoint) {
-     console.log('creating WAYPOINT marker')
      const latLng = wayPoint.latLng
      //todo mondem new icon
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [8, 8]})
-     const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name})
+     const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name, draggable: true})
      newMarker.wayPoint = wayPoint
      newMarker.addTo(this.map)
-   //  newMarker.on('click', this.onMarkerClick.bind(this, newMarker))
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
+     newMarker.on('drag', this.onWayPointDrag.bind(this, newMarker))
+     newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
      return newMarker
    }
 
@@ -233,6 +236,22 @@ export default class MapLeaflet extends React.Component {
   plotRoute() {
     this.poly.setLatLngs(this.props.waypoints.map((wp) => wp.latLng));
     this.plotWayPoints();
+  }
+
+  onWayPointMoveEnd(marker) {
+    console.log('end of moving marker', marker)
+    console.log('end of moving marker.wayPoint', marker.wayPoint)
+    console.log('end of moving marker.wayPoint.latLng przed ', marker.wayPoint.latLng)
+
+
+    let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === marker.wayPoint.key)[0])
+    waypoint.latLng = marker.getLatLng()
+    this.props.updateWaypointWithName(waypoint)
+        console.log('end of moving marker.waypoint.latLng po', marker.wayPoint.latLng)
+  }
+
+  onWayPointDrag(marker) {
+    console.log('drag')
   }
 
   onWayPointRightClick(marker) {
