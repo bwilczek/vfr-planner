@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Button } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { isEqual, forEach, random } from 'lodash'
@@ -9,9 +11,10 @@ import * as L from 'leaflet'
 import { updateUi } from '../actions/uiActions'
 import { getAirspacesForFilters } from '../selectors/airspaces'
 import { getNavigationData } from '../selectors/navigationData'
-import { addWaypoint, addWaypointWithName } from '../actions/flightPlanActions'
+import { addWaypoint, addWaypointWithName, deleteWaypoint } from '../actions/flightPlanActions'
+import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
-import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtils'
+import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon } from '../lib/MapUtils'
 
 @injectIntl
 @connect(
@@ -34,6 +37,12 @@ import { getIconForNavPointKind, createAirspaceRawPolygon } from '../lib/MapUtil
       },
       updateUi: (fields) => {
         dispatch(updateUi(fields))
+      },
+      deleteWaypoint: (waypoint) => {
+        dispatch(deleteWaypoint(waypoint))
+      },
+      renameModalShow: (waypoint) => {
+        dispatch(renameModalShow(waypoint.key))
       }
     }
   }
@@ -188,12 +197,12 @@ export default class MapLeaflet extends React.Component {
      console.log('creating WAYPOINT marker')
      const latLng = wayPoint.latLng
      //todo mondem new icon
-     const icon = L.icon({iconUrl: getIconForNavPointKind('helipad'), iconAnchor: [12, 12]})
+     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [8, 8]})
      const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name})
      newMarker.wayPoint = wayPoint
      newMarker.addTo(this.map)
    //  newMarker.on('click', this.onMarkerClick.bind(this, newMarker))
-   //  newMarker.on('contextmenu', this.onMarkerRightClick.bind(this, newMarker))
+     newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      return newMarker
    }
 
@@ -214,12 +223,36 @@ export default class MapLeaflet extends React.Component {
     this.plotWayPoints();
   }
 
+  onWayPointRightClick(marker) {
+    this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, marker.wayPoint))
+    this.infoWindow.setLatLng(marker.getLatLng())
+    this.infoWindow.openOn(this.map)
+  }
+
+  generateInfoWindowContent(iw, waypoint) {
+    let a = document.createElement('div')
+    const { formatMessage } = this.props.intl
+    ReactDOM.render(
+      <div>
+        <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
+       <Button bsSize="xsmall" title={formatMessage({id: 'center'})} onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
+       <Button bsSize="xsmall" title={formatMessage({id: 'rename'})} onClick={() => { this.props.renameModalShow(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="edit" /></Button>
+       <Button bsSize="xsmall" title={formatMessage({id: 'remove'})} onClick={() => { this.props.deleteWaypoint(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="trash" /></Button>
+      </div>
+    , a)
+    return a
+
+
+  }
+
   initMap() {
     this.map = this.refs.leafletMap.leafletElement
     this.map.on('click', this.onMapClick.bind(this))
     this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom);
     this.map.on('moveend', this.onMapIdle.bind(this))
     this.map.on('zoomend', this.onZoomChanged.bind(this))
+
+    this.infoWindow = L.popup()
 
     this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng))
     this.poly.addTo(this.map)

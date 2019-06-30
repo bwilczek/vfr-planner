@@ -12,6 +12,7 @@ import iconNavPointVorDme from '../../img/dvor_dme.png'
 import iconNavPointDme from '../../img/dme.png'
 import iconNavPointOtherAirstrip from '../../img/airfield_other.png'
 import iconNavPointIfrPoint from '../../img/ifr_point.png'
+import iconWayPoint from '../../img/waypoint.svg'
 
 export function extractPointsFromAirspace(airspace) {
   let ret = []
@@ -92,4 +93,8 @@ export function getIconForNavPointKind(kind) {
     case 'ifr_point':
       return iconNavPointIfrPoint
   }
+}
+
+export function getIconForWaypoint() {
+    return iconWayPoint
 }
