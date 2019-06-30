@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { isEqual, forEach, random } from 'lodash'
+import { max, isEqual, forEach, random } from 'lodash'
 import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
 import * as L from 'leaflet'
 
@@ -15,6 +15,7 @@ import { addWaypoint, addWaypointWithName, deleteWaypoint } from '../actions/fli
 import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
 import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon } from '../lib/MapUtils'
+import { standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
 @connect(
@@ -67,6 +68,7 @@ export default class MapLeaflet extends React.Component {
     this.plotAirspaces()
     this.plotNavPoints()
     this.plotRoute()
+    this.plotMinutes()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -81,6 +83,16 @@ export default class MapLeaflet extends React.Component {
     }
     if (!isEqual(this.props.ui.mapCenter, prevProps.ui.mapCenter)) {
       this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom)
+    }
+    if (
+        max([this.props.navigationData.waypoints.length, prevProps.navigationData.waypoints.length]) > 1 &&
+        (this.props.navigationData.waypoints.length !== prevProps.navigationData.waypoints.length ||
+          !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance)) ||
+          !isEqual(this.props.navigationData.totalDuration, prevProps.navigationData.totalDuration)
+      ) {
+      // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
+      setTimeout(() => { this.plotMinutes() }, 300)
+      // this.plotMinutes()
     }
   }
 
@@ -241,8 +253,84 @@ export default class MapLeaflet extends React.Component {
       </div>
     , a)
     return a
+  }
+
+  plotMinutes() {
+    forEach(this.minuteMarkers, (marker) => {
+      marker.removeFrom(this.map)
+    })
+    this.minuteMarkers = []
+
+    let counterCarryOver = 0
+    let counter = 0
+    let minuteCounter = 0
+    let newMarkerLocationGoogle = null
+    let newMarkerLocation = null
+    let oneSecondDistanceInMeters = null
+    let firstInSegment = true
+    let resetOnEachSegment = true
+    forEach(this.props.navigationData.waypoints, (segment) => {
+      if (!segment.rawHeading) {
+        return
+      }
+      if (resetOnEachSegment) {
+        counter = 0
+        minuteCounter = 0
+      } else {
+        counter = counterCarryOver
+      }
+      firstInSegment = true
+      oneSecondDistanceInMeters = segment.rawGroundSpeed * 1852.0 / 3600.0
+      while (true) {
+        if (firstInSegment && counter === 0) {
+          counter += 60
+          continue
+        }
+        if (counter > segment.rawSegmentDuration) {
+          break
+        }
+        minuteCounter += 1
+        newMarkerLocationGoogle = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
+        newMarkerLocation = L.latLng(newMarkerLocationGoogle.lat(),newMarkerLocationGoogle.lng())
+
+        let bold = minuteCounter % 5 === 0
+        //
+        // let minuteSvg = L.svg({
+        //   path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
+        //   strokeColor: '#F00',
+        //   strokeWeight: bold ? 2 : 1,
+        //   fillColor: '#F00',
+        //   fillOpacity: 1,
+        //   rotation: segment.rawCourse + 90
+        // })
 
 
+        //let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='1000'><path d='M2,111 h300 l-242.7,176.3 92.7,-285.3 92.7,285.3 z' fill='#000000'/></svg>"
+        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg'><path d='M 0,-9 0,9 z' fill='#F00'/></svg>"
+        let minuteIconUrl = encodeURI("data:image/svg+xml," + minuteSvg).replace('#','%23');
+
+
+      let minuteIcon = L.icon({iconUrl: minuteIconUrl})
+      //TODO monden: icon: minuteSvg,
+       let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`}) //, icon: minuteIcon})
+       newMarker.addTo(this.map)
+       this.minuteMarkers.push(newMarker)
+
+
+
+        // GOOGLE let newMarker = new google.maps.Marker({
+        //   position: newMarkerLocation,
+        //   map: this.map,
+        //   title: `Minute: ${minuteCounter}`,
+        //   icon: minuteSvg
+        // })
+
+
+        firstInSegment = false
+        counter += 60
+      }
+      counterCarryOver = counter - segment.rawSegmentDuration
+    })
   }
 
   initMap() {
