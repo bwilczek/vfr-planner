@@ -310,14 +310,13 @@ export default class MapLeaflet extends React.Component {
         // })
 
 
-        //let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='1000' height='1000'><path d='M2,111 h300 l-242.7,176.3 92.7,-285.3 92.7,285.3 z' fill='#000000'/></svg>"
-        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg'><path d='M 0,-9 0,9 z' fill='#F00'/></svg>"
+        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><line x1='0' y1='0' x2='10' y2='10' style='stroke:#F00;stroke-width:"+ (bold ? "2" : "1")+"'/></svg>"
+        console.log('minute SVG',minuteSvg)
         let minuteIconUrl = encodeURI("data:image/svg+xml," + minuteSvg).replace('#','%23');
 
 
-      let minuteIcon = L.icon({iconUrl: minuteIconUrl})
-      //TODO monden: icon: minuteSvg,
-       let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`}) //, icon: minuteIcon})
+       let minuteIcon = L.icon({iconUrl: minuteIconUrl, iconAnchor: [5, 5]})
+       let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
        newMarker.addTo(this.map)
        this.minuteMarkers.push(newMarker)
 
