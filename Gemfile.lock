@@ -134,6 +134,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     rubyzip (1.2.1)
+    seeyoucup (0.0.1)
     slop (3.6.0)
     spring (1.7.2)
     spring-watcher-listen (2.0.0)
@@ -176,6 +177,7 @@ DEPENDENCIES
   rails (~> 5.0.0)
   rubocop (~> 0.41.2)
   rubyzip (~> 1.2)
+  seeyoucup
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3

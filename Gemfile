@@ -24,6 +24,7 @@ gem 'wkhtmltopdf-binary', '0.12.3.1'
 gem 'wicked_pdf', '1.1.0'
 gem 'faraday-cookie_jar'
 gem 'geocoder'
+gem 'seeyoucup'
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -3,6 +3,7 @@ class NavPoint < ApplicationRecord
   enum status: [:active, :inactive]
 
   scope :nav_aids, -> { where(kind: [:vor, :ndb, :vor_dme, :dme]) }
+  scope :aerodromes_with_points, -> { where(kind: [:controlled, :uncontrolled, :military, :airstrip, :helipad, :vfr_point, :other_airstrip]) }
 
   ICAO_CODE_MAPPING = {
     'EP' => 'pl',
