@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { max, cloneDeep, isEqual, forEach, random } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random, floor } from 'lodash'
 import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
 import * as L from 'leaflet'
 
@@ -299,21 +299,10 @@ export default class MapLeaflet extends React.Component {
         newMarkerLocation = L.latLng(newMarkerLocationGoogle.lat(),newMarkerLocationGoogle.lng())
 
         let bold = minuteCounter % 5 === 0
-        //
-        // let minuteSvg = L.svg({
-        //   path: bold ? 'M 0,-9 0,9 z' : 'M 0,-5 0,5 z',
-        //   strokeColor: '#F00',
-        //   strokeWeight: bold ? 2 : 1,
-        //   fillColor: '#F00',
-        //   fillOpacity: 1,
-        //   rotation: segment.rawCourse + 90
-        // })
 
-
-        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1'/></svg>"
-        let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2'/></svg>"
-        console.log('minute SVG',minuteSvg)
-        console.log('minute SVG',minuteSvgBold)
+        let rotation = floor(segment.rawCourse + 90)
+        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
+        let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
         let minuteIconUrl = encodeURI("data:image/svg+xml," + (bold ? minuteSvgBold: minuteSvg)).replace('#','%23');
 
 
@@ -321,16 +310,6 @@ export default class MapLeaflet extends React.Component {
         let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
         newMarker.addTo(this.map)
         this.minuteMarkers.push(newMarker)
-
-
-
-        // GOOGLE let newMarker = new google.maps.Marker({
-        //   position: newMarkerLocation,
-        //   map: this.map,
-        //   title: `Minute: ${minuteCounter}`,
-        //   icon: minuteSvg
-        // })
-
 
         firstInSegment = false
         counter += 60
