@@ -310,15 +310,17 @@ export default class MapLeaflet extends React.Component {
         // })
 
 
-        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><line x1='0' y1='0' x2='10' y2='10' style='stroke:#F00;stroke-width:"+ (bold ? "2" : "1")+"'/></svg>"
+        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1'/></svg>"
+        let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2'/></svg>"
         console.log('minute SVG',minuteSvg)
-        let minuteIconUrl = encodeURI("data:image/svg+xml," + minuteSvg).replace('#','%23');
+        console.log('minute SVG',minuteSvgBold)
+        let minuteIconUrl = encodeURI("data:image/svg+xml," + (bold ? minuteSvgBold: minuteSvg)).replace('#','%23');
 
 
-       let minuteIcon = L.icon({iconUrl: minuteIconUrl, iconAnchor: [5, 5]})
-       let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
-       newMarker.addTo(this.map)
-       this.minuteMarkers.push(newMarker)
+        let minuteIcon = L.icon({iconUrl: minuteIconUrl, iconAnchor: [10, 10]})
+        let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
+        newMarker.addTo(this.map)
+        this.minuteMarkers.push(newMarker)
 
 
 
