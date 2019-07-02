@@ -60,6 +60,7 @@ export default class MapLeaflet extends React.Component {
     this.infoWindow = null
     this.navPointMarkers = []
     this.wayPointMarkers = []
+    this.potentialWayPointMarkers = []
     this.airspacePolygons = []
     this.minuteMarkers = []
     this.keyOfWaypointBeingDragged = null
@@ -204,7 +205,7 @@ export default class MapLeaflet extends React.Component {
      return polygon
    }
 
-   createWayPointMarker(wayPoint) {
+   createWayPointMarker(wayPoint, previousWayPoint) {
      const latLng = wayPoint.latLng
      //todo mondem new icon
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
@@ -213,7 +214,23 @@ export default class MapLeaflet extends React.Component {
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
+     if(previousWayPoint != null)
+       this.createPotentialWayPointMarker(wayPoint, previousWayPoint)
      return newMarker
+   }
+
+   createPotentialWayPointMarker(wayPoint, previousWayPoint) {
+     const mlat = (wayPoint.latLng.lat + previousWayPoint.latLng.lat)/2
+     const mlng = (wayPoint.latLng.lng + previousWayPoint.latLng.lng)/2
+     const latLng = L.latLng(mlat, mlng)
+     //todo mondem new icon and tooltip
+     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
+     const newMarker = L.marker(latLng, {icon: icon, title: 'move to add waypoint', draggable: true})
+     newMarker.rightNeighbour = wayPoint
+     newMarker.addTo(this.map)
+     // todo mondem
+    // newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
+     this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
    plotWayPoints() {
@@ -222,9 +239,16 @@ export default class MapLeaflet extends React.Component {
        marker.removeFrom(this.map);
      })
      this.wayPointMarkers = []
+     // CLEAR potentialWayPointMarkers
+     forEach(this.potentialWayPointMarkers, (marker) => {
+       marker.removeFrom(this.map);
+     })
+     this.potentialWayPointMarkers = []
      // PLOT wayPointMarkers
+     let previousWayPoint = null
      forEach(this.props.waypoints, (wayPoint) => {
-       this.wayPointMarkers = [...this.wayPointMarkers, this.createWayPointMarker(wayPoint)]
+       this.wayPointMarkers = [...this.wayPointMarkers, this.createWayPointMarker(wayPoint, previousWayPoint)]
+       previousWayPoint = wayPoint
      })
    }
 
@@ -238,6 +262,16 @@ export default class MapLeaflet extends React.Component {
     waypoint.latLng = marker.getLatLng()
     this.props.updateWaypointWithName(waypoint)
         console.log('end of moving marker.waypoint.latLng po', marker.wayPoint.latLng)
+  }
+
+  onPotentialWayPointMoveEnd(marker) {
+    console.log('new waypoint', marker)
+    //let edge = 
+    // this.props.addWaypointWithName({
+    //   name: `WPT ${this.props.waypoints.length + 1}`,
+    //   latLng: marker.latlng,
+    //   key: `${random(10000, 99999)}-${Date.now()}`
+    // }, edge)
   }
 
   onWayPointRightClick(marker) {
