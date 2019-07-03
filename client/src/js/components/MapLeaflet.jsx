@@ -5,8 +5,8 @@ import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor } from 'lodash'
-import { Map, TileLayer, Popup, LatLngBounds} from 'react-leaflet'
-import * as L from 'leaflet'
+import { Map, TileLayer } from 'react-leaflet'
+import * as _G from '../lib/Leaflet.Geodesic'
 
 import { updateUi } from '../actions/uiActions'
 import { getAirspacesForFilters } from '../selectors/airspaces'
@@ -253,7 +253,7 @@ export default class MapLeaflet extends React.Component {
    }
 
   plotRoute() {
-    this.poly.setLatLngs(this.props.waypoints.map((wp) => wp.latLng));
+    this.poly.setLatLngs([this.props.waypoints.map((wp) => wp.latLng)])
     this.plotWayPoints();
   }
 
@@ -266,7 +266,7 @@ export default class MapLeaflet extends React.Component {
 
   onPotentialWayPointMoveEnd(marker) {
     console.log('new waypoint', marker)
-    //let edge = 
+    //let edge =
     // this.props.addWaypointWithName({
     //   name: `WPT ${this.props.waypoints.length + 1}`,
     //   latLng: marker.latlng,
@@ -355,13 +355,13 @@ export default class MapLeaflet extends React.Component {
   initMap() {
     this.map = this.refs.leafletMap.leafletElement
     this.map.on('click', this.onMapClick.bind(this))
-    this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom);
+    this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom)
     this.map.on('moveend', this.onMapIdle.bind(this))
     this.map.on('zoomend', this.onZoomChanged.bind(this))
 
     this.infoWindow = L.popup()
 
-    this.poly = L.polyline(this.props.waypoints.map((wp) => wp.latLng), {color: '#FF0000'})
+    this.poly = L.geodesic([this.props.waypoints.map((wp) => wp.latLng)], {color: '#ff0000'})
     this.poly.addTo(this.map)
   }
 
@@ -382,14 +382,13 @@ export default class MapLeaflet extends React.Component {
   }
 
   render() {
-     return (
-       <Map ref="leafletMap">
-         <TileLayer
-           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-           url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
-         />
-       </Map>
-     );
-   }
-
+    return (
+      <Map ref="leafletMap">
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
+        />
+      </Map>
+    )
+  }
 }
