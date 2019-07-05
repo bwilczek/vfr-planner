@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { max, cloneDeep, isEqual, forEach, random, floor } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random, floor, find } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
 import 'leaflet-geometryutil'
@@ -221,16 +221,20 @@ export default class MapLeaflet extends React.Component {
    }
 
    createPotentialWayPointMarker(wayPoint, previousWayPoint) {
-     const mlat = (wayPoint.latLng.lat + previousWayPoint.latLng.lat)/2
-     const mlng = (wayPoint.latLng.lng + previousWayPoint.latLng.lng)/2
-     const latLng = L.latLng(mlat, mlng)
+     let navigationWayPoint = find(this.props.navigationData.waypoints, ['key', previousWayPoint.key])
+     let heading = navigationWayPoint.rawCourse;
+
+     let line = L.polyline([previousWayPoint.latLng, wayPoint.latLng])
+     let distance = L.GeometryUtil.length(line)/2
+
+     let latLng = L.GeometryUtil.destination(previousWayPoint.latLng, heading, distance)
      //todo mondem new icon and tooltip
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
      const newMarker = L.marker(latLng, {icon: icon, title: 'move to add waypoint', draggable: true})
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
-     // todo mondem
-    // newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
+    // // todo mondem
+    // ////// newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
      this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
