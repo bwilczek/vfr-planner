@@ -362,6 +362,20 @@ export default class MapLeaflet extends React.Component {
     this.map.on('moveend', this.onMapIdle.bind(this))
     this.map.on('zoomend', this.onZoomChanged.bind(this))
 
+    var openStreetMapLayer = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'})
+    var esriWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'})
+
+    this.map.addLayer(openStreetMapLayer)
+
+    //todo mondem define i18n for controls
+    var baseMaps = {
+        "Standard": openStreetMapLayer,
+        "Satellite": esriWorldImageryLayer
+    };
+
+    L.control.layers(baseMaps).addTo(this.map);
+
     this.infoWindow = L.popup()
 
     this.poly = L.geodesic([this.props.waypoints.map((wp) => wp.latLng)], {color: '#ff0000'})
@@ -387,10 +401,6 @@ export default class MapLeaflet extends React.Component {
   render() {
     return (
       <Map ref="leafletMap">
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
-        />
       </Map>
     )
   }
