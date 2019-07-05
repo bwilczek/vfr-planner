@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
-import * as _G from '../lib/Leaflet.Geodesic'
+import '../lib/Leaflet.Geodesic'
+import 'leaflet-geometryutil'
 
 import { updateUi } from '../actions/uiActions'
 import { getAirspacesForFilters } from '../selectors/airspaces'
@@ -303,7 +304,6 @@ export default class MapLeaflet extends React.Component {
     let counterCarryOver = 0
     let counter = 0
     let minuteCounter = 0
-    let newMarkerLocationGoogle = null
     let newMarkerLocation = null
     let oneSecondDistanceInMeters = null
     let firstInSegment = true
@@ -329,11 +329,10 @@ export default class MapLeaflet extends React.Component {
           break
         }
         minuteCounter += 1
-        newMarkerLocationGoogle = google.maps.geometry.spherical.computeOffset(standardizeLatLng(segment.latLng), counter * oneSecondDistanceInMeters, segment.rawCourse)
-        newMarkerLocation = L.latLng(newMarkerLocationGoogle.lat(),newMarkerLocationGoogle.lng())
+
+        newMarkerLocation = L.GeometryUtil.destination(segment.latLng, segment.rawCourse, counter * oneSecondDistanceInMeters);
 
         let bold = minuteCounter % 5 === 0
-
         let rotation = floor(segment.rawCourse + 90)
         let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
         let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
