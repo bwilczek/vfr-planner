@@ -3188,7 +3188,14 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet@^1.5.1:
+leaflet-geometryutil@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/leaflet-geometryutil/-/leaflet-geometryutil-0.9.1.tgz#1dd379d7923a8a625266181c1983910a8e8dfc02"
+  integrity sha512-DKYLzFBsEcmZSl1fXLM+Pd+7t5IHmY6Ps7XeSnWL1ngr1qxQfcVzhkJT9gxfZrmFWiL96c23xQ0aLcHocV2tVA==
+  dependencies:
+    leaflet ">=0.7.0"
+
+leaflet@>=0.7.0, leaflet@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.5.1.tgz#9afb9d963d66c870066b1342e7a06f92840f46bf"
 
