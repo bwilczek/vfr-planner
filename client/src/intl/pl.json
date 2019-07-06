@@ -107,5 +107,8 @@
   "totalDuration": "Całkowity czas",
   "totalDistance": "Całkowita odległość",
   "warning": "Uwaga",
-  "warningContent": "Dane o wszystkich strefach są już dostępne, dane z AUP jeszcze nie. Trwają prace w zakresie integracji importu z serwisu lotnik.org"
+  "warningContent": "Dane o wszystkich strefach są już dostępne, dane z AUP jeszcze nie. Trwają prace w zakresie integracji importu z serwisu lotnik.org",
+  "potentialWayPointTooltip": "Przesuń żeby dodać punkt",
+  "layerSatellite": "Satelita",
+  "layerMap": "Mapa"
 }
