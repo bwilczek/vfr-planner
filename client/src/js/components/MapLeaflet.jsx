@@ -127,8 +127,8 @@ export default class MapLeaflet extends React.Component {
       <strong>${marker.navPoint.icao_code || ''} ${marker.navPoint.name}</strong><br />
       ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br />`
 
-    let description = this.linkify(marker.navPoint.description)
     if (marker.navPoint.description) {
+      let description = this.linkify(marker.navPoint.description)
       content += `<hr />${description}`
     }
 
