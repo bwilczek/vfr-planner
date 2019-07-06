@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
-import { max, cloneDeep, isEqual, forEach, random, floor, find } from 'lodash'
+import { max, cloneDeep, isEqual, forEach, random, floor, find, findIndex } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
 import 'leaflet-geometryutil'
@@ -243,8 +243,7 @@ export default class MapLeaflet extends React.Component {
      const newMarker = L.marker(latLng, {icon: icon, title: tooltip, draggable: true})
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
-    // // todo mondem
-    // ////// newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
+     newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
      this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
@@ -280,13 +279,13 @@ export default class MapLeaflet extends React.Component {
   }
 
   onPotentialWayPointMoveEnd(marker) {
-    console.log('new waypoint', marker)
-    //let edge =
-    // this.props.addWaypointWithName({
-    //   name: `WPT ${this.props.waypoints.length + 1}`,
-    //   latLng: marker.latlng,
-    //   key: `${random(10000, 99999)}-${Date.now()}`
-    // }, edge)
+    let edge = findIndex(this.props.navigationData.waypoints, ['key', marker.rightNeighbour.key])
+    let waypoint = {
+      latLng: marker.getLatLng(),
+      name: `WPT ${this.props.waypoints.length + 1}`,
+      key: `${random(10000, 99999)}-${Date.now()}`,
+    }
+    this.props.addWaypointWithName(waypoint, edge)
   }
 
   onWayPointRightClick(marker) {
