@@ -107,5 +107,8 @@
   "totalDuration": "Total duration",
   "totalDistance": "Total distance",
   "warning": "Warning",
-  "warningContent": "Airspace data is back, AUP data is still temporarily unavailable. There's an ongoing work on data integration with lotnik.org."
+  "warningContent": "Airspace data is back, AUP data is still temporarily unavailable. There's an ongoing work on data integration with lotnik.org.",
+  "potentialWayPointTooltip": "Move to add waypoint",
+  "layerSatellite": "Satellite",
+  "layerMap": "Map"
 }

@@ -221,6 +221,9 @@ export default class MapLeaflet extends React.Component {
    }
 
    createPotentialWayPointMarker(wayPoint, previousWayPoint) {
+     const { formatMessage } = this.props.intl
+     let tooltip = formatMessage({id: 'potentialWayPointTooltip'})
+
      let navigationWayPoint = find(this.props.navigationData.waypoints, ['key', previousWayPoint.key])
      let heading = navigationWayPoint.rawCourse;
 
@@ -228,9 +231,8 @@ export default class MapLeaflet extends React.Component {
      let distance = L.GeometryUtil.length(line)/2
 
      let latLng = L.GeometryUtil.destination(previousWayPoint.latLng, heading, distance)
-     //todo mondem new icon and tooltip
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
-     const newMarker = L.marker(latLng, {icon: icon, title: 'move to add waypoint', draggable: true})
+     const newMarker = L.marker(latLng, {icon: icon, title: tooltip, draggable: true})
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
     // // todo mondem
@@ -356,6 +358,8 @@ export default class MapLeaflet extends React.Component {
   }
 
   initMap() {
+    const { formatMessage } = this.props.intl
+
     this.map = this.refs.leafletMap.leafletElement
     this.map.on('click', this.onMapClick.bind(this))
     this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom)
@@ -365,14 +369,11 @@ export default class MapLeaflet extends React.Component {
     var openStreetMapLayer = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'})
     var esriWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'})
-
     this.map.addLayer(openStreetMapLayer)
 
-    //todo mondem define i18n for controls
-    var baseMaps = {
-        "Standard": openStreetMapLayer,
-        "Satellite": esriWorldImageryLayer
-    };
+    var baseMaps = {}
+    baseMaps[formatMessage({id: 'layerMap'})] = openStreetMapLayer
+    baseMaps[formatMessage({id: 'layerSatellite'})] = esriWorldImageryLayer
 
     L.control.layers(baseMaps).addTo(this.map);
 
