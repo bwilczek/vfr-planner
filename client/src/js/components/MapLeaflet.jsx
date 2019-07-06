@@ -114,14 +114,22 @@ export default class MapLeaflet extends React.Component {
     })
   }
 
+  linkify(text) {
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+    })
+  }
+
   onNavPointMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
     let content = `
       <strong>${marker.navPoint.icao_code || ''} ${marker.navPoint.name}</strong><br />
       ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br />`
 
+    let description = this.linkify(marker.navPoint.description)
     if (marker.navPoint.description) {
-      content += `<hr />${marker.navPoint.description}`
+      content += `<hr />${description}`
     }
 
     if (marker.navPoint.radio) {
