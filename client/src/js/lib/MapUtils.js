@@ -13,6 +13,7 @@ import iconNavPointDme from '../../img/dme.png'
 import iconNavPointOtherAirstrip from '../../img/airfield_other.png'
 import iconNavPointIfrPoint from '../../img/ifr_point.png'
 import iconWayPoint from '../../img/waypoint_basic.svg'
+import iconWayPointMouseOver from '../../img/waypoint_basic_hover.svg'
 import iconPotentialWayPoint from '../../img/waypoint_potential.svg'
 
 export function extractPointsFromAirspace(airspace) {
@@ -88,7 +89,11 @@ export function getIconForNavPointKind(kind) {
 }
 
 export function getIconForWaypoint() {
-    return iconWayPoint
+  return iconWayPoint
+}
+
+export function getIconForWaypointMouseOver() {
+  return iconWayPointMouseOver
 }
 
 export function getIconForPotentialWaypoint() {
