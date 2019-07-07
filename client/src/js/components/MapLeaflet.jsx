@@ -15,7 +15,7 @@ import { getNavigationData } from '../selectors/navigationData'
 import { addWaypoint, addWaypointWithName, deleteWaypoint, updateWaypointWithName } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
-import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon } from '../lib/MapUtils'
+import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon, getIconForPotentialWaypoint } from '../lib/MapUtils'
 import { standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
@@ -114,13 +114,6 @@ export default class MapLeaflet extends React.Component {
     })
   }
 
-  linkify(text) {
-    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text.replace(urlRegex, function(url) {
-        return '<a href="' + url + '" target="_blank">' + url + '</a>';
-    })
-  }
-
   onNavPointMarkerRightClick(marker) {
     const { formatMessage } = this.props.intl
     let content = `
@@ -216,12 +209,13 @@ export default class MapLeaflet extends React.Component {
 
    createWayPointMarker(wayPoint, previousWayPoint) {
      const latLng = wayPoint.latLng
-     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
+     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
      const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name, draggable: true})
      newMarker.wayPoint = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
+     //newMarker.on('mouseover', this.onWayPointMouseOver.bind(this, newMarker))
      if(previousWayPoint != null)
        this.createPotentialWayPointMarker(wayPoint, previousWayPoint)
      return newMarker
@@ -238,7 +232,7 @@ export default class MapLeaflet extends React.Component {
      let distance = L.GeometryUtil.length(line)/2
 
      let latLng = L.GeometryUtil.destination(previousWayPoint.latLng, heading, distance)
-     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
+     const icon = L.icon({iconUrl: getIconForPotentialWaypoint(), iconAnchor: [5, 5]})
      const newMarker = L.marker(latLng, {icon: icon, title: tooltip, draggable: true})
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
