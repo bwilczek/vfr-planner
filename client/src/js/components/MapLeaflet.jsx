@@ -215,22 +215,22 @@ export default class MapLeaflet extends React.Component {
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
-
-  //   newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
-  //   newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
+     newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
+     newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
      if(previousWayPoint != null)
        this.createPotentialWayPointMarker(wayPoint, previousWayPoint)
      return newMarker
    }
-   //
-   // setWayPointOnMouseOverIcon(marker) {
-   //   marker.setIcon(getIconForWaypointMouseOver())
-   // }
-   //
-   // setWayPointOnRegularIcon(marker) {
-   //   marker.setIcon(getIconForWaypoint())
-   // }
 
+   setWayPointOnMouseOverIcon(marker) {
+     const icon = L.icon({iconUrl: getIconForWaypointMouseOver(), iconAnchor: [5, 5]})
+     marker.setIcon(icon)
+   }
+
+   setWayPointOnRegularIcon(marker) {
+     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
+     marker.setIcon(icon)
+   }
 
    createPotentialWayPointMarker(wayPoint, previousWayPoint) {
      const { formatMessage } = this.props.intl
