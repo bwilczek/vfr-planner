@@ -216,7 +216,6 @@ export default class MapLeaflet extends React.Component {
 
    createWayPointMarker(wayPoint, previousWayPoint) {
      const latLng = wayPoint.latLng
-     //todo mondem new icon
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [4, 4]})
      const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name, draggable: true})
      newMarker.wayPoint = wayPoint
