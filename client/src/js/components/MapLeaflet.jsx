@@ -215,31 +215,27 @@ export default class MapLeaflet extends React.Component {
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
-    // newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
-  //   newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
+     newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
+     newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
      if(previousWayPoint != null)
        this.createPotentialWayPointMarker(wayPoint, previousWayPoint)
      return newMarker
    }
 
    setWayPointOnMouseOverIcon(marker) {
-     const icon = L.icon({iconUrl: getIconForWaypointMouseOver(), iconAnchor: [5, 5]})
-     marker.setIcon(icon)
+     marker._icon.src = getIconForWaypointMouseOver()
    }
 
    setWayPointOnRegularIcon(marker) {
-     const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
-     marker.setIcon(icon)
+     marker._icon.src = getIconForWaypoint()
    }
 
    setPotentialWayPointOnMouseOverIcon(marker) {
-     const icon = L.icon({iconUrl: getIconForPotentialWaypointMouseOver(), iconAnchor: [5, 5]})
-     marker.setIcon(icon)
+     marker._icon.src = getIconForPotentialWaypointMouseOver()
    }
 
    setPotentialWayPointOnRegularIcon(marker) {
-     const icon = L.icon({iconUrl: getIconForPotentialWaypoint(), iconAnchor: [5, 5]})
-     marker.setIcon(icon)
+     marker._icon.src = getIconForPotentialWaypoint()
    }
 
    createPotentialWayPointMarker(wayPoint, previousWayPoint) {
@@ -258,8 +254,8 @@ export default class MapLeaflet extends React.Component {
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
-//     newMarker.on('mouseover', this.setPotentialWayPointOnMouseOverIcon.bind(this, newMarker))
-//     newMarker.on('mouseout', this.setPotentialWayPointOnRegularIcon.bind(this, newMarker))
+     newMarker.on('mouseover', this.setPotentialWayPointOnMouseOverIcon.bind(this, newMarker))
+     newMarker.on('mouseout', this.setPotentialWayPointOnRegularIcon.bind(this, newMarker))
      this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
