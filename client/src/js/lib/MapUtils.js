@@ -15,6 +15,7 @@ import iconNavPointIfrPoint from '../../img/ifr_point.png'
 import iconWayPoint from '../../img/waypoint_basic.svg'
 import iconWayPointMouseOver from '../../img/waypoint_basic_hover.svg'
 import iconPotentialWayPoint from '../../img/waypoint_potential.svg'
+import iconPotentialWayPointMouseOver from '../../img/waypoint_potential_hover.svg'
 
 export function extractPointsFromAirspace(airspace) {
   let ret = []
@@ -97,5 +98,9 @@ export function getIconForWaypointMouseOver() {
 }
 
 export function getIconForPotentialWaypoint() {
-    return iconPotentialWayPoint
+  return iconPotentialWayPoint
+}
+
+export function getIconForPotentialWaypointMouseOver() {
+  return iconPotentialWayPointMouseOver
 }
