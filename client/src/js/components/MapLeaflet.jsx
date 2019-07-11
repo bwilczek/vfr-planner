@@ -95,9 +95,7 @@ export default class MapLeaflet extends React.Component {
           !isEqual(this.props.navigationData.totalDistance, prevProps.navigationData.totalDistance)) ||
           !isEqual(this.props.navigationData.totalDuration, prevProps.navigationData.totalDuration)
       ) {
-      // FIXME. This timeout is needed because of the calculation of the nav data for the newly inserted segment
-      setTimeout(() => { this.plotMinutes() }, 300)
-      // this.plotMinutes()
+      this.plotMinutes()
     }
   }
 
