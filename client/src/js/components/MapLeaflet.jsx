@@ -15,7 +15,7 @@ import { getNavigationData } from '../selectors/navigationData'
 import { addWaypoint, addWaypointWithName, deleteWaypoint, updateWaypointWithName } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
-import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon, getIconForPotentialWaypoint, getIconForWaypointMouseOver } from '../lib/MapUtils'
+import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon, getIconForPotentialWaypoint, getIconForWaypointMouseOver, getIconForPotentialWaypointMouseOver } from '../lib/MapUtils'
 import { standardizeLatLng } from '../lib/NavigationUtils'
 
 @injectIntl
@@ -121,7 +121,7 @@ export default class MapLeaflet extends React.Component {
       ${formatMessage({id: 'navPointKind_' + marker.navPoint.kind})}<br />`
 
     if (marker.navPoint.description) {
-      let description = this.linkify(marker.navPoint.description)
+      let description = format.linkify(marker.navPoint.description)
       content += `<hr />${description}`
     }
 
@@ -215,8 +215,8 @@ export default class MapLeaflet extends React.Component {
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
      newMarker.on('moveend', this.onWayPointMoveEnd.bind(this, newMarker))
-     newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
-     newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
+    // newMarker.on('mouseover', this.setWayPointOnMouseOverIcon.bind(this, newMarker))
+  //   newMarker.on('mouseout', this.setWayPointOnRegularIcon.bind(this, newMarker))
      if(previousWayPoint != null)
        this.createPotentialWayPointMarker(wayPoint, previousWayPoint)
      return newMarker
@@ -229,6 +229,16 @@ export default class MapLeaflet extends React.Component {
 
    setWayPointOnRegularIcon(marker) {
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
+     marker.setIcon(icon)
+   }
+
+   setPotentialWayPointOnMouseOverIcon(marker) {
+     const icon = L.icon({iconUrl: getIconForPotentialWaypointMouseOver(), iconAnchor: [5, 5]})
+     marker.setIcon(icon)
+   }
+
+   setPotentialWayPointOnRegularIcon(marker) {
+     const icon = L.icon({iconUrl: getIconForPotentialWaypoint(), iconAnchor: [5, 5]})
      marker.setIcon(icon)
    }
 
@@ -248,6 +258,8 @@ export default class MapLeaflet extends React.Component {
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
+//     newMarker.on('mouseover', this.setPotentialWayPointOnMouseOverIcon.bind(this, newMarker))
+//     newMarker.on('mouseout', this.setPotentialWayPointOnRegularIcon.bind(this, newMarker))
      this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
