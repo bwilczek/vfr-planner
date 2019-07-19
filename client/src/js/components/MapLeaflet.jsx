@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor, find, findIndex } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
+import '../lib/Leaflet.SVGIcon'
 import 'leaflet-geometryutil'
 
 import { updateUi } from '../actions/uiActions'
@@ -330,6 +331,11 @@ export default class MapLeaflet extends React.Component {
     let oneSecondDistanceInMeters = null
     let firstInSegment = true
     let resetOnEachSegment = true
+    let minuteIcon = null
+    let bold = false
+    let rotation = 0
+    let newMarker = null
+
     forEach(this.props.navigationData.waypoints, (segment) => {
       if (!segment.rawHeading) {
         return
@@ -354,15 +360,15 @@ export default class MapLeaflet extends React.Component {
 
         newMarkerLocation = L.GeometryUtil.destination(segment.latLng, segment.rawCourse, counter * oneSecondDistanceInMeters);
 
-        let bold = minuteCounter % 5 === 0
-        let rotation = floor(segment.rawCourse + 90)
-        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
-        let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
-        let minuteIconUrl = encodeURI("data:image/svg+xml," + (bold ? minuteSvgBold: minuteSvg)).replace('#','%23');
+        bold = minuteCounter % 5 === 0
+        rotation = floor(segment.rawCourse + 90)
 
-
-        let minuteIcon = L.icon({iconUrl: minuteIconUrl, iconAnchor: [10, 10]})
-        let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
+        if(bold) {
+          minuteIcon = new L.FiveMinuteIcon({iconSize: L.point(20,20), iconAnchor: L.point(10,10), color: 'rgb(255,0,0)', weight: 2, rotation: rotation})
+        } else {
+          minuteIcon = new L.OneMinuteIcon({iconSize: L.point(10,10), iconAnchor: L.point(6,6), color: 'rgb(255,0,0)', weight: 1, rotation: rotation})
+        }
+        newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
         newMarker.addTo(this.map)
         this.minuteMarkers.push(newMarker)
 
