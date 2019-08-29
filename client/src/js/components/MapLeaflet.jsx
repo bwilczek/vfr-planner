@@ -356,12 +356,19 @@ export default class MapLeaflet extends React.Component {
 
         let bold = minuteCounter % 5 === 0
         let rotation = floor(segment.rawCourse + 90)
-        let minuteSvg = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='5' x2='10' y2='15' style='stroke:#F00;stroke-width:1;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
-        let minuteSvgBold = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='1' x2='10' y2='19' style='stroke:#F00;stroke-width:2;transform-origin:center;transform:rotate("+rotation+"deg)'/></svg>"
-        let minuteIconUrl = encodeURI("data:image/svg+xml," + (bold ? minuteSvgBold: minuteSvg)).replace('#','%23');
+
+        var pathDescription = 'M 10,0 10,20 z'
+        let stroke = '#F00'
+        let strokeWidth = 2
+        var path = '<path class="lecimy-icon-path" d="' + pathDescription +
+            '" stroke-width="' + strokeWidth + '" stroke="' + stroke +
+            '" style="transform-origin:center;transform:rotate('+rotation+'deg)"/>'
+        var style = "width:" + 20 + "px; height:" + 20 + "px;"
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="lecimy-icon-svg" style="' + style + '">' + path + '</svg>'
+
+        let minuteIcon = L.divIcon({className: 'lecimy-icon', html: svg, iconAnchor: [10, 10], iconSize: L.point(10,10)})
 
 
-        let minuteIcon = L.icon({iconUrl: minuteIconUrl, iconAnchor: [10, 10]})
         let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
         newMarker.addTo(this.map)
         this.minuteMarkers.push(newMarker)
