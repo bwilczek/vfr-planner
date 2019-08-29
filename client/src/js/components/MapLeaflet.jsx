@@ -330,6 +330,19 @@ export default class MapLeaflet extends React.Component {
     let oneSecondDistanceInMeters = null
     let firstInSegment = true
     let resetOnEachSegment = true
+    let strokeWidth = null
+    let path = null
+    let pathDescription = null
+    let style = null
+    let svg = null
+    let anchor = null
+    let size = null
+    let bold = false
+    let rotation = null
+    let minuteIcon = null
+    let newMarker = null
+    const stroke = '#F00'
+
     forEach(this.props.navigationData.waypoints, (segment) => {
       if (!segment.rawHeading) {
         return
@@ -354,22 +367,29 @@ export default class MapLeaflet extends React.Component {
 
         newMarkerLocation = L.GeometryUtil.destination(segment.latLng, segment.rawCourse, counter * oneSecondDistanceInMeters);
 
-        let bold = minuteCounter % 5 === 0
-        let rotation = floor(segment.rawCourse + 90)
+        bold = minuteCounter % 5 === 0
+        rotation = floor(segment.rawCourse + 90)
 
-        var pathDescription = 'M 10,0 10,20 z'
-        let stroke = '#F00'
-        let strokeWidth = 2
-        var path = '<path class="lecimy-icon-path" d="' + pathDescription +
+        if(bold) {
+          strokeWidth = 2
+          pathDescription = 'M 10,0 10,20 z'
+          anchor = 10
+          size = 20
+        } else {
+          strokeWidth = 1
+          pathDescription = 'M 5,0 5,10 z'
+          anchor = 6
+          size = 10
+        }
+
+        path = '<path class="lecimy-icon-path" d="' + pathDescription +
             '" stroke-width="' + strokeWidth + '" stroke="' + stroke +
             '" style="transform-origin:center;transform:rotate('+rotation+'deg)"/>'
-        var style = "width:" + 20 + "px; height:" + 20 + "px;"
-        var svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="lecimy-icon-svg" style="' + style + '">' + path + '</svg>'
+        style = "width:" + size + "px; height:" + size + "px;"
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="lecimy-icon-svg" style="' + style + '">' + path + '</svg>'
 
-        let minuteIcon = L.divIcon({className: 'lecimy-icon', html: svg, iconAnchor: [10, 10], iconSize: L.point(10,10)})
-
-
-        let newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
+        minuteIcon = L.divIcon({className: 'lecimy-icon', html: svg, iconAnchor: [anchor, anchor], iconSize: L.point(size,size)})
+        newMarker = L.marker(newMarkerLocation, {title: `Minute: ${minuteCounter}`, icon: minuteIcon})
         newMarker.addTo(this.map)
         this.minuteMarkers.push(newMarker)
 
