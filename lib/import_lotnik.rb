@@ -21,7 +21,7 @@ class ImportLotnik
       path: "#{Rails.root}/import/Poland_Airspaces_TOMORROW.txt"
     },
     aup_today: {
-      url: 'https://airspace.pansa.pl/uup/current',
+      url: 'https://airspace.pansa.pl/aup/current',
       path: "#{Rails.root}/import/AUP_today.html"
     },
     aup_tomorrow: {
