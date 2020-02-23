@@ -90,3 +90,9 @@ ul[aria-labelledby="infoDropdown"] {
   width: calc(100vw - 400px); // FIXME: should be calc( 100vw - $planner-side-columns-width ) but somehow doesn't work
   cursor: crosshair;
 }
+
+span.warning {
+  color: #f00;
+  font-weight: bold;
+  font-size: 150%;
+}

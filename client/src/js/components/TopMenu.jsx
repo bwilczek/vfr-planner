@@ -1,4 +1,5 @@
 import React from 'react'
+import { injectIntl, FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import logo from '../../img/lecimy_logo.png'
 import { browserHistory } from 'react-router'
@@ -6,6 +7,7 @@ import { browserHistory } from 'react-router'
 import Auth from './Auth'
 import InfoDropdown from './InfoDropdown'
 
+@injectIntl
 @connect(
   (state) => {
     return {
@@ -25,6 +27,7 @@ export default class TopMenu extends React.Component {
       <div class="top-menu">
         <div class="top-menu-left">
           <img onClick={this.navigateToPlannerPage.bind(this)} src={logo} />
+          <span style={{marginLeft: '10px', display: 'inline'}} class="warning"><FormattedMessage id="notForOperationalUse"/></span>
         </div>
         <div class="top-menu-right">
           <Auth />
