@@ -33,4 +33,9 @@ class SessionsController < ApplicationController
 
     render json: { id: provider_id, name: @user.name, token: @session.token, img: img_url }
   end
+
+  def destroy
+    Session.where(user_id: authorized_user.id).destroy_all
+    render json: { result: 'OK' }
+  end
 end

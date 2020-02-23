@@ -3,8 +3,25 @@ import FontAwesome from 'react-fontawesome'
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
+
+import { logout } from '../actions/authActions'
 
 @injectIntl
+@connect(
+  (state) => {
+    return {
+      userName: state.user.name
+    }
+  },
+  (dispatch) => {
+    return {
+      logout: () => {
+        dispatch(logout())
+      }
+    }
+  }
+)
 export default class InfoDropdown extends React.Component {
 
   render() {
@@ -23,14 +40,17 @@ export default class InfoDropdown extends React.Component {
           <MenuItem onClick={ () => browserHistory.push('/static-contact') } eventKey="2">
             <FormattedMessage id='contact' />
           </MenuItem>
-          <MenuItem onClick={ () => browserHistory.push('/static-help') } eventKey="2">
+          <MenuItem onClick={ () => browserHistory.push('/static-help') } eventKey="3">
             <FormattedMessage id='help' />
           </MenuItem>
-          <MenuItem onClick={ () => browserHistory.push('/static-status') } eventKey="2">
+          <MenuItem onClick={ () => browserHistory.push('/static-status') } eventKey="4">
             <FormattedMessage id='status' />
           </MenuItem>
-          <MenuItem onClick={ () => browserHistory.push('/static-privacy') } eventKey="2">
+          <MenuItem onClick={ () => browserHistory.push('/static-privacy') } eventKey="5">
             <FormattedMessage id='privacy' />
+          </MenuItem>
+          <MenuItem disabled={!this.props.userName} onClick={this.props.logout} eventKey="6">
+            <FormattedMessage id='logout' />
           </MenuItem>
         </DropdownButton>
 

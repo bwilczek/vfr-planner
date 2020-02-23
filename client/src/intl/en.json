@@ -112,5 +112,6 @@
   "layerSatellite": "Satellite",
   "layerMap": "Map",
   "flightMode": "Flight mode",
-  "notForOperationalUse": "NOT FOR OPERATIONAL USE"
+  "notForOperationalUse": "NOT FOR OPERATIONAL USE",
+  "logout": "Logout"
 }
