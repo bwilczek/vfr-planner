@@ -96,3 +96,7 @@ span.warning {
   font-weight: bold;
   font-size: 150%;
 }
+
+ul.dropdown-menu {
+  z-index: 10000;
+}
