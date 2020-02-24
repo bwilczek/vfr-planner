@@ -27,18 +27,18 @@ import { toggleSpeedUnit } from '../actions/flightPlanActions'
 export default class SettingsPage extends React.Component {
 
   render() {
-    const header = (
-      <h2>
-        <FormattedMessage id="settings" />
-      </h2>
-    )
-
     const footer = (
       <Button onClick={browserHistory.goBack}><FormattedMessage id="back" /></Button>
     )
 
     return (
-      <Panel header={header} footer={footer} style={{width: '500px', marginTop: '20px', marginRight: 'auto', marginLeft: 'auto'}}>
+      <Panel style={{width: '600px', marginTop: '20px', marginRight: 'auto', marginLeft: 'auto'}}>
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">
+            <FormattedMessage id="settings" />
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
         <Table condensed hover>
           <tbody>
             <tr>
@@ -59,6 +59,10 @@ export default class SettingsPage extends React.Component {
             </tr>
           </tbody>
         </Table>
+        </Panel.Body>
+        <Panel.Footer>
+          <Button onClick={() => browserHistory.push('/')}><FormattedMessage id="back" /></Button>
+        </Panel.Footer>
       </Panel>
     )
   }
