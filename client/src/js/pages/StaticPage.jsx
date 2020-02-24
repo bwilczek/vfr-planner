@@ -43,13 +43,19 @@ export default class StaticPage extends React.Component {
   render() {
     const C = STATIC_COMPONENTS[this.props.params.textId][this.props.locale]
 
-    const footer = (
-      <Button onClick={browserHistory.goBack}><FormattedMessage id="back" /></Button>
-    )
-
     return (
-      <Panel header={C.getHeader()} footer={footer} style={{width: '600px', marginTop: '20px', marginRight: 'auto', marginLeft: 'auto'}}>
-        <C />
+      <Panel style={{width: '600px', marginTop: '20px', marginRight: 'auto', marginLeft: 'auto'}}>
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">
+            {C.getHeader()}
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          <C />
+        </Panel.Body>
+        <Panel.Footer>
+          <Button onClick={() => browserHistory.push('/')}><FormattedMessage id="back" /></Button>
+        </Panel.Footer>
       </Panel>
     )
   }
