@@ -5,6 +5,7 @@ const initialState = {
   editFlightPlanOpen: false,
   printFlightPlanOpen: false,
   announcementOpen: false,
+  appendWaypointOpen: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -20,6 +21,12 @@ export default function reducer(state = initialState, action) {
     }
     case 'SETTINGS_MODAL_HIDE': {
       return {...state, settingsOpen: false}
+    }
+    case 'APPEND_WAYPOINT_MODAL_SHOW': {
+      return {...state, appendWaypointOpen: true}
+    }
+    case 'APPEND_WAYPOINT_MODAL_HIDE': {
+      return {...state, appendWaypointOpen: false}
     }
     case 'FLIGHT_PLAN_OPEN_MODAL_SHOW': {
       return {...state, openFlightPlanOpen: true}

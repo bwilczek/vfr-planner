@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   scope '/api' do
     get '/nav_points/find', to: 'nav_points#find'
+    get '/nav_points/suggest', to: 'nav_points#suggest'
     post '/downloads/pdf', to: 'downloads#pdf'
     post '/downloads/kml', to: 'downloads#kml'
     post '/downloads/gpx', to: 'downloads#gpx'

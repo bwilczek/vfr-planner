@@ -34,6 +34,7 @@
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-slider": "2.1",
     "react-bootstrap-toggle": "^2.0.7",
+    "react-bootstrap-typeahead": "^3.4.7",
     "react-dom": "16",
     "react-facebook-login": "^3.4.3",
     "react-file-download": "^0.3.4",

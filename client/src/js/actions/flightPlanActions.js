@@ -47,6 +47,13 @@ export function reorderWaypoints(newWaypoints) {
   }
 }
 
+export function reverseWaypoints() {
+  return {
+    type: 'REVERSE_WAYPOINTS',
+    payload: null,
+  }
+}
+
 export function addWaypointWithName(waypoint, position = null) {
   return (dispatch) => {
     dispatch(addWaypoint(waypoint, position))
@@ -65,6 +72,13 @@ export function reverseGeocode(waypoint) {
   return {
     type: 'WAYPOINT_REVERSE_GEOCODE',
     payload: axios.get(`/api/nav_points/find?lat=${waypoint.latLng.lat}&lng=${waypoint.latLng.lng}&key=${waypoint.key}`),
+  }
+}
+
+export function suggestNavPoints(phrase) {
+  return {
+    type: 'SUGGEST_NAVPOINTS',
+    payload: axios.get(`/api/nav_points/suggest?phrase=${phrase}`)
   }
 }
 

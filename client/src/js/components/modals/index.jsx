@@ -5,6 +5,7 @@ import OpenFlightPlanDialog from './OpenFlightPlanDialog'
 import EditFlightPlanDialog from './EditFlightPlanDialog'
 import PrintFlightPlanDialog from './PrintFlightPlanDialog'
 import AnnouncementDialog from './AnnouncementDialog'
+import AppendWaypointDialog from './AppendWaypointDialog'
 
 export default class AllModals extends React.Component {
 
@@ -16,6 +17,7 @@ export default class AllModals extends React.Component {
         <EditFlightPlanDialog />
         <PrintFlightPlanDialog />
         <AnnouncementDialog />
+        <AppendWaypointDialog />
       </div>
     )
   }

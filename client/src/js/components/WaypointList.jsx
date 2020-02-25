@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { Button, ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap'
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc'
 import FontAwesome from 'react-fontawesome'
 
 import { getNavigationData } from '../selectors/navigationData'
 import { updateUi } from '../actions/uiActions'
 import { renameModalShow } from '../actions/modalsActions'
-import { deleteWaypoint, reorderWaypoints } from '../actions/flightPlanActions'
+import { deleteWaypoint, reorderWaypoints, reverseWaypoints } from '../actions/flightPlanActions'
+import { appendWaypointModalShow } from '../actions/modalsActions'
 
 // TODO: evaluate if moving styles to CSS files is beneficial, do it if so
 const dragHandleStyle = {
@@ -83,7 +84,19 @@ const SortableList = SortableContainer(({items, dispatch}) => {
 @connect(
   (state) => {
     return {
-      navigationData: getNavigationData(state)
+      navigationData: getNavigationData(state),
+      appendWaypointModalOpen: state.modals.appendWaypointOpen
+    }
+  },
+  (dispatch) => {
+    return {
+      openAppendWaypointModal: () => {
+        dispatch(appendWaypointModalShow())
+      },
+      reverseWaypoints: () => {
+        dispatch(reverseWaypoints())
+      },
+      dispatch: dispatch
     }
   }
 )
@@ -94,12 +107,25 @@ export default class WaypointList extends React.Component {
   }
 
   render() {
-    if (this.props.navigationData.length === 0) {
-      return <div>This route is empty.<br /><span style={{fontSize: 'x-small'}}>Click on the map to add waypoints.</span></div>
+    if (this.props.navigationData.waypoints.length === 0) {
+      return (
+        <div style={{marginTop: '5px', marginLeft: '5px', fontSize: 'large'}}>
+          <FormattedMessage id="emptyRouteHeader" /><br /><span style={{fontSize: 'small'}}><FormattedMessage id="emptyRouteDescription" /></span>
+          <ButtonGroup>
+            <Button style={{width: '190px'}} onClick={this.props.openAppendWaypointModal}><FormattedMessage id="appendWaypoint" /></Button>
+          </ButtonGroup>
+        </div>
+      )
     }
     return (
       <div>
         <SortableList dispatch={this.props.dispatch} items={this.props.navigationData.waypoints} onSortEnd={this.onSortEnd.bind(this)} useDragHandle={true}/>
+        <div style={{borderTop: '1px solid', marginTop: '5px', paddingTop: '5px', paddingLeft: '5px'}}>
+          <ButtonGroup>
+            <Button style={{width: '95px'}} onClick={this.props.openAppendWaypointModal}><FormattedMessage id="appendWaypoint" /></Button>
+            <Button style={{width: '95px'}} onClick={this.props.reverseWaypoints}><FormattedMessage id="reverseRoute" /></Button>
+          </ButtonGroup>
+        </div>
         <div style={{borderTop: '1px solid', marginTop: '5px'}}>
           <FormattedMessage id="totalDistance" />: {this.props.navigationData.totalDistance}<br />
           <FormattedMessage id="totalDuration" />: <span dangerouslySetInnerHTML={{__html: this.props.navigationData.totalDuration}} />

@@ -113,5 +113,10 @@
   "layerMap": "Mapa",
   "flightMode": "Tryb lotu",
   "notForOperationalUse": "NIE DO UŻYTKU OPERACYJNEGO",
-  "logout": "Wyloguj"
+  "logout": "Wyloguj",
+  "appendWaypoint": "Dodaj...",
+  "reverseRoute": "Odwróć",
+  "appendWaypointModalTitle": "Dodaj punkt",
+  "emptyRouteHeader": "Ta trasa jest pusta",
+  "emptyRouteDescription": "Dodaj punkty klikając na mapie, lub z pomocą przycisku poniżej"
 }

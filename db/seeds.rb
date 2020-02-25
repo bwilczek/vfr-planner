@@ -37,6 +37,39 @@ NavPoint.create(
   declination: 4,
 )
 
+NavPoint.new.tap do |p|
+  p.name = 'EPDE GOLF'
+  p.icao_code = 'EPDEG'
+  p.kind = :vfr_point
+  p.lng = 21.911389
+  p.lat = 51.481389
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
+
+NavPoint.new.tap do |p|
+  p.name = 'EPDE NOVEMBER'
+  p.icao_code = 'EPDEN'
+  p.kind = :vfr_point
+  p.lng = 21.938889
+  p.lat = 51.586667
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
+
+NavPoint.new.tap do |p|
+  p.name = 'EPDE SIERRA'
+  p.icao_code = 'EPDES'
+  p.kind = :vfr_point
+  p.lng = 21.866111
+  p.lat = 51.523611
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
+
 Airspace.destroy_all
 
 Airspace.create(

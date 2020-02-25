@@ -208,7 +208,7 @@ export default class MapLeaflet extends React.Component {
    createWayPointMarker(wayPoint, previousWayPoint) {
      const latLng = wayPoint.latLng
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
-     const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name, draggable: true, riseOnHover: true})
+     const newMarker = L.marker(latLng, {icon: icon, title: wayPoint.name, draggable: true, riseOnHover: true, zIndexOffset: 11})
      newMarker.wayPoint = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('contextmenu', this.onWayPointRightClick.bind(this, newMarker))
@@ -248,7 +248,7 @@ export default class MapLeaflet extends React.Component {
 
      let latLng = L.GeometryUtil.destination(previousWayPoint.latLng, heading, distance)
      const icon = L.icon({iconUrl: getIconForPotentialWaypoint(), iconAnchor: [5, 5]})
-     const newMarker = L.marker(latLng, {icon: icon, title: tooltip, draggable: true, riseOnHover: true})
+     const newMarker = L.marker(latLng, {icon: icon, title: tooltip, draggable: true, riseOnHover: true, zIndexOffset: 10})
      newMarker.rightNeighbour = wayPoint
      newMarker.addTo(this.map)
      newMarker.on('moveend', this.onPotentialWayPointMoveEnd.bind(this, newMarker))
