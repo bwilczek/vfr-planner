@@ -22,32 +22,33 @@ import { standardizeLatLng } from '../lib/NavigationUtils'
 @connect(
   (state) => {
     return {
-      navPoints: state.navPoints,
-      airspaces: getAirspacesForFilters(state),
       ui: state.ui,
+      flightMode: state.ui.flightMode,
+      airspaces: getAirspacesForFilters(state),
+      navPoints: state.navPoints,
       waypoints: state.flightPlan.waypoints,
       navigationData: getNavigationData(state)
     }
   },
   (dispatch) => {
     return {
+      updateUi: (fields) => {
+        dispatch(updateUi(fields))
+      },
       addWaypointWithName: (waypoint, position = null) => {
         dispatch(addWaypointWithName(waypoint, position))
       },
       addWaypoint: (waypoint, position = null) => {
         dispatch(addWaypoint(waypoint, position))
       },
-      updateUi: (fields) => {
-        dispatch(updateUi(fields))
+      updateWaypointWithName: (waypoint) => {
+        dispatch(updateWaypointWithName(waypoint))
       },
       deleteWaypoint: (waypoint) => {
         dispatch(deleteWaypoint(waypoint))
       },
       renameModalShow: (waypoint) => {
         dispatch(renameModalShow(waypoint.key))
-      },
-      updateWaypointWithName: (waypoint) => {
-        dispatch(updateWaypointWithName(waypoint))
       }
     }
   }
@@ -99,6 +100,7 @@ export default class MapLeaflet extends React.Component {
     }
   }
 
+  //NAVPOINTS
   onNavPointMarkerClick(marker) {
     let name = marker.navPoint.icao_code ? marker.navPoint.icao_code : marker.navPoint.name
     this.props.addWaypoint({
@@ -133,29 +135,7 @@ export default class MapLeaflet extends React.Component {
     .openOn(this.map);
   }
 
-  onAirspaceRightClick(e) {
-    let content = ''
-    forEach(this.airspacePolygons, (poly) => {
-      let bounds = poly.getBounds()
-      if (!bounds.contains(e.latlng)) {
-        return
-      }
-      content += `
-      <strong>${poly.airspace.name}</strong><br />
-      ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
-      ${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />
-      ${poly.airspace.description}
-      <hr />
-      `
-    })
-
-    const popup = L.popup()
-    .setLatLng(e.latlng)
-    .setContent(content)
-    .openOn(this.map);
-  }
-
-  plotNavPoints() {
+    plotNavPoints() {
     // CLEAR navPointMarkers
     forEach(this.navPointMarkers, (marker) => {
       marker.removeFrom(this.map);
@@ -178,6 +158,29 @@ export default class MapLeaflet extends React.Component {
     return newMarker
   }
 
+  //AIRSPACE
+  onAirspaceRightClick(e) {
+    let content = ''
+    forEach(this.airspacePolygons, (poly) => {
+      let bounds = poly.getBounds()
+      if (!bounds.contains(e.latlng)) {
+        return
+      }
+      content += `
+      <strong>${poly.airspace.name}</strong><br />
+      ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
+      ${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />
+      ${poly.airspace.description}
+      <hr />
+      `
+    })
+
+    const popup = L.popup()
+    .setLatLng(e.latlng)
+    .setContent(content)
+    .openOn(this.map);
+  }
+
   plotAirspaces() {
      // CLEAR airspacePolygons
      forEach(this.airspacePolygons, (polygon) => {
@@ -197,7 +200,7 @@ export default class MapLeaflet extends React.Component {
        }
      })
    }
-
+   
    createAirspacePolygon(airspace) {
      let polygon = createAirspaceRawPolygon(airspace)
      polygon.addTo(this.map);
@@ -205,6 +208,7 @@ export default class MapLeaflet extends React.Component {
      return polygon
    }
 
+   //WAYPOINTS
    createWayPointMarker(wayPoint, previousWayPoint) {
      const latLng = wayPoint.latLng
      const icon = L.icon({iconUrl: getIconForWaypoint(), iconAnchor: [5, 5]})
@@ -228,6 +232,38 @@ export default class MapLeaflet extends React.Component {
      marker._icon.src = getIconForWaypoint()
    }
 
+   plotWayPoints() {
+    // CLEAR wayPointMarkers
+    forEach(this.wayPointMarkers, (marker) => {
+      marker.removeFrom(this.map);
+    })
+    this.wayPointMarkers = []
+    // CLEAR potentialWayPointMarkers
+    forEach(this.potentialWayPointMarkers, (marker) => {
+      marker.removeFrom(this.map);
+    })
+    this.potentialWayPointMarkers = []
+    // PLOT wayPointMarkers
+    let previousWayPoint = null
+    forEach(this.props.waypoints, (wayPoint) => {
+      this.wayPointMarkers = [...this.wayPointMarkers, this.createWayPointMarker(wayPoint, previousWayPoint)]
+      previousWayPoint = wayPoint
+    })
+  }
+
+  onWayPointMoveEnd(marker) {
+    let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === marker.wayPoint.key)[0])
+    waypoint.latLng = marker.getLatLng()
+    this.props.updateWaypointWithName(waypoint)
+  }
+
+  onWayPointRightClick(marker) {
+    this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, marker.wayPoint))
+    this.infoWindow.setLatLng(marker.getLatLng())
+    this.infoWindow.openOn(this.map)
+  }
+
+   //POTENTIAL WAYPOINTS
    setPotentialWayPointOnMouseOverIcon(marker) {
      marker._icon.src = getIconForPotentialWaypointMouseOver()
    }
@@ -257,36 +293,6 @@ export default class MapLeaflet extends React.Component {
      this.potentialWayPointMarkers = [...this.potentialWayPointMarkers, newMarker]
    }
 
-   plotWayPoints() {
-     // CLEAR wayPointMarkers
-     forEach(this.wayPointMarkers, (marker) => {
-       marker.removeFrom(this.map);
-     })
-     this.wayPointMarkers = []
-     // CLEAR potentialWayPointMarkers
-     forEach(this.potentialWayPointMarkers, (marker) => {
-       marker.removeFrom(this.map);
-     })
-     this.potentialWayPointMarkers = []
-     // PLOT wayPointMarkers
-     let previousWayPoint = null
-     forEach(this.props.waypoints, (wayPoint) => {
-       this.wayPointMarkers = [...this.wayPointMarkers, this.createWayPointMarker(wayPoint, previousWayPoint)]
-       previousWayPoint = wayPoint
-     })
-   }
-
-  plotRoute() {
-    this.poly.setLatLngs([this.props.waypoints.map((wp) => wp.latLng)])
-    this.plotWayPoints();
-  }
-
-  onWayPointMoveEnd(marker) {
-    let waypoint = cloneDeep(this.props.waypoints.filter((v) => v.key === marker.wayPoint.key)[0])
-    waypoint.latLng = marker.getLatLng()
-    this.props.updateWaypointWithName(waypoint)
-  }
-
   onPotentialWayPointMoveEnd(marker) {
     let edge = findIndex(this.props.navigationData.waypoints, ['key', marker.rightNeighbour.key])
     let waypoint = {
@@ -297,24 +303,10 @@ export default class MapLeaflet extends React.Component {
     this.props.addWaypointWithName(waypoint, edge)
   }
 
-  onWayPointRightClick(marker) {
-    this.infoWindow.setContent(this.generateInfoWindowContent(this.infoWindow, marker.wayPoint))
-    this.infoWindow.setLatLng(marker.getLatLng())
-    this.infoWindow.openOn(this.map)
-  }
-
-  generateInfoWindowContent(iw, waypoint) {
-    let a = document.createElement('div')
-    const { formatMessage } = this.props.intl
-    ReactDOM.render(
-      <div>
-        <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
-       <Button bsSize="xsmall" title={formatMessage({id: 'center'})} onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
-       <Button bsSize="xsmall" title={formatMessage({id: 'rename'})} onClick={() => { this.props.renameModalShow(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="edit" /></Button>
-       <Button bsSize="xsmall" title={formatMessage({id: 'remove'})} onClick={() => { this.props.deleteWaypoint(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="trash" /></Button>
-      </div>
-    , a)
-    return a
+  //ROUTE
+  plotRoute() {
+    this.poly.setLatLngs([this.props.waypoints.map((wp) => wp.latLng)])
+    this.plotWayPoints();
   }
 
   plotMinutes() {
@@ -398,6 +390,21 @@ export default class MapLeaflet extends React.Component {
       }
       counterCarryOver = counter - segment.rawSegmentDuration
     })
+  }
+
+  //MISCELLANEOUS
+  generateInfoWindowContent(iw, waypoint) {
+    let a = document.createElement('div')
+    const { formatMessage } = this.props.intl
+    ReactDOM.render(
+      <div>
+        <div style={{marginBottom: '3px'}}>{waypoint.name}</div>
+       <Button bsSize="xsmall" title={formatMessage({id: 'center'})} onClick={() => { this.props.updateUi({mapCenter: waypoint.latLng}) } }><FontAwesome name="crosshairs" /></Button>
+       <Button bsSize="xsmall" title={formatMessage({id: 'rename'})} onClick={() => { this.props.renameModalShow(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="edit" /></Button>
+       <Button bsSize="xsmall" title={formatMessage({id: 'remove'})} onClick={() => { this.props.deleteWaypoint(waypoint); iw.removeFrom(this.map) } }><FontAwesome name="trash" /></Button>
+      </div>
+    , a)
+    return a
   }
 
   initMap() {
