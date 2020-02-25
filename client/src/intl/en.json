@@ -120,5 +120,6 @@
   "emptyRouteHeader": "This route is empty",
   "emptyRouteDescription": "Add some point by clicking on the map, or the button below",
   "fullScreenOn": "View full screen",
-  "fullScreenOff": "Exit full screen"
+  "fullScreenOff": "Exit full screen",
+  "flightModeMarker": "Current position"
 }

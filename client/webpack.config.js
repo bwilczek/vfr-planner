@@ -55,6 +55,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    https: true,
     disableHostCheck: true,
     proxy: {
       '/api': {

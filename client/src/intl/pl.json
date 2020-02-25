@@ -120,5 +120,6 @@
   "emptyRouteHeader": "Ta trasa jest pusta",
   "emptyRouteDescription": "Dodaj punkty klikając na mapie, lub z pomocą przycisku poniżej",
   "fullScreenOn": "Pełny ekran",
-  "fullScreenOff": "Wyłącz pełny ekran"
+  "fullScreenOff": "Wyłącz pełny ekran",
+  "flightModeMarker": "Aktualna pozycja"
 }

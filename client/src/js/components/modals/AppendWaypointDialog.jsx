@@ -57,6 +57,7 @@ export default class AppendWaypointDialog extends React.Component {
         <Modal.Body>
 
           <AsyncTypeahead
+            id='searchPhraseInput'
             ref='searchPhraseInput'
             minLength={3}
             isLoading={this.props.waypointsSuggestListLoading}

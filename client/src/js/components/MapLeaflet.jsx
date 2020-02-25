@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor, find, findIndex } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
+import '../lib/leaflet.rotatedMarker'
 import '../vendor/Leaflet.fullscreen.min.js'
 import 'leaflet-geometryutil'
 
@@ -16,8 +17,7 @@ import { getNavigationData } from '../selectors/navigationData'
 import { addWaypoint, addWaypointWithName, deleteWaypoint, updateWaypointWithName } from '../actions/flightPlanActions'
 import { renameModalShow } from '../actions/modalsActions'
 import * as format from '../lib/Formatter'
-import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon, getIconForPotentialWaypoint, getIconForWaypointMouseOver, getIconForPotentialWaypointMouseOver } from '../lib/MapUtils'
-import { standardizeLatLng } from '../lib/NavigationUtils'
+import { getIconForNavPointKind, getIconForWaypoint, createAirspaceRawPolygon, getIconForPotentialWaypoint, getIconForWaypointMouseOver, getIconForPotentialWaypointMouseOver, getIconForFlightMode } from '../lib/MapUtils'
 
 @injectIntl
 @connect(
@@ -68,6 +68,8 @@ export default class MapLeaflet extends React.Component {
     this.minuteMarkers = []
     this.keyOfWaypointBeingDragged = null
     this.latLngOfMouseDown = null
+    this.geolocationId = null;
+    this.flightModeMarker = null;
   }
 
   componentDidMount() {
@@ -76,6 +78,7 @@ export default class MapLeaflet extends React.Component {
     this.plotNavPoints()
     this.plotRoute()
     this.plotMinutes()
+    this.plotFlightMode();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -99,6 +102,36 @@ export default class MapLeaflet extends React.Component {
       ) {
       this.plotMinutes()
     }
+    if (!isEqual(this.props.flightMode, prevProps.flightMode)) {
+      this.plotFlightMode();
+    }
+  }
+
+  //FLIGHT MODE
+  plotFlightMode(){
+    if (this.props.flightMode) {
+      this.geolocationId = navigator.geolocation.watchPosition(this.createFlightModeMarker.bind(this), (e) => console.log(e))
+    } else {
+      if (this.flightModeMarker) {
+        this.flightModeMarker.removeFrom(this.map)
+      }
+      navigator.geolocation.clearWatch(this.geolocationId)
+    }
+  }
+
+  createFlightModeMarker(position) {
+    if (this.flightModeMarker) {
+      this.flightModeMarker.removeFrom(this.map)
+      this.flightModeMarker = null
+    }
+    const { formatMessage } = this.props.intl
+    const latLng = L.latLng(position.coords.latitude, position.coords.longitude)
+    const heading = position.heading || 0
+    const icon = L.icon({iconUrl: getIconForFlightMode(), iconSize: 24, iconAnchor: [12, 12]})
+    const newMarker = L.marker(latLng, {icon: icon, rotationAngle: heading, title: formatMessage({id: 'flightModeMarker'})})
+
+    this.flightModeMarker = newMarker
+    this.flightModeMarker.addTo(this.map)
   }
 
   //NAVPOINTS
