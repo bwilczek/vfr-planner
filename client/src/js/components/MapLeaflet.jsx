@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor, find, findIndex } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
+import '../vendor/Leaflet.fullscreen.min.js'
 import 'leaflet-geometryutil'
 
 import { updateUi } from '../actions/uiActions'
@@ -415,6 +416,12 @@ export default class MapLeaflet extends React.Component {
     this.map.setView(this.props.ui.mapCenter, this.props.ui.mapZoom)
     this.map.on('moveend', this.onMapIdle.bind(this))
     this.map.on('zoomend', this.onZoomChanged.bind(this))
+    this.map.addControl(new L.Control.Fullscreen({
+      title: {
+          'false': formatMessage({id: 'fullScreenOn'}),
+          'true': formatMessage({id: 'fullScreenOff'})
+      }
+    }));
 
     var openStreetMapLayer = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'})
     var esriWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

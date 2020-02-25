@@ -118,5 +118,7 @@
   "reverseRoute": "Reverse",
   "appendWaypointModalTitle": "Append waypoint",
   "emptyRouteHeader": "This route is empty",
-  "emptyRouteDescription": "Add some point by clicking on the map, or the button below"
+  "emptyRouteDescription": "Add some point by clicking on the map, or the button below",
+  "fullScreenOn": "View full screen",
+  "fullScreenOff": "Exit full screen"
 }
