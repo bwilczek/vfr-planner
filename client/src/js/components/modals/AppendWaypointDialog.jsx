@@ -33,7 +33,7 @@ import * as format from '../../lib/Formatter'
         const latLng = L.latLng(waypoint.lat, waypoint.lng)
         dispatch(
           addWaypoint({
-            name: waypoint.name,
+            name: waypoint.icao_code || waypoint.name,
             radio: waypoint.radio,
             elevation: waypoint.elevation,
             declination: waypoint.declination,
@@ -72,7 +72,7 @@ export default class AppendWaypointDialog extends React.Component {
               this.refs.searchPhraseInput._instance.clear()
             }}
             options={this.props.suggestedWaypoints}
-            labelKey={option => `${option.name}`}
+            labelKey={(option) => option.icao_code ? `${option.name} (${option.icao_code})` : option.name  }
           />
 
         </Modal.Body>
