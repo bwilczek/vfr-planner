@@ -9,6 +9,8 @@ import { getNavigationData } from '../../selectors/navigationData'
 import PrintSettingsCheckbox from '../PrintSettingsCheckbox'
 import * as format from '../../lib/Formatter'
 
+import buttonPatroniteLogo from '../../../img/patronite-logo.svg'
+
 @injectIntl
 @connect(
   (state) => {
@@ -89,6 +91,13 @@ export default class PrintFlightPlanDialog extends React.Component {
         <Modal.Body>
 
           {checkboxList}
+
+          <div style={{width: '100%', textAlign: 'right', fontSize: '18px', verticalAlign: 'middle'}}>
+            <a href="https://patronite.pl/patronuj/lecimy-za-5pln/70674" target="_blank">
+              <FormattedMessage id="supportUsWith" />&nbsp;
+              <img style={{width: '100px'}} src={buttonPatroniteLogo} />
+            </a>
+          </div>
 
         </Modal.Body>
         <Modal.Footer>

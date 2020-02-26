@@ -11,8 +11,6 @@ export default class Status extends React.Component {
     return (
       <div>
         <FormattedMessage id="statusComingSoon" />
-        <br />
-        patronite
       </div>
     )
   }

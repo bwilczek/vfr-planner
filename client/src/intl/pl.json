@@ -121,5 +121,6 @@
   "emptyRouteDescription": "Dodaj punkty klikając na mapie, lub z pomocą przycisku poniżej",
   "fullScreenOn": "Pełny ekran",
   "fullScreenOff": "Wyłącz pełny ekran",
-  "flightModeMarker": "Aktualna pozycja"
+  "flightModeMarker": "Aktualna pozycja",
+  "supportUsWith": "Wspieraj lecimy.org z"
 }
