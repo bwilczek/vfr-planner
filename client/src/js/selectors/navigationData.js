@@ -20,19 +20,18 @@ export const getNavigationData = createSelector(
       next = flightPlan.waypoints[i + 1]
 
       if (next !== undefined) {
-        let wpLatLng = navUtils.standardizeLatLng(wp.latLng)
-        let nextLatLng = navUtils.standardizeLatLng(next.latLng)
-        let course = google.maps.geometry.spherical.computeHeading(wpLatLng, nextLatLng)
-        // if (course < 0) {
-        //   course += 360
-        // }
+        let wpLatLng = wp.latLng
+        let nextLatLng = next.latLng
+
+        // let course = google.maps.geometry.spherical.computeHeading(wpLatLng, nextLatLng)
+        let course = L.GeometryUtil.bearing(wpLatLng, nextLatLng)
+
         course = navUtils.sanitizeDegrees(course)
         let courseMag = course - wp.declination
-        // if (courseMag < 0) {
-        //   courseMag += 360
-        // }
         courseMag = navUtils.sanitizeDegrees(courseMag)
-        segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
+        // segmentDistance = google.maps.geometry.spherical.computeLength([wpLatLng, nextLatLng])
+        segmentDistance = L.GeometryUtil.length(L.polyline([wpLatLng, nextLatLng]))
+
         let nav = navUtils.computeWindTriange(flightPlan.tas, courseMag, segmentDistance, flightPlan.windSpeed, flightPlan.windDirection, flightPlan.speedUnit)
         totalDistance += segmentDistance
         totalDuration += nav.segmentDuration

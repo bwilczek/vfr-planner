@@ -43,14 +43,6 @@ export function computeWindTriange(airSpeed, courseMag, distance, windSpeed, win
   return { heading, groundSpeed, segmentDuration, rawGroundSpeed }
 }
 
-export function standardizeLatLng(o) {
-  if (typeof o.lat === 'function') {
-    return o
-  } else {
-    return new google.maps.LatLng(o.lat, o.lng)
-  }
-}
-
 export function sanitizeDegrees(degrees) {
   if (degrees < 0) {
     return degrees + 360

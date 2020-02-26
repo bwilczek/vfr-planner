@@ -28,7 +28,7 @@ export function logout() {
       },
       (error) => {
         dispatch(toastrActions.remove('pleaseWait'))
-        let errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
+        const errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
         dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
       }
     )
@@ -52,7 +52,7 @@ export function authenticate(provider, token) {
       },
       (error) => {
         dispatch(toastrActions.remove('pleaseWait'))
-        let errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
+        const errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
         dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
       }
     )

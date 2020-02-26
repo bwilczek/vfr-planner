@@ -44,7 +44,6 @@ export default class HelpPl extends React.Component {
             </ul>
             Kilka z funkcjonalności dawnego serwisu nie zostało przeniesionych
             <ul>
-              <li>Dodawanie punktów planu lotu przez wpisywanie</li>
               <li>Pobieranie pogody ze stron IMGW</li>
               <li>Uwzględnianie w obliczeniach czasu spędzonego nad punktami zwrotnymi</li>
             </ul>

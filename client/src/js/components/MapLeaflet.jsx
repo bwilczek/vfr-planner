@@ -200,13 +200,12 @@ export default class MapLeaflet extends React.Component {
       if (!bounds.contains(e.latlng)) {
         return
       }
-      content += `
-      <strong>${poly.airspace.name}</strong><br />
-      ${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />
-      ${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />
-      ${poly.airspace.description}
-      <hr />
-      `
+      content += `<strong>${poly.airspace.name}</strong><br />`
+      content += `${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />`
+      if(poly.airspace.time_from) {
+        content += `${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />`
+      }
+      content += `${poly.airspace.description}<hr />`
     })
 
     const popup = L.popup()
