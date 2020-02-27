@@ -7,6 +7,7 @@ import { injectIntl } from 'react-intl'
 import { max, cloneDeep, isEqual, forEach, random, floor, find, findIndex } from 'lodash'
 import { Map, TileLayer } from 'react-leaflet'
 import '../lib/Leaflet.Geodesic'
+import '../lib/Leaflet.PointInPolygon'
 import '../lib/leaflet.rotatedMarker'
 import '../vendor/Leaflet.fullscreen.min.js'
 import 'leaflet-geometryutil'
@@ -198,13 +199,12 @@ export default class MapLeaflet extends React.Component {
   onAirspaceRightClick(e) {
     let content = ''
     forEach(this.airspacePolygons, (poly) => {
-      let bounds = poly.getBounds()
-      if (!bounds.contains(e.latlng)) {
+      if (!poly.contains(e.latlng)) {
         return
       }
       content += `<strong>${poly.airspace.name}</strong><br />`
       content += `${poly.airspace.level_min}ft - ${poly.airspace.level_max}ft<br />`
-      if(poly.airspace.time_from) {
+      if (poly.airspace.time_from) {
         content += `${format.hour(poly.airspace.time_from)} - ${format.hour(poly.airspace.time_to)} UTC<br />`
       }
       content += `${poly.airspace.description}<hr />`
