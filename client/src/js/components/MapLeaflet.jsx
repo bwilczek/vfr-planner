@@ -70,6 +70,7 @@ export default class MapLeaflet extends React.Component {
     this.latLngOfMouseDown = null
     this.geolocationId = null;
     this.flightModeMarker = null;
+    this.flightModePrevLatLng = null;
   }
 
   componentDidMount() {
@@ -126,10 +127,11 @@ export default class MapLeaflet extends React.Component {
     }
     const { formatMessage } = this.props.intl
     const latLng = L.latLng(position.coords.latitude, position.coords.longitude)
-    const heading = position.heading || 0
+    const heading = this.flightModePrevLatLng ? L.GeometryUtil.bearing(this.flightModePrevLatLng, latLng) : 0
     const icon = L.icon({iconUrl: getIconForFlightMode(), iconSize: 24, iconAnchor: [12, 12]})
     const newMarker = L.marker(latLng, {icon: icon, rotationAngle: heading, title: formatMessage({id: 'flightModeMarker'})})
 
+    this.flightModePrevLatLng = latLng
     this.flightModeMarker = newMarker
     this.flightModeMarker.addTo(this.map)
   }
