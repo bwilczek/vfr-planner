@@ -10,6 +10,7 @@ import { updateUi } from '../actions/uiActions'
 import { renameModalShow } from '../actions/modalsActions'
 import { deleteWaypoint, reorderWaypoints, reverseWaypoints } from '../actions/flightPlanActions'
 import { appendWaypointModalShow } from '../actions/modalsActions'
+import * as format from '../lib/Formatter'
 
 // TODO: evaluate if moving styles to CSS files is beneficial, do it if so
 const dragHandleStyle = {
@@ -63,7 +64,7 @@ const SortableItem = SortableElement(({value, dispatch}) => {
           <MenuItem onClick={() => { dispatch(renameModalShow(value.key)) }}><FontAwesome name="edit" style={{width: '17px'}} /> <FormattedMessage id="rename"/></MenuItem>
           <MenuItem onClick={() => { dispatch(deleteWaypoint(value)) }}><FontAwesome name="trash" style={{width: '17px'}} /> <FormattedMessage id="remove"/></MenuItem>
         </DropdownButton>
-        &nbsp;<span style={{fontSize: '16px', fontWeight: 'bold'}}>{value.name}</span><br />
+        &nbsp;<span title={format.coords(value.latLng)} style={{fontSize: '16px', fontWeight: 'bold'}}>{value.name}</span><br />
         {navInfo}
       </div>
     </div>
