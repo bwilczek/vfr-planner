@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
-import { Accordion, Panel, Button } from 'react-bootstrap'
+import { Panel, Button, PanelGroup } from 'react-bootstrap'
 import { FormattedMessage, injectIntl } from 'react-intl'
 
 import { openFlightPlanModalHide } from '../actions/modalsActions'
@@ -45,20 +45,25 @@ export default class FlightPlanList extends React.Component {
       this.props.closeDialog()
       browserHistory.push(`/plan-${id}`)
     }
-    const list = this.props.flightPlans.map((plan) =>
-      <Panel header={plan.name} key={plan.id} eventKey={plan.id}>
-        ID: {plan.id}<br />
-        {plan.description || this.props.intl.formatMessage({id: 'noDescription'})}
-        <br /><br />
-        <Button onClick={handleClick.bind(this, plan.id)}>
-          <FormattedMessage id='flightPlans_open' />
-        </Button>
+    const list = this.props.flightPlans.map((plan, index) =>
+      <Panel key={index} eventKey={index}>
+        <Panel.Heading>
+          <Panel.Title toggle>{plan.name}</Panel.Title>
+        </Panel.Heading>
+        <Panel.Body collapsible>
+          ID: {plan.id}<br />
+          {plan.description || this.props.intl.formatMessage({id: 'noDescription'})}
+          <br /><br />
+          <Button onClick={handleClick.bind(this, plan.id)}>
+            <FormattedMessage id='flightPlans_open' />
+          </Button>
+        </Panel.Body>
       </Panel>
     )
     return (
-      <Accordion>
+      <PanelGroup accordion id="save-flight-plans-accordion">
         {list}
-      </Accordion>
+      </PanelGroup>
     )
   }
 

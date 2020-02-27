@@ -12,7 +12,9 @@ const initialState = {
   description: '',
   public: false,
   id: null,
-  speedUnit: 'kt'
+  speedUnit: 'kt',
+  waypointsSuggestList: [],
+  waypointsSuggestListLoading: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -50,9 +52,21 @@ export default function reducer(state = initialState, action) {
     case 'REORDER_WAYPOINTS': {
       return {...state, waypoints: action.payload}
     }
+    case 'REVERSE_WAYPOINTS': {
+      let waypoints = cloneDeep(state.waypoints)
+      return {...state, waypoints: waypoints.reverse()}
+    }
+    case 'SUGGEST_NAVPOINTS_PENDING': {
+      return {...state, waypointsSuggestListLoading: true }
+    }
+    case 'SUGGEST_NAVPOINTS_REJECTED': {
+      return {...state, waypointsSuggestListLoading: false }
+    }
+    case 'SUGGEST_NAVPOINTS_FULFILLED': {
+      return {...state, waypointsSuggestListLoading: false, waypointsSuggestList: action.payload.data.data}
+    }
     case 'WAYPOINT_REVERSE_GEOCODE_PENDING': {
       // do nothing
-      // return _.cloneDeep(state);
       break
     }
     case 'WAYPOINT_REVERSE_GEOCODE_REJECTED': {

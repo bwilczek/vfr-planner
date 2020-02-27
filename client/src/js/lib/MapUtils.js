@@ -12,6 +12,11 @@ import iconNavPointVorDme from '../../img/dvor_dme.png'
 import iconNavPointDme from '../../img/dme.png'
 import iconNavPointOtherAirstrip from '../../img/airfield_other.png'
 import iconNavPointIfrPoint from '../../img/ifr_point.png'
+import iconWayPoint from '../../img/waypoint_basic.svg'
+import iconWayPointMouseOver from '../../img/waypoint_basic_hover.svg'
+import iconPotentialWayPoint from '../../img/waypoint_potential.svg'
+import iconPotentialWayPointMouseOver from '../../img/waypoint_potential_hover.svg'
+import iconPlaneMarker from '../../img/plane_marker.svg'
 
 export function extractPointsFromAirspace(airspace) {
   let ret = []
@@ -51,14 +56,7 @@ export function createAirspaceRawPolygon(airspace) {
       color = '#CCCCCC'
   }
 
-  let polygon = new google.maps.Polygon({
-    paths: extractPointsFromAirspace(airspace),
-    strokeColor: color,
-    strokeOpacity: 0.75,
-    strokeWeight: 2,
-    fillColor: color,
-    fillOpacity: 0.28,
-  })
+  let polygon = L.polygon(extractPointsFromAirspace(airspace), {color: color, opacity: 0.75, weight: 2, fillColor: color, fillOpacity: 0.28})
   polygon.airspace = airspace
   return polygon
 }
@@ -90,4 +88,24 @@ export function getIconForNavPointKind(kind) {
     case 'ifr_point':
       return iconNavPointIfrPoint
   }
+}
+
+export function getIconForWaypoint() {
+  return iconWayPoint
+}
+
+export function getIconForWaypointMouseOver() {
+  return iconWayPointMouseOver
+}
+
+export function getIconForPotentialWaypoint() {
+  return iconPotentialWayPoint
+}
+
+export function getIconForPotentialWaypointMouseOver() {
+  return iconPotentialWayPointMouseOver
+}
+
+export function getIconForFlightMode() {
+  return iconPlaneMarker
 }

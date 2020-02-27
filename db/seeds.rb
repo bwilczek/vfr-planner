@@ -10,6 +10,7 @@ NavPoint.create(
   status: :active,
   kind: :uncontrolled,
   declination: 4,
+  description: 'Status: Ladowisko zarejestrowane; ICAO: EPWS; Radio: Szymanow-Radio 122.8; Kierunek ladowania (GEO): 144/324 (14/32); Wymiary pasa: 768 x 51 m; Elewacja: 390 ft = 119 m; Link: http://www.aeroklub.wroc.pl; AIP: http://ais.pansa.pl/vfr/aippliki/EP_AD_4_EPWS_3-0_en.pdf; AIP-txt: http://ais.pansa.pl/vfr/aippliki/EP_AD_4_EPWS_en.pdf; Kontakt: +48 713878716; Uwagi: Ladowisko Aeroklubu Wroclawskiego. Pas trawiasty, oznakowany. Nr ewid.ULC 7; Kamera: http://aero.webcam/epws/; Polozenie drog startowych: https://goo.gl/YUYo1h122.8'
 )
 
 NavPoint.create(
@@ -22,6 +23,7 @@ NavPoint.create(
   status: :active,
   kind: :uncontrolled,
   declination: 4,
+  description: 'Status: Lotnisko; ICAO: EPOM; Radio: Michalkow-Radio 122.2; Kierunek ladowania (GEO): 114/294 (10/28); Wymiary pasa: 961 x 49 m; Elewacja: 469 ft = 143 m; Link: http://www.aeroklub.osw.pl; AIP: http://ais.pansa.pl/vfr/aippliki/EP_AD_4_EPOM_3-0_en.pdf; AIP-txt: http://ais.pansa.pl/vfr/aippliki/EP_AD_4_EPOM_en.pdf; Kontakt: +48 627352023; Uwagi: Lotnisko Aeroklubu Ostrowskiego. Pas trawiasty, oznakowany, utwardzony. Strefa spadochronowa w poludniowo-wschodniej czesci lotniska. Restauracja (bar) na terenie lotniska czynna w sezonie (poza sezonem czasem w weekendy). Nr rej.ULC 6; Kamera: http://aero.webcam/epom/; Polozenie drogi startowej: https://goo.gl/FJnSPD122.2'
 )
 
 NavPoint.create(
@@ -34,6 +36,39 @@ NavPoint.create(
   kind: :vfr_point,
   declination: 4,
 )
+
+NavPoint.new.tap do |p|
+  p.name = 'EPDE GOLF'
+  p.icao_code = 'EPDEG'
+  p.kind = :vfr_point
+  p.lng = 21.911389
+  p.lat = 51.481389
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
+
+NavPoint.new.tap do |p|
+  p.name = 'EPDE NOVEMBER'
+  p.icao_code = 'EPDEN'
+  p.kind = :vfr_point
+  p.lng = 21.938889
+  p.lat = 51.586667
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
+
+NavPoint.new.tap do |p|
+  p.name = 'EPDE SIERRA'
+  p.icao_code = 'EPDES'
+  p.kind = :vfr_point
+  p.lng = 21.866111
+  p.lat = 51.523611
+  p.status = :active
+  p.declination = 5.735
+  p.country = 'pl'
+end.save
 
 Airspace.destroy_all
 

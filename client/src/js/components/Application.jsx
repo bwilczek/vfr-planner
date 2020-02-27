@@ -11,6 +11,7 @@ import '../../css/font-awesome.min.css'
 import '../../css/bootstrap.min.css'
 import '../../css/react-redux-toastr.min.css'
 import '../../css/application.scss'
+import '../../css/leaflet.fullscreen.css'
 
 import { fetchIntl } from '../actions/intlActions'
 

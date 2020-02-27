@@ -107,5 +107,20 @@
   "totalDuration": "Całkowity czas",
   "totalDistance": "Całkowita odległość",
   "warning": "Uwaga",
-  "warningContent": "Dane o wszystkich strefach są już dostępne, dane z AUP jeszcze nie. Trwają prace w zakresie integracji importu z serwisu lotnik.org"
+  "warningContent": "Dane o wszystkich strefach są już dostępne, dane z AUP jeszcze nie. Trwają prace w zakresie integracji importu z serwisu lotnik.org",
+  "potentialWayPointTooltip": "Przesuń żeby dodać punkt",
+  "layerSatellite": "Satelita",
+  "layerMap": "Mapa",
+  "flightMode": "Tryb lotu",
+  "notForOperationalUse": "NIE DO UŻYTKU OPERACYJNEGO",
+  "logout": "Wyloguj",
+  "appendWaypoint": "Dodaj...",
+  "reverseRoute": "Odwróć",
+  "appendWaypointModalTitle": "Dodaj punkt",
+  "emptyRouteHeader": "Ta trasa jest pusta",
+  "emptyRouteDescription": "Dodaj punkty klikając na mapie, lub z pomocą przycisku poniżej",
+  "fullScreenOn": "Pełny ekran",
+  "fullScreenOff": "Wyłącz pełny ekran",
+  "flightModeMarker": "Aktualna pozycja",
+  "supportUsWith": "Wspieraj lecimy.org z"
 }

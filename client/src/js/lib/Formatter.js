@@ -1,7 +1,6 @@
 import { round } from 'lodash'
 import { sprintf } from 'sprintf-js'
 import moment from 'moment'
-import { standardizeLatLng } from './NavigationUtils'
 
 export function distance(meters, speedUnit) {
   if (speedUnit === 'kt') {
@@ -35,12 +34,10 @@ export function heading(degrees) {
 }
 
 export function coords(location) {
-  const stdLocation = standardizeLatLng(location)
-
   let o = {}
   let secs
 
-  let lat = stdLocation.lat()
+  let lat = location.lat
   o.latDeg = parseInt(lat)
   secs = parseInt((lat - o.latDeg) * 3600)
   o.latMin = Math.abs(parseInt(secs / 60))
@@ -48,7 +45,7 @@ export function coords(location) {
   o.latDir = (o.latDeg > 0) ? 'N' : 'S'
   o.latDeg = Math.abs(o.latDeg)
 
-  let lng = stdLocation.lng()
+  let lng = location.lng
   o.lngDeg = parseInt(lng)
   secs = parseInt((lng - o.lngDeg) * 3600)
   o.lngMin = Math.abs(parseInt(secs / 60))
@@ -64,4 +61,12 @@ export function coords(location) {
     sprintf('%02d', parseInt(o.lngMin)) + "'" +
     sprintf('%02d', parseInt(o.lngSec)) + '"' +
     o.lngDir
+}
+
+
+export function linkify(text) {
+  const urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+  return text.replace(urlRegex, function(url) {
+      return '<a href="' + url + '" target="_blank">' + url + '</a>';
+  })
 }

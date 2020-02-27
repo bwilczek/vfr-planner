@@ -12,6 +12,7 @@ import FlightPlanDropdown from './FlightPlanDropdown'
 
 import { fetchNavPoints, fetchAirspaces } from '../actions/aeroDataActions'
 import { printFlightPlanModalShow } from '../actions/modalsActions'
+import { updateUi } from '../actions/uiActions'
 
 @injectIntl
 @connect(
@@ -53,6 +54,7 @@ export default class FlightPlanSettings extends React.Component {
 
   render() {
     const handlePrintClick = () => { this.props.dispatch(printFlightPlanModalShow()) }
+    const handleFlightModeClick = () => { this.props.dispatch(updateUi({flightMode: !this.props.ui.flightMode})) }
     return (
       <div>
         <FlightPlanDropdown />
@@ -62,6 +64,14 @@ export default class FlightPlanSettings extends React.Component {
             <FontAwesome name="print" size="2x" style={{display: 'inline-block', height: '17px', verticalAlign: 'top'}}/>
             <div style={{display: 'inline-block', verticalAlign: 'bottom', height: '23px', marginLeft: '10px', marginTop: '5px', fontWeight: 'bold'}}>
               <FormattedMessage id="printFlightPlan"/>
+            </div>
+          </div>
+        </Button>
+        <Button style={{width: '189px', marginBottom: '5px', backgroundColor: (this.props.ui.flightMode ? '#f67' : '#fff')}} onClick={handleFlightModeClick}>
+          <div>
+            <FontAwesome name="plane" size="2x" style={{display: 'inline-block', height: '17px', verticalAlign: 'top'}}/>
+            <div style={{display: 'inline-block', verticalAlign: 'bottom', height: '23px', marginLeft: '10px', marginTop: '5px', fontWeight: 'bold'}}>
+              <FormattedMessage id="flightMode"/>
             </div>
           </div>
         </Button>

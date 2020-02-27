@@ -14,10 +14,6 @@ ReactGA.initialize(secrets.GOOGLE_ANALYTICS_KEY)
 
 export default class Root extends React.Component {
 
-  static propTypes = {
-    store: React.PropTypes.object.isRequired,
-  };
-
   logPageView() {
     ReactGA.set({ page: window.location.pathname + window.location.search })
     ReactGA.pageview(window.location.pathname + window.location.search)

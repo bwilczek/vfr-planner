@@ -10,6 +10,31 @@ export function updateUser(data) {
   }
 }
 
+export function logout() {
+  return (dispatch) => {
+    dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
+    axios.delete('/api/sessions/666').then(
+      (response) => {
+        const data = {
+          name: '',
+          id: null,
+          token: null,
+          img: null,
+          flightPlans: null
+        }
+        axios.defaults.headers.common['Authorization'] = null
+        dispatch(toastrActions.remove('pleaseWait'))
+        dispatch(updateUser(data))
+      },
+      (error) => {
+        dispatch(toastrActions.remove('pleaseWait'))
+        const errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
+        dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
+      }
+    )
+  }
+}
+
 export function authenticate(provider, token) {
   return (dispatch) => {
     dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))
@@ -27,7 +52,7 @@ export function authenticate(provider, token) {
       },
       (error) => {
         dispatch(toastrActions.remove('pleaseWait'))
-        let errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
+        const errorMessageKey = error.response.status === 401 ? 'errorMessageUnauthorized' : 'errorMessageNetwork'
         dispatch(toastrActions.add(ToastrUtils.configForError(errorMessageKey)))
       }
     )

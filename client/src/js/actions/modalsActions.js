@@ -26,6 +26,20 @@ export function settingsModalHide() {
   }
 }
 
+export function appendWaypointModalShow() {
+  return {
+    type: 'APPEND_WAYPOINT_MODAL_SHOW',
+    payload: null
+  }
+}
+
+export function appendWaypointModalHide() {
+  return {
+    type: 'APPEND_WAYPOINT_MODAL_HIDE',
+    payload: null
+  }
+}
+
 export function openFlightPlanModalShow() {
   return {
     type: 'FLIGHT_PLAN_OPEN_MODAL_SHOW',

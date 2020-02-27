@@ -7,7 +7,8 @@ const initialState = {
   checkboxIfrPoints: false,
   checkboxNavAids: false,
   countries: ['pl'],
-  selectedAirspaces: 'today'
+  selectedAirspaces: 'today',
+  flightMode: false
 }
 
 export default function reducer(state = initialState, action) {
