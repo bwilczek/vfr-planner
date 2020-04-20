@@ -57,6 +57,8 @@ class LotnikParser
                       :tma
                     when /^TRA/
                       :tra
+                    when /^TR /
+                      :tra
                     when /^TFR/
                       :tfr
                     when /^EA/
