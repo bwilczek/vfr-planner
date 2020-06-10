@@ -54,7 +54,7 @@ GEM
       faraday (>= 0.7.4)
       http-cookie (~> 1.0.0)
     ffi (1.9.14)
-    geocoder (1.5.1)
+    geocoder (1.6.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     http-cookie (1.0.3)
