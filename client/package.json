@@ -36,7 +36,7 @@
     "react-bootstrap-toggle": "^2.0.7",
     "react-bootstrap-typeahead": "^3.4.7",
     "react-dom": "16",
-    "react-facebook-login": "^3.4.3",
+    "react-facebook-login": "^4.1.1",
     "react-file-download": "^0.3.4",
     "react-fontawesome": "^1.5.0",
     "react-ga": "^2.2.0",

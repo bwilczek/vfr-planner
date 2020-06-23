@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
-import FacebookLogin from 'react-facebook-login'
+// import FacebookLogin from 'react-facebook-login'
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import GoogleLogin from 'react-google-login'
 import { injectIntl } from 'react-intl'
 
@@ -45,16 +46,18 @@ export default class Auth extends React.Component {
 
     return (
       <span>
-        <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={(e) => { this.refs.auth_button_fb.click(e) }}/>
-        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e) => { this.refs.auth_button_google.signIn() }}/>
         <FacebookLogin
           ref="auth_button_fb"
           appId={secrets.FACEBOOK_APP_ID}
           autoLoad={false}
           fields="name,picture"
           callback={this.props.handleResponseFacebook}
-          cssClass="hidden"
-          textButton="Facebook"/>
+          textButton="Facebook"
+          render={renderProps => (
+            <FontAwesome title={formatMessage({id: 'loginWithFacebook'})} name="facebook-official" class="auth-button" size="3x" onClick={renderProps.onClick}/>
+          )}
+        />
+        <FontAwesome title={formatMessage({id: 'loginWithGoogle'})} name="google" class="auth-button" size="3x" onClick={(e) => { this.refs.auth_button_google.signIn() }}/>
         <GoogleLogin
           ref="auth_button_google"
           clientId={secrets.GOOGLE_APP_ID}
