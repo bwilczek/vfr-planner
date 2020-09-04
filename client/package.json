@@ -28,7 +28,7 @@
     "leaflet-geometryutil": "^0.9.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "node-sass": "^4.1.1",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.5.7",
     "react": "16",
     "react-bootstrap": "^0.32.4",
