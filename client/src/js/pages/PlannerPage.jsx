@@ -38,12 +38,6 @@ import { fetchFlightPlan } from '../actions/flightPlanActions'
 export default class PlannerPage extends React.Component {
 
   componentDidMount() {
-    // GoogleMapsLoader.load((g) => {
-    //   this.props.setMapsApiLoaded(true)
-    // })
-  }
-
-  componentDidUpdate() {
     if (this.props.params.planId) {
       this.props.fetchFlightPlan(this.props.params.planId)
     }
