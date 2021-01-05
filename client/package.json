@@ -7,7 +7,7 @@
   "author": "bwilczek",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.21.1",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
