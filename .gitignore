@@ -1,4 +1,7 @@
 /.bundle
+/.idea
+/.rakeTasks
+/.generators
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
