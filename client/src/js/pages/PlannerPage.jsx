@@ -14,6 +14,7 @@ import FlightPlanSettings from '../components/FlightPlanSettings'
 import { setMapsApiLoaded } from '../actions/googleActions'
 import { settingsModalShow } from '../actions/modalsActions'
 import { fetchFlightPlan } from '../actions/flightPlanActions'
+import { isEqual } from 'lodash'
 
 @connect(
   (state) => {
@@ -39,6 +40,12 @@ export default class PlannerPage extends React.Component {
 
   componentDidMount() {
     if (this.props.params.planId) {
+      this.props.fetchFlightPlan(this.props.params.planId)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.params.planId, prevProps.params.planId)) {
       this.props.fetchFlightPlan(this.props.params.planId)
     }
   }
