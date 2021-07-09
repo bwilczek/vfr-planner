@@ -1,5 +1,10 @@
 class SessionsController < ApplicationController
-  skip_before_action :require_authorization, only: [:create]
+  skip_before_action :require_authorization, only: [:create, :check]
+
+  def check
+    session = Session.find_by_token(auth_token)
+    render json: { result: !session.nil? }
+  end
 
   def create
     if params[:provider] == 'facebook'

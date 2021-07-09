@@ -10,6 +10,30 @@ export function updateUser(data) {
   }
 }
 
+export function checkToken() {
+  return (dispatch) => {
+    axios.get('/api/check_session').then(
+      (response) => {
+        const valid_session = response.data.result
+        if(!valid_session) {
+          const data = {
+            name: '',
+            id: null,
+            token: null,
+            img: null,
+            flightPlans: null
+          }
+          axios.defaults.headers.common['Authorization'] = null
+          dispatch(updateUser(data))
+        }
+      },
+      (_error) => {
+        console.log("Failed to check session status")
+      }
+    )
+  }
+}
+
 export function logout() {
   return (dispatch) => {
     dispatch(toastrActions.add(ToastrUtils.configForPleaseWait()))

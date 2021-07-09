@@ -14,6 +14,7 @@ import '../../css/application.scss'
 import '../../css/leaflet.fullscreen.css'
 
 import { fetchIntl } from '../actions/intlActions'
+import { checkToken } from '../actions/authActions'
 
 @injectIntl
 @connect(
@@ -22,13 +23,15 @@ import { fetchIntl } from '../actions/intlActions'
   },
   (dispatch) => {
     return {
-      fetchDefaultIntl: () => { dispatch(fetchIntl('pl')) }
+      fetchDefaultIntl: () => { dispatch(fetchIntl('pl')) },
+      checkToken: () => { dispatch(checkToken()) }
     }
   }
 )
 export default class Application extends React.Component {
 
   componentWillMount() {
+    this.props.checkToken()
     ToastrUtils.setup(this.props.intl.formatMessage)
     if (isEmpty(this.props.messages)) {
       this.props.fetchDefaultIntl()
