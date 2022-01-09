@@ -1,4 +1,4 @@
-class PlansController < ApplicationController
+class PlansController < ApiApplicationController
   skip_before_action :require_authorization, only: [:show, :index, :find]
 
   def show

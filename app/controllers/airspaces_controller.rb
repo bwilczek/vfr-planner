@@ -1,4 +1,4 @@
-class AirspacesController < ApplicationController
+class AirspacesController < ApiApplicationController
   skip_before_action :require_authorization, only: [:show, :index]
 
   def index

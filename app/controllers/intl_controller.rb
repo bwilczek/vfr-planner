@@ -1,4 +1,4 @@
-class IntlController < ApplicationController
+class IntlController < ApiApplicationController
   skip_before_action :require_authorization, only: [:list]
 
   def list

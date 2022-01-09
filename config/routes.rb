@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :members
+  get '/html', to: 'html#index'
 
   scope '/api' do
     get '/nav_points/find', to: 'nav_points#find'
@@ -15,6 +17,6 @@ Rails.application.routes.draw do
     resources :airspaces
     resources :plans
   end
-  get '/*path/index.min.js', :to => "application#index_js"
-  get '*unmatched_route', :to => "application#index_html"
+  get '/*path/index.min.js', :to => "api_application#index_js"
+  get '*unmatched_route', :to => "api_application#index_html"
 end

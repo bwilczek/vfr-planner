@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.0.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
@@ -17,7 +17,7 @@ gem 'puma', '~> 3.7'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'koala', '~> 2.4'
+# gem 'koala', '~> 2.4'
 gem 'mysql2', '~> 0.4.9'
 gem 'rubyzip', '~> 1.2'
 gem 'wkhtmltopdf-binary', '0.12.3.1'
@@ -25,6 +25,7 @@ gem 'wicked_pdf', '1.1.0'
 gem 'faraday-cookie_jar'
 gem 'geocoder'
 gem 'seeyoucup'
+gem 'devise'
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -1,4 +1,4 @@
-class NavPointsController < ApplicationController
+class NavPointsController < ApiApplicationController
   skip_before_action :require_authorization, only: [:show, :index, :find, :suggest]
 
   def index
